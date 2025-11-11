@@ -1,0 +1,2563 @@
+i<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>German-English Flashcards v2.1 - Enhanced</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .upload-section {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .upload-label {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: 600;
+        }
+
+        .upload-label:hover {
+            background: #5568d3;
+        }
+
+        #csvFile {
+            display: none;
+        }
+
+        .file-info {
+            margin-top: 10px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .flashcard-container {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .flashcard {
+            position: relative;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .card-german-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .card-label {
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .card-content {
+            font-size: 2.5em;
+            font-weight: 700;
+            text-align: center;
+            word-wrap: break-word;
+            margin: 20px 0;
+        }
+
+        .card-divider {
+            border: none;
+            border-top: 2px dashed rgba(255, 255, 255, 0.3);
+            margin: 20px 0;
+        }
+
+        .card-english-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.4s ease-in-out;
+        }
+
+        .card-english-section.revealed {
+            max-height: 300px;
+            opacity: 1;
+            padding: 40px 30px;
+        }
+
+        .reveal-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .reveal-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .card-detail {
+            font-size: 0.9em;
+            margin-top: 15px;
+            opacity: 0.9;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .navigation {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .nav-button {
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            background: #5568d3;
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .progress {
+            text-align: center;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .hint {
+            text-align: center;
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .show-meanings-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            padding: 12px;
+            background: #f0f9ff;
+            border-radius: 10px;
+        }
+
+        .show-meanings-toggle label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #667eea;
+            user-select: none;
+        }
+
+        .show-meanings-toggle input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .control-buttons {
+            display: none;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .control-btn {
+            padding: 10px 20px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .control-btn:hover {
+            background: #059669;
+        }
+
+        .control-btn.active {
+            background: #f59e0b;
+        }
+
+        .autoplay-btn {
+            background: #8b5cf6;
+        }
+
+        .autoplay-btn:hover {
+            background: #7c3aed;
+        }
+
+        .autoplay-btn.playing {
+            background: #ef4444;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .autoplay-settings {
+            display: none;
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px solid #e5e7eb;
+        }
+
+        .category-manager {
+            display: none;
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px solid #f59e0b;
+        }
+
+        .category-manager h4 {
+            margin: 0 0 10px 0;
+            color: #d97706;
+        }
+
+        .category-section {
+            margin: 10px 0;
+        }
+
+        .category-input-group {
+            display: flex;
+            gap: 8px;
+            margin: 8px 0;
+        }
+
+        .category-input-group input,
+        .category-input-group select {
+            padding: 6px 10px;
+            border: 2px solid #fbbf24;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+
+        .category-input-group button {
+            padding: 6px 15px;
+            background: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .category-input-group button:hover {
+            background: #d97706;
+        }
+
+        .category-list {
+            background: white;
+            border: 2px solid #fbbf24;
+            border-radius: 6px;
+            padding: 10px;
+            margin: 10px 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .category-item {
+            padding: 8px;
+            margin: 4px 0;
+            background: #fffbeb;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-item:hover {
+            background: #fef3c7;
+        }
+
+        .subcategory-item {
+            margin-left: 20px;
+            padding: 6px;
+            font-size: 0.9em;
+            background: #fefce8;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #fbbf24;
+            color: #78350f;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .btn-small {
+            padding: 3px 8px;
+            font-size: 0.8em;
+            margin-left: 5px;
+        }
+
+        .advanced-settings {
+            display: none;
+            background: #dbeafe;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px solid #3b82f6;
+        }
+
+        .advanced-settings h4 {
+            margin: 0 0 10px 0;
+            color: #1e40af;
+        }
+
+        .timer-display {
+            background: #fee2e2;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 10px 0;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #991b1b;
+            display: none;
+        }
+
+        .session-stats {
+            background: #d1fae5;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .session-stats h4 {
+            margin: 0 0 10px 0;
+            color: #065f46;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #a7f3d0;
+        }
+
+        .stat-label {
+            color: #047857;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            color: #065f46;
+            font-weight: bold;
+        }
+
+        .focus-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #1f2937;
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .focus-mode .container {
+            background: #374151;
+            max-width: 800px;
+        }
+
+        .focus-mode .flashcard {
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .focus-exit-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            z-index: 10000;
+        }
+
+        .focus-exit-btn:hover {
+            background: #dc2626;
+        }
+
+        .autoplay-settings label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0;
+            font-size: 0.9em;
+            color: #374151;
+        }
+
+        .voice-settings {
+            display: none;
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px solid #fbbf24;
+        }
+
+        .voice-settings h4 {
+            margin: 0 0 10px 0;
+            color: #d97706;
+        }
+
+        .voice-settings label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #92400e;
+        }
+
+        .voice-settings select {
+            flex: 1;
+            padding: 6px 10px;
+            border: 2px solid #fbbf24;
+            border-radius: 6px;
+            background: white;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+
+        .voice-settings input[type="range"] {
+            flex: 1;
+            cursor: pointer;
+            accent-color: #f59e0b;
+        }
+
+        .autoplay-settings input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #8b5cf6;
+        }
+
+        .autoplay-settings input[type="range"] {
+            flex: 1;
+            cursor: pointer;
+            accent-color: #8b5cf6;
+        }
+
+        .delay-value {
+            font-weight: 600;
+            color: #8b5cf6;
+            min-width: 50px;
+            text-align: right;
+        }
+
+        .learned-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #10b981;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .stats {
+            display: none;
+            background: #f0f9ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .stats-item {
+            display: inline-block;
+            margin: 0 15px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .stats-value {
+            font-size: 1.5em;
+            display: block;
+        }
+
+        .audio-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .audio-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        .audio-btn-english {
+            position: relative;
+            top: auto;
+            left: auto;
+            margin: 15px auto 0 auto;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .audio-btn-english:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        .review-info {
+            font-size: 0.75em;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .instructions {
+            background: #f7f7f7;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .instructions h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .instructions code {
+            background: #e0e0e0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+
+        /* Settings Menu Styles */
+        .settings-menu {
+            display: none;
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            border: 2px solid #e2e8f0;
+        }
+
+        .settings-toggle-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            margin: 15px 0;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .settings-toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .settings-toggle-btn.active {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .toggle-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+
+        .settings-toggle-btn.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-item {
+            background: white;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+
+        .accordion-item:hover {
+            border-color: #cbd5e1;
+        }
+
+        .accordion-header {
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #334155;
+            user-select: none;
+            transition: all 0.3s;
+        }
+
+        .accordion-header:hover {
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+        }
+
+        .accordion-header.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .accordion-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            padding: 0 20px;
+        }
+
+        .accordion-content.active {
+            max-height: 2000px;
+            padding: 20px;
+            transition: max-height 0.5s ease-in, padding 0.4s ease-in;
+        }
+
+        .quick-actions {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .quick-action-btn {
+            padding: 12px 20px;
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .quick-action-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .quick-action-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Fix accordion content labels */
+        .accordion-content label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            font-size: 0.95em;
+            color: #334155;
+        }
+
+        .accordion-content label span {
+            flex: 1;
+        }
+
+        .accordion-content label select,
+        .accordion-content label input[type="range"] {
+            flex: 2;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .flashcard {
+                height: 250px;
+            }
+
+            .card-content {
+                font-size: 1.5em;
+            }
+
+            .nav-button {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🇩🇪 German-English Flashcards v2.1 🇬🇧</h1>
+
+        <!-- Upload Section (Always Visible) -->
+        <div class="upload-section">
+            <label for="csvFile" class="upload-label">
+                📁 Upload CSV File
+            </label>
+            <input type="file" id="csvFile" accept=".csv">
+            <div class="file-info" id="fileInfo"></div>
+        </div>
+
+        <!-- Instructions (Collapsible) -->
+        <div class="instructions" id="instructions" style="cursor: pointer;" onclick="this.style.display='none'">
+            <h3>📋 CSV Format Instructions - v2.0 Enhanced (Click to hide):</h3>
+            <p><strong>✨ NEW: Smart Format Detection!</strong> Auto-detects columns AND separators!</p>
+            <p style="margin-top: 10px;"><strong>Supported Separators:</strong></p>
+            <p>✅ Comma (,) | ✅ Semicolon (;) | ✅ Pipe (|) | ✅ Tab - All auto-detected!</p>
+            <p style="margin-top: 10px;"><strong>Supported Formats:</strong></p>
+            <p><strong>Basic:</strong> <code>German,English</code> or <code>English,German</code></p>
+            <p><strong>Extended (NEW!):</strong> <code>German,Long German Text,English,Long English Text</code></p>
+            <p style="margin-top: 10px;"><strong>Examples:</strong></p>
+            <code>Hallo,Hello</code> (comma)<br>
+            <code>Hallo;Hello</code> (semicolon - auto-detected!)<br>
+            <code>Hallo|Ich sage hallo|Hello|I say hello</code> (pipe + extended)<br>
+            <p style="margin-top: 10px;">✅ Any separator | ✅ Any column order | ✅ Extended text supported</p>
+        </div>
+
+        <!-- Stats (Always Visible When File Loaded) -->
+        <div class="stats" id="stats">
+            <div class="stats-item">
+                <span class="stats-value" id="learnedCount">0</span>
+                <span>Learned</span>
+            </div>
+            <div class="stats-item">
+                <span class="stats-value" id="remainingCount">0</span>
+                <span>Remaining</span>
+            </div>
+            <div class="stats-item">
+                <span class="stats-value" id="totalCount">0</span>
+                <span>Total</span>
+            </div>
+        </div>
+
+        <!-- Quick Actions (Always Visible When File Loaded) -->
+        <div class="quick-actions" id="quickActions">
+            <button class="quick-action-btn autoplay-btn" id="autoplayBtn">▶ Auto-Play</button>
+            <button class="quick-action-btn" id="shuffleBtn">🔀 Shuffle</button>
+            <button class="quick-action-btn" id="learnedBtn">✓ Mark Learned</button>
+            <button class="quick-action-btn" id="showLearnedBtn">👁 Unlearned Only</button>
+        </div>
+
+        <!-- Settings Menu Toggle Button -->
+        <button class="settings-toggle-btn" id="settingsToggleBtn">
+            <span>⚙️ Settings & Options</span>
+            <span class="toggle-icon">▼</span>
+        </button>
+
+        <!-- Settings Menu (Collapsible Accordion) -->
+        <div class="settings-menu" id="settingsMenu">
+
+            <!-- Category Management Accordion -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>📚 Category Management</span>
+                    <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="category-section">
+                        <strong>Current File:</strong>
+                        <span id="currentFileDisplay">No file loaded</span>
+                        <span class="category-badge" id="currentCategoryBadge">Default</span>
+                    </div>
+                    <div class="category-section">
+                        <label style="display: block; margin-bottom: 5px;">Assign to Category:</label>
+                        <div class="category-input-group">
+                            <select id="categorySelect" style="flex: 1;">
+                                <option value="Default">Default</option>
+                            </select>
+                            <select id="subcategorySelect" style="flex: 1;">
+                                <option value="">No Subcategory</option>
+                            </select>
+                            <button onclick="assignCategory()">Assign</button>
+                        </div>
+                    </div>
+                    <hr style="border: 1px solid #e2e8f0; margin: 15px 0;">
+                    <div class="category-section">
+                        <strong>Create New Category:</strong>
+                        <div class="category-input-group">
+                            <input type="text" id="newCategoryName" placeholder="e.g., German" style="flex: 1;">
+                            <button onclick="createCategory()">+ Add Category</button>
+                        </div>
+                    </div>
+                    <div class="category-section">
+                        <strong>Add Subcategory:</strong>
+                        <div class="category-input-group">
+                            <select id="parentCategorySelect" style="flex: 1;">
+                                <option value="Default">Default</option>
+                            </select>
+                            <input type="text" id="newSubcategoryName" placeholder="e.g., A1 Vocabulary" style="flex: 1;">
+                            <button onclick="createSubcategory()">+ Add Sub</button>
+                        </div>
+                    </div>
+                    <div class="category-section">
+                        <strong>All Categories:</strong>
+                        <div class="category-list" id="categoryList">
+                            <div class="category-item">
+                                <span>📁 Default</span>
+                                <span style="font-size: 0.8em; color: #78350f;">Built-in</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Voice & Speech Settings Accordion -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>🎙️ Voice & Speech Settings</span>
+                    <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <label>
+                        <span>German Voice:</span>
+                        <select id="germanVoiceSelect"></select>
+                    </label>
+                    <label>
+                        <span>English Voice:</span>
+                        <select id="englishVoiceSelect"></select>
+                    </label>
+                    <label>
+                        <span>Speech Rate:</span>
+                        <input type="range" id="speechRate" min="0.5" max="1.5" step="0.1" value="0.8">
+                        <span class="delay-value" id="speechRateValue">0.8x</span>
+                    </label>
+                    <label>
+                        <span>Pitch:</span>
+                        <input type="range" id="speechPitch" min="0.5" max="2" step="0.1" value="1.0">
+                        <span class="delay-value" id="speechPitchValue">1.0</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Auto-Play Settings Accordion -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>▶ Auto-Play Settings</span>
+                    <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <label>
+                        <input type="checkbox" id="autoplayEnglish">
+                        <span>Pronounce English translation (after German)</span>
+                    </label>
+                    <label>
+                        <span>Delay between German & English:</span>
+                        <input type="range" id="delayBetween" min="500" max="3000" step="100" value="1500">
+                        <span class="delay-value" id="delayBetweenValue">1.5s</span>
+                    </label>
+                    <label>
+                        <span>Delay before next card:</span>
+                        <input type="range" id="delayNext" min="1000" max="5000" step="200" value="2500">
+                        <span class="delay-value" id="delayNextValue">2.5s</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Advanced Features Accordion -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>🎯 Advanced Features</span>
+                    <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <label>
+                        <input type="checkbox" id="loopMode">
+                        <span>🔁 Loop Mode - Restart automatically when finished</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" id="repeatMode">
+                        <span>🗣️ Repeat Each Card:</span>
+                        <select id="repeatCount" style="margin-left: 10px; padding: 4px;">
+                            <option value="2">2 times</option>
+                            <option value="3">3 times</option>
+                            <option value="4">4 times</option>
+                            <option value="5">5 times</option>
+                        </select>
+                    </label>
+                    <label>
+                        <input type="checkbox" id="studyTimer">
+                        <span>⏰ Study Timer:</span>
+                        <select id="studyDuration" style="margin-left: 10px; padding: 4px;">
+                            <option value="5">5 minutes</option>
+                            <option value="10">10 minutes</option>
+                            <option value="15">15 minutes</option>
+                            <option value="20">20 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="45">45 minutes</option>
+                            <option value="60">60 minutes</option>
+                        </select>
+                    </label>
+                    <label>
+                        <input type="checkbox" id="sleepTimer">
+                        <span>📚 Sleep Timer:</span>
+                        <select id="sleepDuration" style="margin-left: 10px; padding: 4px;">
+                            <option value="10">10 minutes</option>
+                            <option value="15">15 minutes</option>
+                            <option value="20">20 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="45">45 minutes</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Display Options Accordion -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>👁️ Display Options</span>
+                    <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <label style="display: flex; align-items: center; gap: 10px; margin: 10px 0;">
+                        <input type="checkbox" id="alwaysShowMeanings">
+                        <span>Always show English meanings</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 10px; margin: 10px 0;">
+                        <input type="checkbox" id="readExtendedContent">
+                        <span>📖 Read Extended Examples/Sentences in Auto-Play</span>
+                    </label>
+                    <button class="control-btn" id="focusModeBtn" style="width: 100%; margin-top: 10px; background: #6366f1;">
+                        🎯 Enter Focus Mode
+                    </button>
+                    <button class="control-btn" id="resetBtn" style="width: 100%; margin-top: 10px; background: #ef4444;">
+                        ↺ Reset All Progress
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Timer Display (Shows During Auto-Play) -->
+        <div class="timer-display" id="timerDisplay">
+            <span id="timerText">Time Remaining: 00:00</span>
+        </div>
+
+        <!-- Session Stats (Shows During Auto-Play) -->
+        <div class="session-stats" id="sessionStats">
+            <h4>📊 Session Statistics</h4>
+            <div class="stat-row">
+                <span class="stat-label">Cards Reviewed:</span>
+                <span class="stat-value" id="cardsReviewed">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Time Studying:</span>
+                <span class="stat-value" id="timeStudying">00:00</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Cards per Minute:</span>
+                <span class="stat-value" id="cardsPerMinute">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Session Started:</span>
+                <span class="stat-value" id="sessionStart">--:--</span>
+            </div>
+        </div>
+
+        <div class="flashcard-container" id="flashcardContainer">
+            <div class="flashcard" id="flashcard">
+                <div class="card-german-section">
+                    <button class="audio-btn" id="audioBtn" title="Pronounce German word">🔊</button>
+                    <div class="learned-badge" id="learnedBadge" style="display: none;">✓ Learned</div>
+                    <div class="card-label">German (Deutsch) 🇩🇪</div>
+                    <div class="card-content" id="germanWord"></div>
+                    <div class="review-info" id="reviewInfo"></div>
+                    <hr class="card-divider">
+                    <button class="reveal-btn" id="revealBtn">👁 Show English Meaning</button>
+                </div>
+                <div class="card-english-section" id="englishSection">
+                    <div class="card-label">English Translation 🇬🇧</div>
+                    <div class="card-content" id="englishWord"></div>
+                    <div class="card-detail" id="detailBack"></div>
+                    <button class="audio-btn-english" id="audioBtnEnglish" title="Pronounce English word">🔊</button>
+                </div>
+            </div>
+            <div class="hint">👆 Click "Show English Meaning" or Space to reveal | 🔊 P for German | E for English pronunciation</div>
+        </div>
+
+        <div class="navigation" id="navigation">
+            <button class="nav-button" id="prevBtn">← Previous</button>
+            <div class="progress" id="progress">1 / 1</div>
+            <button class="nav-button" id="nextBtn">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        let flashcards = [];
+        let currentIndex = 0;
+        let showOnlyUnlearned = false;
+        let filteredCards = [];
+        let currentFileName = '';
+        let alwaysShowMeanings = false;
+        let readExtendedContent = false; // New: toggle for reading extended examples/sentences
+
+        // Category management
+        let categories = {};
+        let fileCategories = {};
+        let currentFileCategory = { category: 'Default', subcategory: '' };
+
+        // Auto-play variables
+        let isAutoPlaying = false;
+        let autoplayTimeout = null;
+        let autoplayEnglishEnabled = false;
+        let delayBetweenLangs = 1500; // milliseconds
+        let delayBeforeNext = 2500; // milliseconds
+
+        // Advanced feature variables
+        let loopModeEnabled = false;
+        let repeatModeEnabled = false;
+        let repeatCount = 2;
+        let currentRepeat = 0;
+        let studyTimerEnabled = false;
+        let sleepTimerEnabled = false;
+        let timerInterval = null;
+        let timerEndTime = null;
+
+        // Session stats variables
+        let sessionStartTime = null;
+        let cardsReviewedCount = 0;
+        let statsInterval = null
+
+        // Speech synthesis for audio pronunciation
+        const synth = window.speechSynthesis;
+        let germanVoice = null;
+        let englishVoice = null;
+        let allVoices = [];
+        let speechRate = 0.8;
+        let speechPitch = 1.0;
+
+        // Load voices
+        function loadVoices() {
+            allVoices = synth.getVoices();
+
+            // Filter German and English voices
+            const germanVoices = allVoices.filter(voice => voice.lang.startsWith('de'));
+            const englishVoices = allVoices.filter(voice => voice.lang.startsWith('en'));
+
+            // Set default voices
+            germanVoice = germanVoices[0] || allVoices[0];
+            englishVoice = englishVoices[0] || allVoices[0];
+
+            // Populate German voice dropdown
+            const germanSelect = document.getElementById('germanVoiceSelect');
+            germanSelect.innerHTML = '';
+            germanVoices.forEach((voice, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${voice.name} (${voice.lang})`;
+                germanSelect.appendChild(option);
+            });
+
+            // Populate English voice dropdown
+            const englishSelect = document.getElementById('englishVoiceSelect');
+            englishSelect.innerHTML = '';
+            englishVoices.forEach((voice, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${voice.name} (${voice.lang})`;
+                englishSelect.appendChild(option);
+            });
+
+            // Store filtered voices for easy access
+            germanSelect.dataset.voices = JSON.stringify(germanVoices.map(v => v.name));
+            englishSelect.dataset.voices = JSON.stringify(englishVoices.map(v => v.name));
+        }
+
+        // Load voices on page load
+        if (synth.onvoiceschanged !== undefined) {
+            synth.onvoiceschanged = loadVoices;
+        }
+        loadVoices();
+
+        // Category Management Functions
+        function loadCategories() {
+            const saved = localStorage.getItem('flashcard_categories');
+            if (saved) {
+                categories = JSON.parse(saved);
+            } else {
+                categories = { 'Default': [] };
+            }
+
+            const savedFiles = localStorage.getItem('flashcard_file_categories');
+            if (savedFiles) {
+                fileCategories = JSON.parse(savedFiles);
+            }
+
+            updateCategoryDropdowns();
+            renderCategoryList();
+        }
+
+        function saveCategories() {
+            localStorage.setItem('flashcard_categories', JSON.stringify(categories));
+            localStorage.setItem('flashcard_file_categories', JSON.stringify(fileCategories));
+        }
+
+        function createCategory() {
+            const name = document.getElementById('newCategoryName').value.trim();
+            if (!name) {
+                alert('Please enter a category name');
+                return;
+            }
+            if (categories[name]) {
+                alert('Category already exists!');
+                return;
+            }
+
+            categories[name] = [];
+            saveCategories();
+            updateCategoryDropdowns();
+            renderCategoryList();
+            document.getElementById('newCategoryName').value = '';
+            alert(`Category "${name}" created!`);
+        }
+
+        function createSubcategory() {
+            const parent = document.getElementById('parentCategorySelect').value;
+            const name = document.getElementById('newSubcategoryName').value.trim();
+
+            if (!name) {
+                alert('Please enter a subcategory name');
+                return;
+            }
+
+            if (!categories[parent]) {
+                alert('Parent category not found!');
+                return;
+            }
+
+            if (categories[parent].includes(name)) {
+                alert('Subcategory already exists!');
+                return;
+            }
+
+            categories[parent].push(name);
+            saveCategories();
+            updateCategoryDropdowns();
+            renderCategoryList();
+            document.getElementById('newSubcategoryName').value = '';
+            alert(`Subcategory "${name}" added to "${parent}"!`);
+        }
+
+        function assignCategory() {
+            if (!currentFileName) {
+                alert('No file loaded!');
+                return;
+            }
+
+            const category = document.getElementById('categorySelect').value;
+            const subcategory = document.getElementById('subcategorySelect').value;
+
+            fileCategories[currentFileName] = { category, subcategory };
+            currentFileCategory = { category, subcategory };
+
+            saveCategories();
+            updateCurrentFileDisplay();
+
+            const subText = subcategory ? ` > ${subcategory}` : '';
+            alert(`File mapped to: ${category}${subText}`);
+        }
+
+        function updateCategoryDropdowns() {
+            const categorySelect = document.getElementById('categorySelect');
+            const parentSelect = document.getElementById('parentCategorySelect');
+            const subcategorySelect = document.getElementById('subcategorySelect');
+
+            // Update category selects
+            [categorySelect, parentSelect].forEach(select => {
+                const current = select.value;
+                select.innerHTML = '';
+                Object.keys(categories).forEach(cat => {
+                    const option = document.createElement('option');
+                    option.value = cat;
+                    option.textContent = cat;
+                    select.appendChild(option);
+                });
+                if (current && categories[current]) {
+                    select.value = current;
+                }
+            });
+
+            // Update subcategory select
+            updateSubcategoryDropdown();
+        }
+
+        function updateSubcategoryDropdown() {
+            const category = document.getElementById('categorySelect').value;
+            const subcategorySelect = document.getElementById('subcategorySelect');
+
+            subcategorySelect.innerHTML = '<option value="">No Subcategory</option>';
+
+            if (categories[category]) {
+                categories[category].forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub;
+                    option.textContent = sub;
+                    subcategorySelect.appendChild(option);
+                });
+            }
+        }
+
+        function renderCategoryList() {
+            const listDiv = document.getElementById('categoryList');
+            listDiv.innerHTML = '';
+
+            Object.keys(categories).forEach(cat => {
+                const catDiv = document.createElement('div');
+                catDiv.className = 'category-item';
+
+                const catInfo = document.createElement('span');
+                catInfo.innerHTML = `📁 <strong>${cat}</strong>`;
+
+                const actions = document.createElement('div');
+                if (cat !== 'Default') {
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = '✕';
+                    deleteBtn.className = 'btn-small';
+                    deleteBtn.style.background = '#ef4444';
+                    deleteBtn.style.color = 'white';
+                    deleteBtn.style.border = 'none';
+                    deleteBtn.style.borderRadius = '4px';
+                    deleteBtn.style.cursor = 'pointer';
+                    deleteBtn.onclick = () => deleteCategory(cat);
+                    actions.appendChild(deleteBtn);
+                }
+
+                catDiv.appendChild(catInfo);
+                catDiv.appendChild(actions);
+                listDiv.appendChild(catDiv);
+
+                // Add subcategories
+                if (categories[cat] && categories[cat].length > 0) {
+                    categories[cat].forEach(sub => {
+                        const subDiv = document.createElement('div');
+                        subDiv.className = 'category-item subcategory-item';
+
+                        const subInfo = document.createElement('span');
+                        subInfo.innerHTML = `└─ ${sub}`;
+
+                        const subActions = document.createElement('div');
+                        const deleteSubBtn = document.createElement('button');
+                        deleteSubBtn.textContent = '✕';
+                        deleteSubBtn.className = 'btn-small';
+                        deleteSubBtn.style.background = '#f59e0b';
+                        deleteSubBtn.style.color = 'white';
+                        deleteSubBtn.style.border = 'none';
+                        deleteSubBtn.style.borderRadius = '4px';
+                        deleteSubBtn.style.cursor = 'pointer';
+                        deleteSubBtn.onclick = () => deleteSubcategory(cat, sub);
+                        subActions.appendChild(deleteSubBtn);
+
+                        subDiv.appendChild(subInfo);
+                        subDiv.appendChild(subActions);
+                        listDiv.appendChild(subDiv);
+                    });
+                }
+            });
+        }
+
+        function deleteCategory(category) {
+            if (category === 'Default') {
+                alert('Cannot delete Default category!');
+                return;
+            }
+
+            if (!confirm(`Delete category "${category}" and all its subcategories?`)) {
+                return;
+            }
+
+            delete categories[category];
+
+            // Reassign files to Default
+            Object.keys(fileCategories).forEach(file => {
+                if (fileCategories[file].category === category) {
+                    fileCategories[file] = { category: 'Default', subcategory: '' };
+                }
+            });
+
+            saveCategories();
+            updateCategoryDropdowns();
+            renderCategoryList();
+            alert(`Category "${category}" deleted!`);
+        }
+
+        function deleteSubcategory(category, subcategory) {
+            if (!confirm(`Delete subcategory "${subcategory}"?`)) {
+                return;
+            }
+
+            const index = categories[category].indexOf(subcategory);
+            if (index > -1) {
+                categories[category].splice(index, 1);
+            }
+
+            // Reassign files
+            Object.keys(fileCategories).forEach(file => {
+                if (fileCategories[file].category === category &&
+                    fileCategories[file].subcategory === subcategory) {
+                    fileCategories[file].subcategory = '';
+                }
+            });
+
+            saveCategories();
+            updateCategoryDropdowns();
+            renderCategoryList();
+            alert(`Subcategory "${subcategory}" deleted!`);
+        }
+
+        function updateCurrentFileDisplay() {
+            if (currentFileName) {
+                document.getElementById('currentFileDisplay').textContent = currentFileName;
+
+                const cat = currentFileCategory.category || 'Default';
+                const sub = currentFileCategory.subcategory;
+                const badgeText = sub ? `${cat} > ${sub}` : cat;
+
+                document.getElementById('currentCategoryBadge').textContent = badgeText;
+            }
+        }
+
+        function filterByCategory() {
+            // TODO: Implement filtering by category
+            alert('Filter by category feature coming soon!');
+        }
+
+        // Category select change handler
+        document.getElementById('categorySelect').addEventListener('change', updateSubcategoryDropdown);
+
+        // Load categories on page load
+        loadCategories();
+
+        const csvFileInput = document.getElementById('csvFile');
+        const fileInfo = document.getElementById('fileInfo');
+        const flashcardContainer = document.getElementById('flashcardContainer');
+        const flashcard = document.getElementById('flashcard');
+        const navigation = document.getElementById('navigation');
+        const germanWord = document.getElementById('germanWord');
+        const englishWord = document.getElementById('englishWord');
+        const detailBack = document.getElementById('detailBack');
+        const progress = document.getElementById('progress');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const controlButtons = document.getElementById('controlButtons');
+        const stats = document.getElementById('stats');
+        const learnedCount = document.getElementById('learnedCount');
+        const remainingCount = document.getElementById('remainingCount');
+        const totalCount = document.getElementById('totalCount');
+        const shuffleBtn = document.getElementById('shuffleBtn');
+        const learnedBtn = document.getElementById('learnedBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const showLearnedBtn = document.getElementById('showLearnedBtn');
+        const learnedBadge = document.getElementById('learnedBadge');
+        const audioBtn = document.getElementById('audioBtn');
+        const reviewInfo = document.getElementById('reviewInfo');
+        const englishSection = document.getElementById('englishSection');
+        const revealBtn = document.getElementById('revealBtn');
+        const alwaysShowMeaningsCheckbox = document.getElementById('alwaysShowMeanings');
+        const showMeaningsToggle = document.getElementById('showMeaningsToggle');
+        const audioBtnEnglish = document.getElementById('audioBtnEnglish');
+
+        // Auto-play elements
+        const autoplayBtn = document.getElementById('autoplayBtn');
+        const autoplaySettings = document.getElementById('autoplaySettings');
+        const autoplayEnglishCheckbox = document.getElementById('autoplayEnglish');
+        const delayBetweenSlider = document.getElementById('delayBetween');
+        const delayNextSlider = document.getElementById('delayNext');
+        const delayBetweenValue = document.getElementById('delayBetweenValue');
+        const delayNextValue = document.getElementById('delayNextValue');
+
+        // Handle file upload
+        csvFileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                fileInfo.textContent = `Loading: ${file.name}`;
+                parseCSV(file);
+            }
+        });
+
+        // LocalStorage functions
+        function saveProgress() {
+            if (currentFileName && flashcards.length > 0) {
+                const progressData = flashcards.map(card => ({
+                    german: card.german,
+                    english: card.english,
+                    learned: card.learned,
+                    reviewDate: card.reviewDate || null,
+                    repetitions: card.repetitions || 0,
+                    easeFactor: card.easeFactor || 2.5,
+                    interval: card.interval || 1
+                }));
+                localStorage.setItem(`flashcards_${currentFileName}`, JSON.stringify(progressData));
+            }
+        }
+
+        function loadProgress(fileName) {
+            const saved = localStorage.getItem(`flashcards_${fileName}`);
+            if (saved) {
+                return JSON.parse(saved);
+            }
+            return null;
+        }
+
+        // Spaced Repetition Algorithm (SM-2)
+        function calculateNextReview(card, quality) {
+            // quality: 0-5 (0=total blackout, 5=perfect response)
+            let easeFactor = card.easeFactor || 2.5;
+            let repetitions = card.repetitions || 0;
+            let interval = card.interval || 1;
+
+            if (quality >= 3) {
+                // Correct response
+                if (repetitions === 0) {
+                    interval = 1;
+                } else if (repetitions === 1) {
+                    interval = 6;
+                } else {
+                    interval = Math.round(interval * easeFactor);
+                }
+                repetitions++;
+            } else {
+                // Incorrect response - restart
+                repetitions = 0;
+                interval = 1;
+            }
+
+            // Update ease factor
+            easeFactor = easeFactor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+            if (easeFactor < 1.3) easeFactor = 1.3;
+
+            const nextReviewDate = new Date();
+            nextReviewDate.setDate(nextReviewDate.getDate() + interval);
+
+            return {
+                repetitions,
+                easeFactor,
+                interval,
+                reviewDate: nextReviewDate.toISOString()
+            };
+        }
+
+        // Check if card is due for review
+        function isDueForReview(card) {
+            if (!card.reviewDate) return true;
+            return new Date() >= new Date(card.reviewDate);
+        }
+
+        // Smart language detection helper
+        function detectGerman(text) {
+            if (!text) return false;
+
+            // German-specific characters
+            const germanChars = /[äöüßÄÖÜ]/;
+            if (germanChars.test(text)) return true;
+
+            // Common German articles and words (case insensitive)
+            const germanWords = /\b(der|die|das|den|dem|des|ein|eine|einen|einem|eines|ich|du|er|sie|es|wir|ihr|und|oder|aber|auch|nicht|ist|sind|haben|hat|zu|auf|in|mit|von|für)\b/i;
+            if (germanWords.test(text)) return true;
+
+            return false;
+        }
+
+        function detectEnglish(text) {
+            if (!text) return false;
+
+            // Common English articles and words
+            const englishWords = /\b(the|a|an|and|or|but|in|on|at|to|for|of|with|by|from|is|are|was|were|be|been|have|has|had|do|does|did|will|would|can|could|should|may|might|must|this|that|these|those|i|you|he|she|it|we|they)\b/i;
+            return englishWords.test(text);
+        }
+
+        function isLikelyWord(text) {
+            // A word is typically: short, no punctuation, capitalized or all lowercase
+            return text && text.trim().split(/\s+/).length <= 3;
+        }
+
+        function isLikelySentence(text) {
+            // A sentence is typically: longer, has punctuation, multiple words
+            return text && (text.trim().split(/\s+/).length > 3 || /[.!?]/.test(text));
+        }
+
+        // Detect CSV separator (comma, semicolon, tab, or pipe)
+        function detectSeparator(text) {
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            if (lines.length === 0) return ',';
+
+            const firstLine = lines[0];
+            const separators = [',', ';', '\t', '|'];
+            let bestSeparator = ',';
+            let maxColumns = 0;
+
+            for (const sep of separators) {
+                const columns = firstLine.split(sep).length;
+                if (columns > maxColumns && columns >= 2) {
+                    maxColumns = columns;
+                    bestSeparator = sep;
+                }
+            }
+
+            return bestSeparator;
+        }
+
+        // Parse CSV file with smart format detection
+        function parseCSV(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const text = e.target.result;
+                const lines = text.split('\n').filter(line => line.trim() !== '');
+
+                currentFileName = file.name;
+                const savedProgress = loadProgress(currentFileName);
+
+                // Detect separator automatically
+                const separator = detectSeparator(text);
+                console.log('Detected separator:', separator === '\t' ? 'TAB' : separator);
+
+                // Check if first line is a header
+                let startIndex = 0;
+                const firstLine = lines[0].toLowerCase();
+                if (firstLine.includes('german') || firstLine.includes('english') ||
+                    firstLine.includes('deutsch') || firstLine.includes('word') ||
+                    firstLine.includes('voc')) {
+                    startIndex = 1; // Skip header row
+                }
+
+                flashcards = lines.slice(startIndex).map((line, index) => {
+                    const parts = line.split(separator).map(part => part.trim());
+
+                    if (parts.length < 2) return null; // Need at least 2 columns
+
+                    let german = '';
+                    let germanExtended = '';
+                    let english = '';
+                    let englishExtended = '';
+                    let detail = '';
+
+                    // Smart detection of column order
+                    const col0IsGerman = detectGerman(parts[0]);
+                    const col0IsEnglish = detectEnglish(parts[0]);
+                    const col1IsGerman = detectGerman(parts[1]);
+                    const col1IsEnglish = detectEnglish(parts[1]);
+                    const col2IsGerman = parts[2] ? detectGerman(parts[2]) : false;
+                    const col2IsEnglish = parts[2] ? detectEnglish(parts[2]) : false;
+
+                    // Format detection logic
+                    if (parts.length === 2) {
+                        // Simple 2-column format
+                        if (col0IsGerman && !col1IsGerman) {
+                            german = parts[0];
+                            english = parts[1];
+                        } else if (col0IsEnglish && !col1IsEnglish) {
+                            english = parts[0];
+                            german = parts[1];
+                        } else {
+                            // Fallback: assume first is German
+                            german = parts[0];
+                            english = parts[1];
+                        }
+                    } else if (parts.length === 3) {
+                        // 3-column format: could be German,English,Detail or German,GermanExtended,English
+                        const col1IsLongGerman = col1IsGerman && isLikelySentence(parts[1]);
+                        const col2IsShortEnglish = col2IsEnglish && isLikelyWord(parts[2]);
+
+                        if (col0IsGerman && col1IsLongGerman && col2IsShortEnglish) {
+                            // Format: German_Word, Long_German_Sentence, English_Translation
+                            german = parts[0];
+                            germanExtended = parts[1];
+                            english = parts[2];
+                        } else if (col0IsGerman && col1IsEnglish) {
+                            // Format: German, English, Detail
+                            german = parts[0];
+                            english = parts[1];
+                            detail = parts[2];
+                        } else if (col0IsEnglish && col1IsGerman) {
+                            // Format: English, German, Detail
+                            english = parts[0];
+                            german = parts[1];
+                            detail = parts[2];
+                        } else {
+                            // Fallback: assume German, Extended, English
+                            german = parts[0];
+                            germanExtended = parts[1];
+                            english = parts[2];
+                        }
+                    } else if (parts.length >= 4) {
+                        // 4+ column format
+                        // User's format: GermanVoc, Long German, English Vocab, Long English
+
+                        // Try to identify the format intelligently
+                        const col2IsGerman = detectGerman(parts[2]);
+                        const col2IsEnglish = detectEnglish(parts[2]);
+                        const col3IsGerman = detectGerman(parts[3]);
+                        const col3IsEnglish = detectEnglish(parts[3]);
+
+                        // Check if columns are long text (extended)
+                        const col1IsLong = isLikelySentence(parts[1]);
+                        const col3IsLong = isLikelySentence(parts[3]);
+
+                        // IMPROVED LOGIC: Check if col1 is long AND German, and col2 is short AND English
+                        const col1IsGermanSentence = col1IsGerman && col1IsLong;
+                        const col2IsEnglishWord = col2IsEnglish && isLikelyWord(parts[2]);
+
+                        if (col0IsGerman && col1IsGermanSentence && col2IsEnglishWord) {
+                            // Format: German_Word, Long_German_Sentence, English_Word, Long_English_Sentence
+                            // This is the most common format for your data
+                            german = parts[0];
+                            germanExtended = parts[1];
+                            english = parts[2];
+                            englishExtended = parts[3] || '';
+                        } else if (col0IsGerman && col2IsEnglish && !col1IsGermanSentence) {
+                            // Format: German, German_Extended, English, English_Extended
+                            german = parts[0];
+                            germanExtended = parts[1];
+                            english = parts[2];
+                            englishExtended = parts[3] || '';
+                        } else if (col0IsGerman && col1IsEnglish) {
+                            // Format: German, English, German_Extended, English_Extended
+                            german = parts[0];
+                            english = parts[1];
+                            germanExtended = parts[2] || '';
+                            englishExtended = parts[3] || '';
+                        } else if (col0IsEnglish && col2IsGerman) {
+                            // Format: English, English_Extended, German, German_Extended
+                            english = parts[0];
+                            englishExtended = parts[1];
+                            german = parts[2];
+                            germanExtended = parts[3] || '';
+                        } else if (col0IsEnglish && col1IsGerman) {
+                            // Format: English, German, English_Extended, German_Extended
+                            english = parts[0];
+                            german = parts[1];
+                            englishExtended = parts[2] || '';
+                            germanExtended = parts[3] || '';
+                        } else {
+                            // Default fallback: German, German_Ext, English, English_Ext
+                            german = parts[0];
+                            germanExtended = parts[1];
+                            english = parts[2];
+                            englishExtended = parts[3] || '';
+                        }
+
+                        // Any remaining columns can be detail
+                        if (parts.length > 4) {
+                            detail = parts.slice(4).join(', ');
+                        }
+                    }
+
+                    // Check if we have saved progress for this card
+                    const savedCard = savedProgress?.find(s => s.german === german && s.english === english);
+
+                    const cardData = {
+                        id: index,
+                        german: german,
+                        germanExtended: germanExtended,
+                        english: english,
+                        englishExtended: englishExtended,
+                        detail: detail,
+                        hasExtended: !!(germanExtended || englishExtended),
+                        learned: savedCard?.learned || false,
+                        reviewDate: savedCard?.reviewDate || null,
+                        repetitions: savedCard?.repetitions || 0,
+                        easeFactor: savedCard?.easeFactor || 2.5,
+                        interval: savedCard?.interval || 1
+                    };
+
+                    // Debug logging for first card
+                    if (index === 0) {
+                        console.log('First card parsed:', cardData);
+                        console.log('Columns detected:', {
+                            col0: parts[0],
+                            col1: parts[1],
+                            col2: parts[2],
+                            col3: parts[3]
+                        });
+                    }
+
+                    return cardData;
+                }).filter(card => card && card.german && card.english);
+
+                if (flashcards.length > 0) {
+                    const dueCount = flashcards.filter(isDueForReview).length;
+                    const sepName = separator === '\t' ? 'TAB' : separator === ',' ? 'COMMA' : separator === ';' ? 'SEMICOLON' : 'PIPE';
+                    const extCount = flashcards.filter(card => card.hasExtended).length;
+                    fileInfo.textContent = `✅ Loaded ${flashcards.length} cards (${dueCount} due for review) | Separator: ${sepName} | Extended: ${extCount}`;
+                    currentIndex = 0;
+                    filteredCards = [...flashcards];
+
+                    // Load file category
+                    if (fileCategories[currentFileName]) {
+                        currentFileCategory = fileCategories[currentFileName];
+                    } else {
+                        currentFileCategory = { category: 'Default', subcategory: '' };
+                        fileCategories[currentFileName] = currentFileCategory;
+                        saveCategories();
+                    }
+
+                    updateStats();
+                    showFlashcard();
+                    updateCurrentFileDisplay();
+
+                    // Show main UI elements
+                    flashcardContainer.style.display = 'block';
+                    navigation.style.display = 'flex';
+                    stats.style.display = 'block';
+
+                    // Show new UI elements
+                    document.getElementById('quickActions').style.display = 'grid';
+                    document.getElementById('settingsToggleBtn').style.display = 'flex';
+                } else {
+                    fileInfo.textContent = '❌ No valid flashcards found in file';
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Update statistics
+        function updateStats() {
+            const learned = flashcards.filter(card => card.learned).length;
+            const total = flashcards.length;
+            const remaining = total - learned;
+
+            learnedCount.textContent = learned;
+            remainingCount.textContent = remaining;
+            totalCount.textContent = total;
+
+            saveProgress(); // Save whenever stats update
+        }
+
+        // Pronounce German word
+        function pronounceGerman(text) {
+            if (!synth) return;
+
+            synth.cancel(); // Stop any ongoing speech
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'de-DE';
+            if (germanVoice) {
+                utterance.voice = germanVoice;
+            }
+            utterance.rate = speechRate; // User-configurable rate
+            utterance.pitch = speechPitch; // User-configurable pitch
+            synth.speak(utterance);
+        }
+
+        // Pronounce English word
+        function pronounceEnglish(text) {
+            if (!synth) return;
+
+            synth.cancel(); // Stop any ongoing speech
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            if (englishVoice) {
+                utterance.voice = englishVoice;
+            }
+            utterance.rate = speechRate; // User-configurable rate
+            utterance.pitch = speechPitch; // User-configurable pitch
+            synth.speak(utterance);
+        }
+
+        // Get active card list
+        function getActiveCards() {
+            return showOnlyUnlearned
+                ? flashcards.filter(card => !card.learned)
+                : flashcards;
+        }
+
+        // Show current flashcard
+        function showFlashcard() {
+            filteredCards = getActiveCards();
+
+            if (filteredCards.length === 0) {
+                germanWord.textContent = 'No cards available';
+                englishWord.textContent = 'Load a CSV file or adjust filter';
+                detailBack.style.display = 'none';
+                learnedBadge.style.display = 'none';
+                return;
+            }
+
+            // Adjust index if out of bounds
+            if (currentIndex >= filteredCards.length) {
+                currentIndex = filteredCards.length - 1;
+            }
+            if (currentIndex < 0) {
+                currentIndex = 0;
+            }
+
+            const card = filteredCards[currentIndex];
+
+            // Debug logging
+            console.log('Displaying card:', {
+                german: card.german,
+                germanExtended: card.germanExtended,
+                english: card.english,
+                englishExtended: card.englishExtended
+            });
+
+            germanWord.textContent = card.german;
+            englishWord.textContent = card.english;
+
+            // Show detail and extended content indicators (only English-related content)
+            let detailText = '';
+            if (card.englishExtended) {
+                detailText += `📝 ${card.englishExtended}\n`;
+            }
+            if (card.detail) {
+                detailText += card.detail;
+            }
+
+            if (detailText) {
+                detailBack.textContent = detailText;
+                detailBack.style.display = 'block';
+                detailBack.style.whiteSpace = 'pre-line'; // Preserve line breaks
+            } else {
+                detailBack.style.display = 'none';
+            }
+
+            // Show review date info
+            if (card.reviewDate && card.repetitions > 0) {
+                const reviewDate = new Date(card.reviewDate);
+                const daysUntil = Math.ceil((reviewDate - new Date()) / (1000 * 60 * 60 * 24));
+                if (daysUntil > 0) {
+                    reviewInfo.textContent = `Next review in ${daysUntil} day${daysUntil > 1 ? 's' : ''}`;
+                } else if (daysUntil === 0) {
+                    reviewInfo.textContent = 'Review due today';
+                } else {
+                    reviewInfo.textContent = 'Review overdue';
+                }
+                reviewInfo.style.display = 'block';
+            } else {
+                reviewInfo.style.display = 'none';
+            }
+
+            // Show/hide learned badge
+            if (card.learned) {
+                learnedBadge.style.display = 'block';
+                learnedBtn.textContent = '✗ Unmark Learned';
+            } else {
+                learnedBadge.style.display = 'none';
+                learnedBtn.textContent = '✓ Mark as Learned';
+            }
+
+            progress.textContent = `${currentIndex + 1} / ${filteredCards.length}`;
+
+            // Handle English section visibility
+            if (alwaysShowMeanings) {
+                englishSection.classList.add('revealed');
+                revealBtn.style.display = 'none';
+            } else {
+                englishSection.classList.remove('revealed');
+                revealBtn.style.display = 'block';
+                revealBtn.textContent = '👁 Show English Meaning';
+            }
+
+            // Update button states
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === filteredCards.length - 1;
+        }
+
+        // Reveal English meaning
+        function revealEnglish() {
+            englishSection.classList.add('revealed');
+            revealBtn.textContent = '✓ Meaning Shown';
+            revealBtn.style.opacity = '0.7';
+        }
+
+        // Auto-play functions
+        function startAutoPlay() {
+            if (filteredCards.length === 0) return;
+
+            isAutoPlaying = true;
+            autoplayBtn.textContent = '⏸ Stop';
+            autoplayBtn.classList.add('playing');
+
+            // Auto-open settings menu and expand auto-play accordion
+            document.getElementById('settingsMenu').style.display = 'block';
+            document.getElementById('settingsToggleBtn').classList.add('active');
+
+            // Open Auto-Play and Advanced accordions
+            const accordions = document.querySelectorAll('.accordion-header');
+            accordions.forEach(header => {
+                const text = header.textContent;
+                if (text.includes('Auto-Play') || text.includes('Advanced Features')) {
+                    header.classList.add('active');
+                    header.nextElementSibling.classList.add('active');
+                }
+            });
+
+            // Start session stats
+            startSessionStats();
+
+            // Start timers if enabled
+            if (studyTimerEnabled) {
+                startStudyTimer();
+            }
+            if (sleepTimerEnabled) {
+                startSleepTimer();
+            }
+
+            // Start from current card
+            currentRepeat = 0;
+            playCurrentCard();
+        }
+
+        function stopAutoPlay(reason = 'manual') {
+            isAutoPlaying = false;
+            autoplayBtn.textContent = '▶ Auto-Play';
+            autoplayBtn.classList.remove('playing');
+
+            // Clear any pending timeouts
+            if (autoplayTimeout) {
+                clearTimeout(autoplayTimeout);
+                autoplayTimeout = null;
+            }
+
+            // Stop any ongoing speech
+            if (synth) {
+                synth.cancel();
+            }
+
+            // Stop timers
+            stopAllTimers();
+
+            // Show appropriate message
+            if (reason === 'timer') {
+                alert('⏰ Time\'s up! Auto-play stopped.');
+            } else if (reason === 'sleep') {
+                alert('📚 Sleep timer complete. Good night!');
+            }
+        }
+
+        function playCurrentCard() {
+            if (!isAutoPlaying || filteredCards.length === 0) return;
+
+            const card = filteredCards[currentIndex];
+
+            // Always reveal English in auto-play mode
+            if (!alwaysShowMeanings) {
+                revealEnglish();
+            }
+
+            // Increment cards reviewed (only once per card, not per repeat)
+            if (currentRepeat === 0) {
+                cardsReviewedCount++;
+                updateSessionStats();
+            }
+
+            // Determine what to pronounce
+            const germanText = readExtendedContent && card.germanExtended ? card.germanExtended : card.german;
+            const englishText = readExtendedContent && card.englishExtended ? card.englishExtended : card.english;
+
+            // Step 1: Pronounce German (word or extended)
+            pronounceGerman(germanText);
+
+            // Step 2: Wait, then pronounce English if enabled
+            if (autoplayEnglishEnabled) {
+                autoplayTimeout = setTimeout(() => {
+                    if (!isAutoPlaying) return;
+                    pronounceEnglish(englishText);
+
+                    // Step 3: Wait, then move to next card or repeat
+                    autoplayTimeout = setTimeout(() => {
+                        if (!isAutoPlaying) return;
+                        handleCardCompletion();
+                    }, delayBeforeNext);
+                }, delayBetweenLangs);
+            } else {
+                // If English not enabled, just wait and move to next or repeat
+                autoplayTimeout = setTimeout(() => {
+                    if (!isAutoPlaying) return;
+                    handleCardCompletion();
+                }, delayBeforeNext);
+            }
+        }
+
+        function handleCardCompletion() {
+            if (!isAutoPlaying) return;
+
+            // Check if repeat mode is enabled
+            if (repeatModeEnabled && currentRepeat < repeatCount - 1) {
+                currentRepeat++;
+                playCurrentCard(); // Repeat the same card
+            } else {
+                currentRepeat = 0; // Reset repeat counter
+                moveToNextCardInAutoPlay();
+            }
+        }
+
+        function moveToNextCardInAutoPlay() {
+            if (!isAutoPlaying) return;
+
+            // Move to next card
+            if (currentIndex < filteredCards.length - 1) {
+                currentIndex++;
+                showFlashcard();
+                playCurrentCard();
+            } else {
+                // Reached end
+                if (loopModeEnabled) {
+                    // Loop back to beginning
+                    currentIndex = 0;
+                    showFlashcard();
+                    playCurrentCard();
+                } else {
+                    // Stop auto-play
+                    stopAutoPlay();
+                    alert('✅ Auto-play completed! Reached the end of cards.');
+                }
+            }
+        }
+
+        // Timer functions
+        function startStudyTimer() {
+            const duration = parseInt(document.getElementById('studyDuration').value);
+            timerEndTime = Date.now() + (duration * 60 * 1000);
+            document.getElementById('timerDisplay').style.display = 'block';
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                updateTimerDisplay();
+                if (Date.now() >= timerEndTime) {
+                    stopAutoPlay('timer');
+                }
+            }, 1000);
+        }
+
+        function startSleepTimer() {
+            const duration = parseInt(document.getElementById('sleepDuration').value);
+            timerEndTime = Date.now() + (duration * 60 * 1000);
+            document.getElementById('timerDisplay').style.display = 'block';
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                updateTimerDisplay();
+                if (Date.now() >= timerEndTime) {
+                    stopAutoPlay('sleep');
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            if (!timerEndTime) return;
+            const remaining = Math.max(0, timerEndTime - Date.now());
+            const minutes = Math.floor(remaining / 60000);
+            const seconds = Math.floor((remaining % 60000) / 1000);
+            document.getElementById('timerText').textContent =
+                `⏱️ Time Remaining: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function stopAllTimers() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            if (statsInterval) {
+                clearInterval(statsInterval);
+                statsInterval = null;
+            }
+            timerEndTime = null;
+            document.getElementById('timerDisplay').style.display = 'none';
+        }
+
+        // Session stats functions
+        function startSessionStats() {
+            sessionStartTime = Date.now();
+            cardsReviewedCount = 0;
+            document.getElementById('sessionStats').style.display = 'block';
+            document.getElementById('sessionStart').textContent = new Date().toLocaleTimeString();
+            updateSessionStats();
+            statsInterval = setInterval(updateSessionStats, 1000);
+        }
+
+        function updateSessionStats() {
+            if (!sessionStartTime) return;
+
+            const elapsed = Date.now() - sessionStartTime;
+            const minutes = Math.floor(elapsed / 60000);
+            const seconds = Math.floor((elapsed % 60000) / 1000);
+
+            document.getElementById('cardsReviewed').textContent = cardsReviewedCount;
+            document.getElementById('timeStudying').textContent =
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+            const cardsPerMin = minutes > 0 ? (cardsReviewedCount / minutes).toFixed(1) : '0.0';
+            document.getElementById('cardsPerMinute').textContent = cardsPerMin;
+        }
+
+        // Focus Mode functions
+        function enterFocusMode() {
+            document.getElementById('focusMode').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function exitFocusMode() {
+            document.getElementById('focusMode').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Audio pronunciation - German
+        audioBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (filteredCards.length > 0) {
+                const card = filteredCards[currentIndex];
+                pronounceGerman(card.german);
+            }
+        });
+
+        // Audio pronunciation - English
+        audioBtnEnglish.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (filteredCards.length > 0) {
+                const card = filteredCards[currentIndex];
+                pronounceEnglish(card.english);
+            }
+        });
+
+        // Reveal button click
+        revealBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            revealEnglish();
+        });
+
+        // Always show meanings checkbox
+        alwaysShowMeaningsCheckbox.addEventListener('change', (e) => {
+            alwaysShowMeanings = e.target.checked;
+            showFlashcard(); // Refresh current card
+        });
+
+        // Read extended content checkbox
+        document.getElementById('readExtendedContent').addEventListener('change', (e) => {
+            readExtendedContent = e.target.checked;
+        });
+
+        // Auto-play button
+        autoplayBtn.addEventListener('click', () => {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        });
+
+        // Auto-play English checkbox
+        autoplayEnglishCheckbox.addEventListener('change', (e) => {
+            autoplayEnglishEnabled = e.target.checked;
+        });
+
+        // Delay sliders
+        delayBetweenSlider.addEventListener('input', (e) => {
+            delayBetweenLangs = parseInt(e.target.value);
+            delayBetweenValue.textContent = (delayBetweenLangs / 1000).toFixed(1) + 's';
+        });
+
+        delayNextSlider.addEventListener('input', (e) => {
+            delayBeforeNext = parseInt(e.target.value);
+            delayNextValue.textContent = (delayBeforeNext / 1000).toFixed(1) + 's';
+        });
+
+        // Voice selection handlers
+        document.getElementById('germanVoiceSelect').addEventListener('change', (e) => {
+            const germanVoices = allVoices.filter(voice => voice.lang.startsWith('de'));
+            germanVoice = germanVoices[parseInt(e.target.value)];
+        });
+
+        document.getElementById('englishVoiceSelect').addEventListener('change', (e) => {
+            const englishVoices = allVoices.filter(voice => voice.lang.startsWith('en'));
+            englishVoice = englishVoices[parseInt(e.target.value)];
+        });
+
+        // Speech rate handler
+        document.getElementById('speechRate').addEventListener('input', (e) => {
+            speechRate = parseFloat(e.target.value);
+            document.getElementById('speechRateValue').textContent = speechRate.toFixed(1) + 'x';
+        });
+
+        // Pitch handler
+        document.getElementById('speechPitch').addEventListener('input', (e) => {
+            speechPitch = parseFloat(e.target.value);
+            document.getElementById('speechPitchValue').textContent = speechPitch.toFixed(1);
+        });
+
+        // Advanced features event listeners
+        document.getElementById('loopMode').addEventListener('change', (e) => {
+            loopModeEnabled = e.target.checked;
+        });
+
+        document.getElementById('repeatMode').addEventListener('change', (e) => {
+            repeatModeEnabled = e.target.checked;
+        });
+
+        document.getElementById('repeatCount').addEventListener('change', (e) => {
+            repeatCount = parseInt(e.target.value);
+        });
+
+        document.getElementById('studyTimer').addEventListener('change', (e) => {
+            studyTimerEnabled = e.target.checked;
+            if (!e.target.checked && timerInterval) {
+                stopAllTimers();
+            }
+        });
+
+        document.getElementById('sleepTimer').addEventListener('change', (e) => {
+            sleepTimerEnabled = e.target.checked;
+            if (!e.target.checked && timerInterval) {
+                stopAllTimers();
+            }
+        });
+
+        // Accordion toggle function
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            const wasActive = header.classList.contains('active');
+
+            // Close all accordions first (optional - remove if you want multiple open)
+            // document.querySelectorAll('.accordion-header').forEach(h => {
+            //     h.classList.remove('active');
+            //     h.nextElementSibling.classList.remove('active');
+            // });
+
+            // Toggle current accordion
+            if (wasActive) {
+                header.classList.remove('active');
+                content.classList.remove('active');
+            } else {
+                header.classList.add('active');
+                content.classList.add('active');
+            }
+        }
+
+        // Settings menu toggle
+        document.getElementById('settingsToggleBtn').addEventListener('click', function() {
+            const menu = document.getElementById('settingsMenu');
+            const isVisible = menu.style.display === 'block';
+
+            if (isVisible) {
+                menu.style.display = 'none';
+                this.classList.remove('active');
+            } else {
+                menu.style.display = 'block';
+                this.classList.add('active');
+            }
+        });
+
+        // Focus Mode button
+        document.getElementById('focusModeBtn').addEventListener('click', () => {
+            enterFocusMode();
+            // Clone the current flashcard to focus mode
+            const mainCard = document.getElementById('flashcard');
+            const focusCard = document.getElementById('focusFlashcard');
+            focusCard.innerHTML = mainCard.innerHTML;
+        });
+
+        // Navigation
+        prevBtn.addEventListener('click', () => {
+            stopAutoPlay(); // Stop auto-play on manual navigation
+            if (currentIndex > 0) {
+                currentIndex--;
+                showFlashcard();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            stopAutoPlay(); // Stop auto-play on manual navigation
+            if (currentIndex < filteredCards.length - 1) {
+                currentIndex++;
+                showFlashcard();
+            }
+        });
+
+        // Shuffle cards
+        shuffleBtn.addEventListener('click', () => {
+            for (let i = flashcards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [flashcards[i], flashcards[j]] = [flashcards[j], flashcards[i]];
+            }
+            currentIndex = 0;
+            showFlashcard();
+        });
+
+        // Mark as learned/unlearned
+        learnedBtn.addEventListener('click', () => {
+            if (filteredCards.length === 0) return;
+
+            // First reveal the English meaning if not visible
+            if (!alwaysShowMeanings && !englishSection.classList.contains('revealed')) {
+                revealEnglish();
+                // Give user a moment to see the meaning before marking
+                setTimeout(() => {
+                    markCardAsLearned();
+                }, 300);
+            } else {
+                markCardAsLearned();
+            }
+        });
+
+        function markCardAsLearned() {
+            const card = filteredCards[currentIndex];
+
+            if (!card.learned) {
+                // Mark as learned and apply spaced repetition
+                // Quality 4 = good recall (default when marking as learned)
+                const reviewData = calculateNextReview(card, 4);
+                card.learned = true;
+                card.repetitions = reviewData.repetitions;
+                card.easeFactor = reviewData.easeFactor;
+                card.interval = reviewData.interval;
+                card.reviewDate = reviewData.reviewDate;
+            } else {
+                // Unmark as learned and reset spaced repetition
+                card.learned = false;
+                card.repetitions = 0;
+                card.interval = 1;
+                card.reviewDate = null;
+            }
+
+            updateStats();
+            showFlashcard();
+
+            // Auto-advance to next unlearned card if in "show only unlearned" mode
+            if (showOnlyUnlearned && card.learned) {
+                if (filteredCards.length > 0) {
+                    showFlashcard();
+                }
+            }
+        }
+
+        // Reset all progress
+        resetBtn.addEventListener('click', () => {
+            if (confirm('Reset all progress? This will unmark all learned cards and clear review schedules.')) {
+                flashcards.forEach(card => {
+                    card.learned = false;
+                    card.repetitions = 0;
+                    card.interval = 1;
+                    card.reviewDate = null;
+                });
+                updateStats();
+                showFlashcard();
+            }
+        });
+
+        // Toggle show only unlearned
+        showLearnedBtn.addEventListener('click', () => {
+            showOnlyUnlearned = !showOnlyUnlearned;
+
+            if (showOnlyUnlearned) {
+                showLearnedBtn.textContent = '👁 Show All Cards';
+                showLearnedBtn.classList.add('active');
+            } else {
+                showLearnedBtn.textContent = '👁 Show Only Unlearned';
+                showLearnedBtn.classList.remove('active');
+            }
+
+            currentIndex = 0;
+            showFlashcard();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (flashcards.length === 0) return;
+
+            switch(e.key) {
+                case 'ArrowLeft':
+                    stopAutoPlay(); // Stop auto-play on manual navigation
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                        showFlashcard();
+                    }
+                    break;
+                case 'ArrowRight':
+                    stopAutoPlay(); // Stop auto-play on manual navigation
+                    if (currentIndex < filteredCards.length - 1) {
+                        currentIndex++;
+                        showFlashcard();
+                    }
+                    break;
+                case ' ':
+                case 'Enter':
+                    e.preventDefault();
+                    if (!alwaysShowMeanings && !englishSection.classList.contains('revealed')) {
+                        revealEnglish();
+                    }
+                    break;
+                case 'l':
+                case 'L':
+                    // Quick keyboard shortcut for marking as learned
+                    if (filteredCards.length > 0) {
+                        // First reveal the English meaning if not visible
+                        if (!alwaysShowMeanings && !englishSection.classList.contains('revealed')) {
+                            revealEnglish();
+                            setTimeout(() => {
+                                markCardAsLearned();
+                            }, 300);
+                        } else {
+                            markCardAsLearned();
+                        }
+                    }
+                    break;
+                case 'p':
+                case 'P':
+                    // Quick keyboard shortcut for German pronunciation
+                    if (filteredCards.length > 0) {
+                        const card = filteredCards[currentIndex];
+                        pronounceGerman(card.german);
+                    }
+                    break;
+                case 'e':
+                case 'E':
+                    // Quick keyboard shortcut for English pronunciation
+                    if (filteredCards.length > 0) {
+                        const card = filteredCards[currentIndex];
+                        pronounceEnglish(card.english);
+                    }
+                    break;
+            }
+        });
+    </script>
+
+    <!-- Focus Mode Overlay -->
+    <div class="focus-mode" id="focusMode">
+        <button class="focus-exit-btn" onclick="exitFocusMode()">✕ Exit Focus Mode</button>
+        <div class="flashcard-container">
+            <div class="flashcard" id="focusFlashcard">
+                <!-- Will be cloned from main flashcard -->
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
