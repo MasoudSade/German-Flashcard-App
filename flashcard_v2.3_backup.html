@@ -3,7 +3,7 @@ i<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>German-English Flashcards v2.4 - Enhanced Voice Options</title>
+    <title>German-English Flashcards v2.3 - Fast & Flexible</title>
     <style>
         * {
             margin: 0;
@@ -1425,7 +1425,7 @@ i<!DOCTYPE html>
 </head>
 <body>
     <div class="container">
-        <h1>🇩🇪 German-English Flashcards <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3px 12px; border-radius: 15px; font-size: 0.7em; vertical-align: middle;">v2.4</span> 🇬🇧</h1>
+        <h1>🇩🇪 German-English Flashcards v2.3 🇬🇧</h1>
 
         <!-- Upload Section (Always Visible) -->
         <div class="upload-section">
@@ -1647,36 +1647,27 @@ i<!DOCTYPE html>
             <!-- Voice & Speech Settings Accordion -->
             <div class="accordion-item">
                 <div class="accordion-header" onclick="toggleAccordion(this)">
-                    <span>🎙️ Voice & Speech Settings <span style="font-size: 0.8em; color: #888;">(v2.4 Enhanced)</span></span>
+                    <span>🎙️ Voice & Speech Settings</span>
                     <span class="accordion-icon">▼</span>
                 </div>
                 <div class="accordion-content">
-                    <div style="background: #f0f8ff; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 0.9em; border-left: 3px solid #667eea;">
-                        <strong>🔊 = Google voices (recommended, highest quality)</strong><br>
-                        <strong>🎙️ = Microsoft voices (high quality)</strong><br>
-                        <span style="color: #666;">Tip: Google voices provide the most natural pronunciation for learning!</span>
-                    </div>
                     <label>
-                        <span><strong>German Voice:</strong></span>
-                        <select id="germanVoiceSelect" style="width: 100%; padding: 8px; margin-top: 5px; border: 2px solid #667eea; border-radius: 5px; font-size: 14px;"></select>
-                        <div id="germanVoiceInfo" style="font-size: 0.85em; color: #666; margin-top: 5px; font-style: italic;">Loading voices...</div>
+                        <span>German Voice:</span>
+                        <select id="germanVoiceSelect"></select>
                     </label>
-                    <label style="margin-top: 15px;">
-                        <span><strong>English Voice:</strong></span>
-                        <select id="englishVoiceSelect" style="width: 100%; padding: 8px; margin-top: 5px; border: 2px solid #667eea; border-radius: 5px; font-size: 14px;"></select>
-                        <div id="englishVoiceInfo" style="font-size: 0.85em; color: #666; margin-top: 5px; font-style: italic;">Loading voices...</div>
+                    <label>
+                        <span>English Voice:</span>
+                        <select id="englishVoiceSelect"></select>
                     </label>
-                    <label style="margin-top: 15px;">
+                    <label>
                         <span>Speech Rate:</span>
                         <input type="range" id="speechRate" min="0.5" max="1.5" step="0.1" value="0.8">
                         <span class="delay-value" id="speechRateValue">0.8x</span>
-                        <div style="font-size: 0.8em; color: #888; margin-top: 3px;">Slower (0.5x) ← → Faster (1.5x)</div>
                     </label>
                     <label>
                         <span>Pitch:</span>
                         <input type="range" id="speechPitch" min="0.5" max="2" step="0.1" value="1.0">
                         <span class="delay-value" id="speechPitchValue">1.0</span>
-                        <div style="font-size: 0.8em; color: #888; margin-top: 3px;">Lower (0.5) ← → Higher (2.0)</div>
                     </label>
                 </div>
             </div>
@@ -2053,39 +2044,9 @@ i<!DOCTYPE html>
             germanSelect.dataset.voices = JSON.stringify(germanVoices.map(v => v.name));
             englishSelect.dataset.voices = JSON.stringify(englishVoices.map(v => v.name));
 
-            // Update voice info displays
-            updateVoiceInfo('german', germanVoice);
-            updateVoiceInfo('english', englishVoice);
-
             // Log default voices for debugging
-            console.log('✅ v2.4 Voice System Loaded');
             console.log('Default German Voice:', germanVoice ? germanVoice.name : 'None');
             console.log('Default English Voice:', englishVoice ? englishVoice.name : 'None');
-            console.log('Total German voices available:', germanVoices.length);
-            console.log('Total English voices available:', englishVoices.length);
-        }
-
-        // Update voice info display
-        function updateVoiceInfo(language, voice) {
-            const infoElement = document.getElementById(language + 'VoiceInfo');
-            if (!voice || !infoElement) return;
-
-            let info = '';
-            const isGoogle = voice.name.toLowerCase().includes('google');
-            const isMicrosoft = voice.name.toLowerCase().includes('microsoft');
-
-            if (isGoogle) {
-                info = '🔊 <strong>Google Voice</strong> - Premium quality, natural pronunciation (Recommended for learning)';
-            } else if (isMicrosoft) {
-                info = '🎙️ <strong>Microsoft Voice</strong> - High quality, clear enunciation';
-            } else {
-                info = '📢 <strong>System Voice</strong> - Standard quality';
-            }
-
-            // Add voice details
-            info += `<br><span style="color: #888;">Voice: ${voice.name} | Language: ${voice.lang}</span>`;
-
-            infoElement.innerHTML = info;
         }
 
         // Load voices on page load
@@ -3846,15 +3807,11 @@ i<!DOCTYPE html>
         document.getElementById('germanVoiceSelect').addEventListener('change', (e) => {
             const germanVoices = allVoices.filter(voice => voice.lang.startsWith('de'));
             germanVoice = germanVoices[parseInt(e.target.value)];
-            updateVoiceInfo('german', germanVoice);
-            console.log('German voice changed to:', germanVoice.name);
         });
 
         document.getElementById('englishVoiceSelect').addEventListener('change', (e) => {
             const englishVoices = allVoices.filter(voice => voice.lang.startsWith('en'));
             englishVoice = englishVoices[parseInt(e.target.value)];
-            updateVoiceInfo('english', englishVoice);
-            console.log('English voice changed to:', englishVoice.name);
         });
 
         // Speech rate handler
