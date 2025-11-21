@@ -1379,6 +1379,15 @@ i<!DOCTYPE html>
             border-color: #94a3b8;
         }
 
+        .category-browser {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         @media (max-width: 480px) {
             .container {
                 padding: 20px;
@@ -1399,6 +1408,10 @@ i<!DOCTYPE html>
             .nav-button {
                 padding: 10px 20px;
                 font-size: 0.9em;
+            }
+
+            #categoryBrowserList {
+                grid-template-columns: 1fr !important;
             }
 
             /* Modal responsive adjustments */
@@ -1430,6 +1443,18 @@ i<!DOCTYPE html>
     <div class="container">
         <h1>🇩🇪 German-English Flashcards <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3px 12px; border-radius: 15px; font-size: 0.7em; vertical-align: middle;">v2.4</span> 🇬🇧</h1>
 
+        <!-- Category Browser (Always Visible) - Practice existing vocabulary -->
+        <div class="category-browser" id="categoryBrowser" style="background: #f0f9ff; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 3px solid #667eea;">
+            <h3 style="color: #667eea; margin-bottom: 15px;">📚 Your Vocabulary Categories</h3>
+            <p style="color: #666; font-size: 0.9em; margin-bottom: 15px;">Browse and practice your saved vocabulary organized by categories</p>
+            <div id="categoryBrowserList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
+                <!-- Will be populated dynamically -->
+            </div>
+            <div id="noCategoriesMessage" style="text-align: center; color: #999; padding: 20px; display: none;">
+                No categories yet. Upload a file to get started!
+            </div>
+        </div>
+
         <!-- Upload Section (Always Visible) -->
         <div class="upload-section">
             <label for="csvFile" class="upload-label">
@@ -1440,6 +1465,96 @@ i<!DOCTYPE html>
             <button class="upload-label" id="clearFileBtn" style="background: #ef4444; display: none; margin-top: 10px;">
                 🗑️ Remove Current File
             </button>
+        </div>
+
+        <!-- Category Suggestion Box (MOVED OUTSIDE - Always visible when suggestion exists) -->
+        <div class="category-section" id="suggestedCategorySection" style="display: none; background: #fef3c7; padding: 20px; border-radius: 12px; margin: 20px 0; border: 3px solid #f59e0b; box-shadow: 0 6px 12px rgba(245, 158, 11, 0.3);">
+            <strong style="color: #92400e; font-size: 1.2em; display: block; margin-bottom: 10px;">💡 Suggested Categories</strong>
+            <p style="color: #78350f; font-size: 0.95em; margin: 0 0 15px 0;">Based on your filename and content analysis:</p>
+
+            <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <div style="margin-bottom: 12px;">
+                    <label style="display: block; color: #92400e; font-weight: 600; margin-bottom: 6px;">📁 Category:</label>
+                    <input type="text" id="suggestedCategoryInput" style="width: 100%; padding: 10px; border: 2px solid #fbbf24; border-radius: 8px; font-size: 1em;">
+                </div>
+                <div>
+                    <label style="display: block; color: #92400e; font-weight: 600; margin-bottom: 6px;">📋 Subcategory (optional):</label>
+                    <input type="text" id="suggestedSubcategoryInput" style="width: 100%; padding: 10px; border: 2px solid #fbbf24; border-radius: 8px; font-size: 1em;">
+                    <small style="color: #78350f; font-style: italic; display: block; margin-top: 5px;">Leave empty if no subcategory needed</small>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 12px;">
+                <button onclick="applySuggestedCategory()" style="flex: 1; padding: 12px 18px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1.05em; transition: all 0.2s;">
+                    ✓ Accept & Apply
+                </button>
+                <button onclick="rejectSuggestion()" style="flex: 1; padding: 12px 18px; background: #94a3b8; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1.05em; transition: all 0.2s;">
+                    ✗ Use Default Instead
+                </button>
+            </div>
+        </div>
+
+        <!-- Manual Suggestion Display Button -->
+        <div style="margin-bottom: 20px;">
+            <button onclick="testAutoOpen()" style="display: block; width: 100%; padding: 12px; background: #3b82f6; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1em;" id="testAutoOpenBtn">
+                💡 Show Category Suggestion
+            </button>
+        </div>
+
+        <!-- Category Management (Always Visible, Collapsible) -->
+        <div style="margin-bottom: 20px;">
+            <button class="settings-toggle-btn" id="categoryMgmtToggleBtn" style="display: flex; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                <span>📚 Manage Categories</span>
+                <span class="toggle-icon">▼</span>
+            </button>
+            <div class="category-manager" id="categoryManagerSection" style="display: none; margin-top: 10px;">
+                <h4 style="color: #d97706;">Category Management</h4>
+
+                <div class="category-section">
+                    <strong>Current File:</strong>
+                    <span id="currentFileDisplay">No file loaded</span>
+                    <span class="category-badge" id="currentCategoryBadge">Default</span>
+                </div>
+                <div class="category-section">
+                    <label style="display: block; margin-bottom: 5px;">Assign to Category:</label>
+                    <div class="category-input-group">
+                        <select id="categorySelect" style="flex: 1;">
+                            <option value="Default">Default</option>
+                        </select>
+                        <select id="subcategorySelect" style="flex: 1;">
+                            <option value="">No Subcategory</option>
+                        </select>
+                        <button onclick="assignCategory()">Assign</button>
+                    </div>
+                </div>
+                <hr style="border: 1px solid #e2e8f0; margin: 15px 0;">
+                <div class="category-section">
+                    <strong>Create New Category:</strong>
+                    <div class="category-input-group">
+                        <input type="text" id="newCategoryName" placeholder="e.g., German" style="flex: 1;">
+                        <button onclick="createCategory()">+ Add Category</button>
+                    </div>
+                </div>
+                <div class="category-section">
+                    <strong>Add Subcategory:</strong>
+                    <div class="category-input-group">
+                        <select id="parentCategorySelect" style="flex: 1;">
+                            <option value="Default">Default</option>
+                        </select>
+                        <input type="text" id="newSubcategoryName" placeholder="e.g., A1 Vocabulary" style="flex: 1;">
+                        <button onclick="createSubcategory()">+ Add Sub</button>
+                    </div>
+                </div>
+                <div class="category-section">
+                    <strong>All Categories:</strong>
+                    <div class="category-list" id="categoryList">
+                        <div class="category-item">
+                            <span>📁 Default</span>
+                            <span style="font-size: 0.8em; color: #78350f;">Built-in</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Format Selection Interface -->
@@ -1592,60 +1707,6 @@ i<!DOCTYPE html>
 
         <!-- Settings Menu (Collapsible Accordion) -->
         <div class="settings-menu" id="settingsMenu">
-
-            <!-- Category Management Accordion -->
-            <div class="accordion-item">
-                <div class="accordion-header" onclick="toggleAccordion(this)">
-                    <span>📚 Category Management</span>
-                    <span class="accordion-icon">▼</span>
-                </div>
-                <div class="accordion-content">
-                    <div class="category-section">
-                        <strong>Current File:</strong>
-                        <span id="currentFileDisplay">No file loaded</span>
-                        <span class="category-badge" id="currentCategoryBadge">Default</span>
-                    </div>
-                    <div class="category-section">
-                        <label style="display: block; margin-bottom: 5px;">Assign to Category:</label>
-                        <div class="category-input-group">
-                            <select id="categorySelect" style="flex: 1;">
-                                <option value="Default">Default</option>
-                            </select>
-                            <select id="subcategorySelect" style="flex: 1;">
-                                <option value="">No Subcategory</option>
-                            </select>
-                            <button onclick="assignCategory()">Assign</button>
-                        </div>
-                    </div>
-                    <hr style="border: 1px solid #e2e8f0; margin: 15px 0;">
-                    <div class="category-section">
-                        <strong>Create New Category:</strong>
-                        <div class="category-input-group">
-                            <input type="text" id="newCategoryName" placeholder="e.g., German" style="flex: 1;">
-                            <button onclick="createCategory()">+ Add Category</button>
-                        </div>
-                    </div>
-                    <div class="category-section">
-                        <strong>Add Subcategory:</strong>
-                        <div class="category-input-group">
-                            <select id="parentCategorySelect" style="flex: 1;">
-                                <option value="Default">Default</option>
-                            </select>
-                            <input type="text" id="newSubcategoryName" placeholder="e.g., A1 Vocabulary" style="flex: 1;">
-                            <button onclick="createSubcategory()">+ Add Sub</button>
-                        </div>
-                    </div>
-                    <div class="category-section">
-                        <strong>All Categories:</strong>
-                        <div class="category-list" id="categoryList">
-                            <div class="category-item">
-                                <span>📁 Default</span>
-                                <span style="font-size: 0.8em; color: #78350f;">Built-in</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- Voice & Speech Settings Accordion -->
             <div class="accordion-item">
@@ -2135,6 +2196,7 @@ i<!DOCTYPE html>
             saveCategories();
             updateCategoryDropdowns();
             renderCategoryList();
+            renderCategoryBrowser();
             document.getElementById('newCategoryName').value = '';
             alert(`Category "${name}" created!`);
         }
@@ -2162,6 +2224,7 @@ i<!DOCTYPE html>
             saveCategories();
             updateCategoryDropdowns();
             renderCategoryList();
+            renderCategoryBrowser();
             document.getElementById('newSubcategoryName').value = '';
             alert(`Subcategory "${name}" added to "${parent}"!`);
         }
@@ -2180,6 +2243,7 @@ i<!DOCTYPE html>
 
             saveCategories();
             updateCurrentFileDisplay();
+            renderCategoryBrowser();
 
             const subText = subcategory ? ` > ${subcategory}` : '';
             alert(`File mapped to: ${category}${subText}`);
@@ -2352,8 +2416,699 @@ i<!DOCTYPE html>
         // Category select change handler
         document.getElementById('categorySelect').addEventListener('change', updateSubcategoryDropdown);
 
-        // Load categories on page load
+        // Category Management Toggle Button Handler
+        document.getElementById('categoryMgmtToggleBtn').addEventListener('click', function() {
+            const section = document.getElementById('categoryManagerSection');
+            const isVisible = section.style.display === 'block';
+
+            if (isVisible) {
+                section.style.display = 'none';
+                this.classList.remove('active');
+            } else {
+                section.style.display = 'block';
+                this.classList.add('active');
+            }
+        });
+
+        // Intelligent Category Suggestion System
+        let suggestedCategory = null;
+        let suggestedSubcategory = null;
+
+        function suggestCategoryFromFile(fileName, fileContent = '') {
+            // Extract category hints from filename
+            const nameLower = fileName.toLowerCase().replace(/\.(csv|txt|tsv)$/i, '');
+
+            // IMPORTANT: Check for detailed level patterns BEFORE splitting (to preserve A1.1, B2.3, etc.)
+            let detectedDetailedLevel = null;
+            const detailedLevelMatch = nameLower.match(/([abc][12])\.(\d+)/i);
+            if (detailedLevelMatch) {
+                const level = detailedLevelMatch[1].toUpperCase();
+                const sublevel = detailedLevelMatch[2];
+                detectedDetailedLevel = `${level}.${sublevel}`;
+                console.log('🎯 Pre-split: Found detailed level:', detectedDetailedLevel);
+            }
+
+            // Split filename by common separators to analyze parts
+            const nameParts = nameLower.split(/[_\-\s.]+/);
+
+            // Common patterns in filenames
+            const patterns = {
+                // Language levels - enhanced to catch more variations
+                a1: /\b(a1(?!\.\d)|beginner|anfänger|elementary)\b/i,
+                a2: /\b(a2(?!\.\d)|elementary|grundstufe)\b/i,
+                b1: /\b(b1(?!\.\d)|intermediate|mittelstufe)\b/i,
+                b2: /\b(b2(?!\.\d)|upper[_\-]?intermediate|oberstufe)\b/i,
+                c1: /\b(c1(?!\.\d)|advanced|fortgeschritten)\b/i,
+                c2: /\b(c2(?!\.\d)|proficient|sehr[_\-]?fortgeschritten)\b/i,
+
+                // Subject categories
+                business: /\b(business|geschäft|wirtschaft|beruf|office|meeting)\b/i,
+                travel: /\b(travel|reise|urlaub|tourism|vacation|hotel|airport)\b/i,
+                food: /\b(food|essen|cuisine|küche|restaurant|cooking|meal)\b/i,
+                medical: /\b(medical|medizin|health|gesundheit|doctor|arzt|hospital|clinic)\b/i,
+                technology: /\b(tech|technology|computer|it|software|programming|digital)\b/i,
+                everyday: /\b(everyday|daily|alltag|basic|common|routine)\b/i,
+                family: /\b(family|familie|home|haus|zuhause|parents|kinder)\b/i,
+                shopping: /\b(shopping|einkaufen|store|laden|market|kaufen)\b/i,
+                work: /\b(work|arbeit|job|career|karriere|office)\b/i,
+
+                // Content types
+                verbs: /\b(verb|verben|action|tun|doing)\b/i,
+                nouns: /\b(noun|nomen|substantiv|things|dinge|objects)\b/i,
+                adjectives: /\b(adjective|adjektiv|beschreibung|describing)\b/i,
+                phrases: /\b(phrase|satz|expression|redewendung|sentence|saying)\b/i,
+                grammar: /\b(grammar|grammatik|rules|regeln|structure)\b/i,
+                vocabulary: /\b(vocab|vokabel|wort|word|wörter)\b/i,
+
+                // Languages
+                german: /\b(german|deutsch|de)\b/i,
+                english: /\b(english|englisch|en)\b/i
+            };
+
+            let category = null;
+            let subcategory = null;
+
+            // Priority 1: Detect main category (theme/subject)
+            if (patterns.business.test(nameLower)) {
+                category = 'Business';
+            } else if (patterns.travel.test(nameLower)) {
+                category = 'Travel';
+            } else if (patterns.medical.test(nameLower)) {
+                category = 'Medical';
+            } else if (patterns.technology.test(nameLower)) {
+                category = 'Technology';
+            } else if (patterns.food.test(nameLower)) {
+                category = 'Food';
+            } else if (patterns.family.test(nameLower)) {
+                category = 'Family';
+            } else if (patterns.shopping.test(nameLower)) {
+                category = 'Shopping';
+            } else if (patterns.work.test(nameLower)) {
+                category = 'Work';
+            } else if (patterns.everyday.test(nameLower)) {
+                category = 'Everyday';
+            } else if (patterns.german.test(nameLower)) {
+                category = 'German';
+            }
+
+            // Priority 2: Detect subcategory (level or content type)
+            // First use the pre-split detailed level if found (this preserves A1.1, B2.3, etc.)
+            if (detectedDetailedLevel) {
+                subcategory = detectedDetailedLevel;
+                console.log('✅ Using pre-split detailed level:', subcategory);
+            }
+            // Then check for basic language levels
+            else if (patterns.a1.test(nameLower)) {
+                subcategory = 'A1';
+            } else if (patterns.a2.test(nameLower)) {
+                subcategory = 'A2';
+            } else if (patterns.b1.test(nameLower)) {
+                subcategory = 'B1';
+            } else if (patterns.b2.test(nameLower)) {
+                subcategory = 'B2';
+            } else if (patterns.c1.test(nameLower)) {
+                subcategory = 'C1';
+            } else if (patterns.c2.test(nameLower)) {
+                subcategory = 'C2';
+            }
+            // Then check for numbered subcategories (e.g., Lesson1, Unit2, Chapter3)
+            else {
+                const numberedMatch = nameLower.match(/\b(lesson|unit|chapter|lektion|einheit|kapitel)[_\-\s]?(\d+)\b/i);
+                if (numberedMatch) {
+                    const type = numberedMatch[1].charAt(0).toUpperCase() + numberedMatch[1].slice(1);
+                    const number = numberedMatch[2];
+                    subcategory = `${type} ${number}`;
+                    console.log('Detected numbered subcategory:', subcategory);
+                }
+                // Then content types
+                else if (patterns.verbs.test(nameLower)) {
+                    subcategory = 'Verbs';
+                } else if (patterns.nouns.test(nameLower)) {
+                    subcategory = 'Nouns';
+                } else if (patterns.adjectives.test(nameLower)) {
+                    subcategory = 'Adjectives';
+                } else if (patterns.phrases.test(nameLower)) {
+                    subcategory = 'Phrases';
+                } else if (patterns.grammar.test(nameLower)) {
+                    subcategory = 'Grammar';
+                } else if (patterns.vocabulary.test(nameLower)) {
+                    subcategory = 'Vocabulary';
+                }
+                // Finally, check for simple numbers at the end (e.g., vocab1, test2)
+                else {
+                    const simpleNumberMatch = nameLower.match(/(\d+)$/);
+                    if (simpleNumberMatch) {
+                        subcategory = `Part ${simpleNumberMatch[1]}`;
+                        console.log('Detected simple numbered part:', subcategory);
+                    }
+                }
+            }
+
+            // Analyze file content for additional hints (first 1000 chars)
+            if (fileContent && fileContent.length > 100) {
+                const contentSample = fileContent.substring(0, 1000).toLowerCase();
+
+                // If no category detected from filename, try content analysis
+                if (!category) {
+                    const germanWordCount = (contentSample.match(/\b(der|die|das|ich|du|er|sie|wir|und|oder|ist|sind|haben|sein)\b/g) || []).length;
+                    if (germanWordCount > 5) {
+                        category = 'German';
+                    }
+                }
+
+                // If still no category, create one from first meaningful part of filename
+                if (!category && nameParts.length > 0) {
+                    // Take first meaningful part (not numbers or single letters)
+                    const meaningfulPart = nameParts.find(part => part.length > 2 && !/^\d+$/.test(part));
+                    if (meaningfulPart) {
+                        // Capitalize first letter
+                        category = meaningfulPart.charAt(0).toUpperCase() + meaningfulPart.slice(1);
+                    }
+                }
+            }
+
+            // Fallback: If still no category, use filename base as category
+            if (!category) {
+                const baseName = nameParts[0] || 'Vocabulary';
+                category = baseName.charAt(0).toUpperCase() + baseName.slice(1);
+            }
+
+            // Smart subcategory fallback: If no subcategory detected, try to create one from filename parts
+            if (!subcategory && nameParts.length > 1) {
+                // Look for the second meaningful part that's not the category
+                const categoryLower = category.toLowerCase();
+                const potentialSubcat = nameParts.find((part, idx) => {
+                    return idx > 0 &&
+                           part.length > 1 &&
+                           part !== categoryLower &&
+                           part !== 'csv' &&
+                           part !== 'txt' &&
+                           !part.match(/^\d+$/); // Skip pure numbers
+                });
+
+                if (potentialSubcat) {
+                    // Capitalize first letter
+                    subcategory = potentialSubcat.charAt(0).toUpperCase() + potentialSubcat.slice(1);
+                    console.log('  ✨ Created subcategory from filename parts:', subcategory);
+                }
+            }
+
+            console.log('🔍 Smart Detection Analysis:');
+            console.log('  📁 Filename:', fileName);
+            console.log('  📄 Lowercase name:', nameLower);
+            console.log('  📂 Detected Category:', category || 'None');
+            console.log('  📋 Detected Subcategory:', subcategory || 'None');
+            console.log('  🔤 Name parts:', nameParts);
+
+            // Additional debugging for subcategory detection
+            console.log('  🔍 Subcategory Detection Tests:');
+            console.log('    - Detailed level (A1.1):', nameLower.match(/\b([abc][12])\.(\d+)\b/i));
+            console.log('    - Basic A1:', patterns.a1.test(nameLower));
+            console.log('    - Basic A2:', patterns.a2.test(nameLower));
+            console.log('    - Verbs:', patterns.verbs.test(nameLower));
+            console.log('    - Simple number:', nameLower.match(/(\d+)$/));
+
+            return { category, subcategory };
+        }
+
+        function showCategorySuggestion(category, subcategory) {
+            console.log('🎯 showCategorySuggestion CALLED with:', category, subcategory);
+
+            const section = document.getElementById('suggestedCategorySection');
+            const categoryInput = document.getElementById('suggestedCategoryInput');
+            const subcategoryInput = document.getElementById('suggestedSubcategoryInput');
+
+            if (!section || !categoryInput || !subcategoryInput) {
+                console.error('❌ Required elements not found for category suggestion');
+                return;
+            }
+
+            suggestedCategory = category;
+            suggestedSubcategory = subcategory;
+
+            // If no category detected, use Default
+            if (!category) {
+                console.log('No category detected, using Default');
+                category = 'Default';
+            }
+
+            // Populate the editable input fields with suggestions
+            categoryInput.value = category || '';
+            subcategoryInput.value = subcategory || '';
+
+            console.log('💡 Showing suggestion box with:', category, subcategory);
+
+            // Show the suggestion section
+            section.style.display = 'block';
+
+            console.log('✅ Suggestion box displayed prominently');
+
+            // Scroll to suggestion box smoothly
+            setTimeout(() => {
+                try {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    categoryInput.focus();
+                    categoryInput.select();
+                } catch(e) {
+                    console.error('Scroll/focus error:', e);
+                }
+            }, 300);
+        }
+
+        // Function to hide category suggestion
+        function hideCategorySuggestion() {
+            const section = document.getElementById('suggestedCategorySection');
+            if (section) {
+                section.style.display = 'none';
+                console.log('✅ Category suggestion box hidden');
+            }
+        }
+
+        function autoApplyCategory(category, subcategory) {
+            if (!category) return;
+
+            // Create category if it doesn't exist
+            if (!categories[category]) {
+                categories[category] = [];
+                console.log('Auto-created category:', category);
+            }
+
+            // Create subcategory if suggested and doesn't exist
+            if (subcategory && !categories[category].includes(subcategory)) {
+                categories[category].push(subcategory);
+                console.log('Auto-created subcategory:', subcategory);
+            }
+
+            // Save and update UI
+            saveCategories();
+            updateCategoryDropdowns();
+            renderCategoryList();
+
+            // Assign current file to detected category AUTOMATICALLY
+            if (currentFileName) {
+                fileCategories[currentFileName] = {
+                    category: category,
+                    subcategory: subcategory || ''
+                };
+                currentFileCategory = fileCategories[currentFileName];
+                saveCategories();
+                updateCurrentFileDisplay();
+            }
+
+            // Update dropdowns to show selected values
+            document.getElementById('categorySelect').value = category;
+            updateSubcategoryDropdown();
+            if (subcategory) {
+                document.getElementById('subcategorySelect').value = subcategory;
+            }
+
+            // Render category browser
+            renderCategoryBrowser();
+        }
+
+        function applySuggestedCategory() {
+            // Read values from input fields (user might have edited them)
+            const categoryInput = document.getElementById('suggestedCategoryInput');
+            const subcategoryInput = document.getElementById('suggestedSubcategoryInput');
+
+            const category = categoryInput.value.trim();
+            const subcategory = subcategoryInput.value.trim();
+
+            if (!category) {
+                alert('Please enter a category name!');
+                categoryInput.focus();
+                return;
+            }
+
+            console.log('✅ User approved category:', category, subcategory);
+
+            // Create category if it doesn't exist
+            if (!categories[category]) {
+                categories[category] = [];
+                console.log('Created new category:', category);
+            }
+
+            // Create subcategory if provided and doesn't exist
+            if (subcategory && !categories[category].includes(subcategory)) {
+                categories[category].push(subcategory);
+                console.log('Created new subcategory:', subcategory);
+            }
+
+            // Save and update UI
+            saveCategories();
+            updateCategoryDropdowns();
+            renderCategoryList();
+
+            // Assign current file to approved category
+            if (currentFileName) {
+                fileCategories[currentFileName] = {
+                    category: category,
+                    subcategory: subcategory || ''
+                };
+                currentFileCategory = fileCategories[currentFileName];
+                saveCategories(); // Save category mappings
+                updateCurrentFileDisplay();
+
+                console.log('✅ File category assignment complete:', currentFileName, '→', category, subcategory);
+                console.log('📦 Flashcard data already in localStorage (saved during parsing)');
+            }
+
+            // Update dropdowns to show selected values
+            document.getElementById('categorySelect').value = category;
+            updateSubcategoryDropdown();
+            if (subcategory) {
+                document.getElementById('subcategorySelect').value = subcategory;
+            }
+
+            // Hide suggestion section
+            document.getElementById('suggestedCategorySection').style.display = 'none';
+
+            // Render category browser
+            renderCategoryBrowser();
+
+            // Show success message
+            const subText = subcategory ? ` → ${subcategory}` : '';
+            alert(`✓ Success! File assigned to:\n📁 ${category}${subText}\n\n💾 Vocabulary saved and ready to practice!`);
+        }
+
+        function rejectSuggestion() {
+            console.log('❌ User rejected suggestion, using Default');
+
+            // Assign to Default category
+            if (currentFileName) {
+                fileCategories[currentFileName] = {
+                    category: 'Default',
+                    subcategory: ''
+                };
+                currentFileCategory = fileCategories[currentFileName];
+                saveCategories(); // Save category mappings
+                updateCurrentFileDisplay();
+
+                console.log('✅ File assigned to Default category:', currentFileName);
+                console.log('📦 Flashcard data already in localStorage (saved during parsing)');
+            }
+
+            // Update dropdowns
+            document.getElementById('categorySelect').value = 'Default';
+            updateSubcategoryDropdown();
+
+            // Hide suggestion section
+            document.getElementById('suggestedCategorySection').style.display = 'none';
+
+            // Render category browser
+            renderCategoryBrowser();
+
+            alert('✓ File assigned to Default category\n\n💾 Vocabulary saved and ready to practice!');
+        }
+
+        // Category Browser Functions
+        function renderCategoryBrowser() {
+            const browserList = document.getElementById('categoryBrowserList');
+            const noMessage = document.getElementById('noCategoriesMessage');
+
+            // Get all files organized by category
+            const categoryFiles = {};
+
+            Object.keys(fileCategories).forEach(fileName => {
+                const cat = fileCategories[fileName].category || 'Default';
+                const subcat = fileCategories[fileName].subcategory || '';
+
+                if (!categoryFiles[cat]) {
+                    categoryFiles[cat] = {};
+                }
+
+                if (subcat) {
+                    if (!categoryFiles[cat][subcat]) {
+                        categoryFiles[cat][subcat] = [];
+                    }
+                    categoryFiles[cat][subcat].push(fileName);
+                } else {
+                    if (!categoryFiles[cat]['_root']) {
+                        categoryFiles[cat]['_root'] = [];
+                    }
+                    categoryFiles[cat]['_root'].push(fileName);
+                }
+            });
+
+            // Check if we have any categories with files
+            const hasCategories = Object.keys(categoryFiles).length > 0;
+
+            if (!hasCategories) {
+                browserList.innerHTML = '';
+                noMessage.style.display = 'block';
+                return;
+            }
+
+            noMessage.style.display = 'none';
+            browserList.innerHTML = '';
+
+            // Render each category
+            Object.keys(categoryFiles).sort().forEach(category => {
+                const categoryCard = document.createElement('div');
+                categoryCard.style.cssText = `
+                    background: white;
+                    border: 2px solid #667eea;
+                    border-radius: 10px;
+                    padding: 15px;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                `;
+
+                categoryCard.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px)';
+                    this.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.3)';
+                });
+
+                categoryCard.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+                });
+
+                // Count total files in this category
+                let fileCount = 0;
+                Object.keys(categoryFiles[category]).forEach(subcat => {
+                    fileCount += categoryFiles[category][subcat].length;
+                });
+
+                // Category header
+                const header = document.createElement('div');
+                header.style.cssText = 'display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;';
+                header.innerHTML = `
+                    <div>
+                        <div style="font-size: 1.3em; font-weight: 600; color: #667eea;">📁 ${category}</div>
+                        <div style="font-size: 0.8em; color: #999; margin-top: 3px;">${fileCount} file${fileCount !== 1 ? 's' : ''}</div>
+                    </div>
+                `;
+
+                categoryCard.appendChild(header);
+
+                // Subcategories list
+                const subcatList = document.createElement('div');
+                subcatList.style.cssText = 'margin-top: 10px; padding-top: 10px; border-top: 1px solid #e0e0e0; font-size: 0.85em;';
+
+                const subcats = Object.keys(categoryFiles[category]).filter(s => s !== '_root').sort();
+                if (subcats.length > 0) {
+                    subcats.forEach(subcat => {
+                        const subcatItem = document.createElement('div');
+                        subcatItem.style.cssText = 'padding: 6px 8px; margin: 2px 0; color: #555; cursor: pointer; border-radius: 6px; transition: all 0.2s; background: #f8f9fa;';
+                        subcatItem.innerHTML = `└ <strong>${subcat}</strong> <span style="color: #999;">(${categoryFiles[category][subcat].length} file${categoryFiles[category][subcat].length !== 1 ? 's' : ''})</span>`;
+
+                        // Hover effect
+                        subcatItem.addEventListener('mouseenter', function() {
+                            this.style.background = '#667eea';
+                            this.style.color = 'white';
+                            const span = this.querySelector('span');
+                            if (span) span.style.color = '#e0e7ff';
+                        });
+
+                        subcatItem.addEventListener('mouseleave', function() {
+                            this.style.background = '#f8f9fa';
+                            this.style.color = '#555';
+                            const span = this.querySelector('span');
+                            if (span) span.style.color = '#999';
+                        });
+
+                        // Click handler for subcategory - load specific subcategory only
+                        subcatItem.addEventListener('click', (e) => {
+                            e.stopPropagation(); // Prevent triggering parent category click
+                            loadSubcategoryVocabulary(category, subcat);
+                        });
+
+                        subcatList.appendChild(subcatItem);
+                    });
+                    categoryCard.appendChild(subcatList);
+                }
+
+                // Click handler to load category vocabulary (all files in category)
+                categoryCard.addEventListener('click', (e) => {
+                    // Only trigger if clicked directly on card, not on subcategory
+                    if (e.target === categoryCard || e.target.closest('.category-card-header')) {
+                        loadCategoryVocabulary(category);
+                    }
+                });
+
+                browserList.appendChild(categoryCard);
+            });
+        }
+
+        function loadCategoryVocabulary(categoryName) {
+            // Get all files in this category
+            const filesInCategory = Object.keys(fileCategories).filter(fileName => {
+                return fileCategories[fileName].category === categoryName;
+            });
+
+            if (filesInCategory.length === 0) {
+                alert(`No files found in category "${categoryName}"`);
+                return;
+            }
+
+            // Show selection dialog if multiple files
+            if (filesInCategory.length > 1) {
+                let message = `Select a file from "${categoryName}":\n\n`;
+                filesInCategory.forEach((file, idx) => {
+                    const subcat = fileCategories[file].subcategory;
+                    message += `${idx + 1}. ${file}${subcat ? ' (' + subcat + ')' : ''}\n`;
+                });
+
+                const selection = prompt(message + '\nEnter file number:');
+                if (selection) {
+                    const index = parseInt(selection) - 1;
+                    if (index >= 0 && index < filesInCategory.length) {
+                        loadFileByName(filesInCategory[index]);
+                    }
+                }
+            } else {
+                // Load the single file
+                loadFileByName(filesInCategory[0]);
+            }
+        }
+
+        function loadSubcategoryVocabulary(categoryName, subcategoryName) {
+            console.log('📋 Loading subcategory:', categoryName, '→', subcategoryName);
+
+            // Get all files in this specific subcategory
+            const filesInSubcategory = Object.keys(fileCategories).filter(fileName => {
+                return fileCategories[fileName].category === categoryName &&
+                       fileCategories[fileName].subcategory === subcategoryName;
+            });
+
+            if (filesInSubcategory.length === 0) {
+                alert(`No files found in subcategory "${categoryName} → ${subcategoryName}"`);
+                return;
+            }
+
+            // Show selection dialog if multiple files
+            if (filesInSubcategory.length > 1) {
+                let message = `Select a file from "${categoryName} → ${subcategoryName}":\n\n`;
+                filesInSubcategory.forEach((file, idx) => {
+                    message += `${idx + 1}. ${file}\n`;
+                });
+
+                const selection = prompt(message + '\nEnter file number:');
+                if (selection) {
+                    const index = parseInt(selection) - 1;
+                    if (index >= 0 && index < filesInSubcategory.length) {
+                        loadFileByName(filesInSubcategory[index]);
+                    }
+                }
+            } else {
+                // Load the single file
+                loadFileByName(filesInSubcategory[0]);
+            }
+        }
+
+        function loadFileByName(fileName) {
+            // Try to load from localStorage
+            const savedData = localStorage.getItem(`flashcards_${fileName}`);
+
+            if (!savedData) {
+                alert(`Vocabulary data for "${fileName}" not found. Please upload the file again.`);
+                return;
+            }
+
+            try {
+                const cardData = JSON.parse(savedData);
+
+                // Reconstruct flashcards from saved data
+                flashcards = cardData.map((card, index) => ({
+                    id: index,
+                    german: card.german,
+                    germanExtended: card.germanExtended || '',
+                    english: card.english,
+                    englishExtended: card.englishExtended || '',
+                    detail: card.detail || '',
+                    hasExtended: !!(card.germanExtended || card.englishExtended),
+                    learned: card.learned || false,
+                    reviewDate: card.reviewDate || null,
+                    repetitions: card.repetitions || 0,
+                    easeFactor: card.easeFactor || 2.5,
+                    interval: card.interval || 1
+                }));
+
+                currentFileName = fileName;
+                currentIndex = 0;
+                filteredCards = [...flashcards];
+
+                // Load file category
+                if (fileCategories[currentFileName]) {
+                    currentFileCategory = fileCategories[currentFileName];
+                }
+
+                // Update UI
+                const dueCount = flashcards.filter(isDueForReview).length;
+                fileInfo.innerHTML = `<strong>📂 ${currentFileName}</strong><br>✅ Loaded ${flashcards.length} cards (${dueCount} due for review) from saved data`;
+
+                updateStats();
+                showFlashcard();
+                updateCurrentFileDisplay();
+
+                // Show main UI elements
+                flashcardContainer.style.display = 'block';
+                navigation.style.display = 'flex';
+                stats.style.display = 'block';
+                document.getElementById('quickActions').style.display = 'grid';
+                document.getElementById('settingsToggleBtn').style.display = 'flex';
+                document.getElementById('clearFileBtn').style.display = 'inline-block';
+                document.getElementById('instructions').style.display = 'none';
+
+                // Scroll to flashcard
+                flashcardContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            } catch (error) {
+                console.error('Error loading saved vocabulary:', error);
+                alert('Error loading vocabulary data. Please upload the file again.');
+            }
+        }
+
+        // TEST FUNCTION - For testing suggestion display
+        function testAutoOpen() {
+            console.log('🧪 TEST: Manual trigger of suggestion display');
+            console.log('🧪 TEST: Using lastDetectedSuggestion:', window.lastDetectedSuggestion);
+
+            // Use real suggestion if available, otherwise use test values
+            let testCategory = 'TestCategory';
+            let testSubcategory = 'TestSubcategory';
+
+            if (window.lastDetectedSuggestion) {
+                testCategory = window.lastDetectedSuggestion.category;
+                testSubcategory = window.lastDetectedSuggestion.subcategory;
+                console.log('🧪 TEST: Using real detected values');
+            } else if (window.pendingCategorySuggestion) {
+                testCategory = window.pendingCategorySuggestion.category;
+                testSubcategory = window.pendingCategorySuggestion.subcategory;
+                console.log('🧪 TEST: Using pending suggestion');
+            } else {
+                console.log('🧪 TEST: No suggestion found, using test values');
+            }
+
+            showCategorySuggestion(testCategory, testSubcategory);
+            console.log('✅ TEST: Suggestion display triggered');
+        }
+
+        // Load categories and render browser on page load
         loadCategories();
+        renderCategoryBrowser();
 
         const csvFileInput = document.getElementById('csvFile');
         const fileInfo = document.getElementById('fileInfo');
@@ -2397,6 +3152,29 @@ i<!DOCTYPE html>
         csvFileInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
             if (file) {
+                console.log('🆕 New file upload detected:', file.name);
+
+                // Clear any pending suggestion from previous file
+                window.pendingCategorySuggestion = null;
+                window.lastDetectedSuggestion = null;
+                console.log('   Cleared pending suggestions');
+
+                // Hide format selector and suggestion box from previous upload
+                const formatSelector = document.getElementById('formatSelector');
+                const suggestionBox = document.getElementById('suggestedCategorySection');
+                if (formatSelector) {
+                    formatSelector.style.display = 'none';
+                    console.log('   Hidden format selector');
+                }
+                if (suggestionBox) {
+                    suggestionBox.style.display = 'none';
+                    console.log('   Hidden suggestion box');
+                }
+
+                // Reset column mapping
+                columnMapping = null;
+                console.log('   Reset column mapping');
+
                 fileInfo.textContent = `Loading: ${file.name}`;
                 parseCSV(file);
             }
@@ -2405,6 +3183,8 @@ i<!DOCTYPE html>
         // Handle clear file button
         document.getElementById('clearFileBtn').addEventListener('click', () => {
             if (confirm('Remove current file and reset? All unsaved progress will be kept in browser storage.')) {
+                console.log('🗑️ Clearing current file and resetting UI');
+
                 // Reset file input
                 csvFileInput.value = '';
 
@@ -2413,6 +3193,11 @@ i<!DOCTYPE html>
                 filteredCards = [];
                 currentIndex = 0;
                 currentFileName = '';
+
+                // Clear suggestions
+                window.pendingCategorySuggestion = null;
+                window.lastDetectedSuggestion = null;
+                console.log('   Cleared suggestions');
 
                 // Stop any ongoing auto-play
                 stopAutoPlay();
@@ -2428,11 +3213,24 @@ i<!DOCTYPE html>
                 document.getElementById('sessionStats').style.display = 'none';
                 document.getElementById('timerDisplay').style.display = 'none';
 
+                // Hide format selector and suggestion box
+                const formatSelector = document.getElementById('formatSelector');
+                const suggestionBox = document.getElementById('suggestedCategorySection');
+                if (formatSelector) {
+                    formatSelector.style.display = 'none';
+                }
+                if (suggestionBox) {
+                    suggestionBox.style.display = 'none';
+                }
+                console.log('   Hidden format selector and suggestion box');
+
                 // Update file info
                 fileInfo.textContent = 'File removed. Upload a new CSV file to continue.';
 
                 // Show instructions again
                 document.getElementById('instructions').style.display = 'block';
+
+                console.log('✅ File cleared successfully');
             }
         });
 
@@ -2776,7 +3574,8 @@ i<!DOCTYPE html>
         }
 
         function applyPredefinedFormat(format) {
-            console.log('Applying predefined format:', format);
+            console.log('⚙️ Applying predefined format:', format);
+            console.log('⚙️ Pending suggestion still exists?', window.pendingCategorySuggestion);
 
             // Set column mapping based on format
             columnMapping = {};
@@ -2910,10 +3709,22 @@ i<!DOCTYPE html>
 
         // Option 3: Auto-detection
         function selectAutoDetection() {
+            console.log('⚙️ Auto-detection selected');
+            console.log('⚙️ Pending suggestion still exists?', window.pendingCategorySuggestion);
+            console.log('⚙️ rawFileData exists?', !!rawFileData);
+            console.log('⚙️ currentFileName:', currentFileName);
+
             columnMapping = null; // Reset to auto-detect
             document.getElementById('formatSelector').style.display = 'none';
-            const file = new File([rawFileData], currentFileName, { type: 'text/csv' });
-            parseCSV(file, true);
+
+            try {
+                const file = new File([rawFileData], currentFileName, { type: 'text/csv' });
+                console.log('⚙️ File object created:', file);
+                parseCSV(file, true);
+            } catch (error) {
+                console.error('❌ ERROR in selectAutoDetection:', error);
+                alert('ERROR: ' + error.message);
+            }
         }
 
         // Show column mapping interface with data preview table
@@ -3132,20 +3943,34 @@ i<!DOCTYPE html>
 
         // Parse CSV file with smart format detection
         function parseCSV(file, useManualMapping = false) {
+            console.log('🚀 parseCSV CALLED! File:', file.name, 'useManualMapping:', useManualMapping);
+
             const reader = new FileReader();
             reader.onload = (e) => {
+                console.log('📖 File read complete, parsing...');
                 const text = e.target.result;
                 const lines = text.split('\n').filter(line => line.trim() !== '');
 
                 currentFileName = file.name;
                 rawFileData = text;
+                console.log('📁 Current file:', currentFileName, '| Lines:', lines.length);
 
                 // Detect separator automatically
                 detectedSeparator = detectSeparator(text);
                 console.log('Detected separator:', detectedSeparator === '\t' ? 'TAB' : detectedSeparator);
 
+                // Store suggestion data for later (after parsing completes)
+                // Only generate suggestion on FIRST parse (not on re-parse with format selection)
+                if (!window.pendingCategorySuggestion) {
+                    window.pendingCategorySuggestion = suggestCategoryFromFile(currentFileName, text);
+                    console.log('🔍 Category suggestion prepared (first time):', window.pendingCategorySuggestion);
+                } else {
+                    console.log('🔍 Category suggestion already exists (re-parse):', window.pendingCategorySuggestion);
+                }
+
                 // Show format selector on first load (unless explicitly using a method)
                 if (!useManualMapping) {
+                    console.log('📋 Showing format selector (suggestion will trigger after format is selected)');
                     showFormatSelector(lines, detectedSeparator);
                     return;
                 }
@@ -3222,20 +4047,31 @@ i<!DOCTYPE html>
                     currentIndex = 0;
                     filteredCards = [...flashcards];
 
-                    // Load file category
+                    // Check if file already has a category assigned
+                    const fileAlreadyCategorized = fileCategories[currentFileName] != null;
+                    console.log('📂 File already categorized?', fileAlreadyCategorized);
+
                     if (fileCategories[currentFileName]) {
                         currentFileCategory = fileCategories[currentFileName];
+                        console.log('   Existing category:', currentFileCategory);
                     } else {
+                        // DON'T create default category yet - wait for user to accept/reject suggestion
                         currentFileCategory = { category: 'Default', subcategory: '' };
-                        fileCategories[currentFileName] = currentFileCategory;
-                        saveCategories();
+                        console.log('   Using temporary default category (not saved yet)');
                     }
 
-                    updateStats();
+                    updateStats(); // This calls saveProgress() which saves flashcards to localStorage
                     showFlashcard();
                     updateCurrentFileDisplay();
 
-                    // Show main UI elements
+                    console.log('💾 Flashcards saved to localStorage:', currentFileName, flashcards.length, 'cards');
+
+                    // NOW show category suggestion AFTER flashcards are saved
+                    console.log('🔍 Checking for pending category suggestion...');
+                    console.log('   File already categorized?', fileAlreadyCategorized);
+                    console.log('   pendingCategorySuggestion:', window.pendingCategorySuggestion);
+
+                    // Show main UI elements FIRST
                     flashcardContainer.style.display = 'block';
                     navigation.style.display = 'flex';
                     stats.style.display = 'block';
@@ -3247,6 +4083,44 @@ i<!DOCTYPE html>
 
                     // Hide instructions after successful load
                     document.getElementById('instructions').style.display = 'none';
+
+                    // Show category suggestion AFTER all UI is visible (SIMPLIFIED - no auto-open needed!)
+                    console.log('🔍 Checking pending suggestion. Value:', window.pendingCategorySuggestion);
+                    console.log('🔍 File already categorized?', fileAlreadyCategorized);
+                    console.log('🔍 Current fileName:', currentFileName);
+
+                    // ALWAYS show suggestion if one exists (for testing - we can refine later)
+                    if (window.pendingCategorySuggestion) {
+                        const suggestion = window.pendingCategorySuggestion;
+                        console.log('📋 Suggestion found! Showing it now. Category:', suggestion.category, 'Subcategory:', suggestion.subcategory);
+
+                        // Store for later reference
+                        window.lastDetectedSuggestion = {
+                            category: suggestion.category,
+                            subcategory: suggestion.subcategory
+                        };
+
+                        window.pendingCategorySuggestion = null; // Clear pending
+
+                        // Simply show the suggestion box (it's now outside category management!)
+                        setTimeout(() => {
+                            console.log('⏰ About to call showCategorySuggestion...');
+                            showCategorySuggestion(suggestion.category, suggestion.subcategory);
+                            console.log('✅ showCategorySuggestion called');
+                        }, 500);
+                    } else {
+                        console.log('⚠️ NO pending suggestion found!');
+                        console.log('   This means either:');
+                        console.log('   1. No suggestion was detected from filename');
+                        console.log('   2. Suggestion was cleared somewhere');
+                        console.log('   3. This is a re-parse without suggestion');
+
+                        // If no suggestion and file is new, save default category now
+                        if (!fileAlreadyCategorized) {
+                            fileCategories[currentFileName] = currentFileCategory;
+                            saveCategories();
+                        }
+                    }
                 } else {
                     fileInfo.textContent = '❌ No valid flashcards found in file';
                     document.getElementById('clearFileBtn').style.display = 'none';
