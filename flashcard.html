@@ -2215,8 +2215,17 @@ i<!DOCTYPE html>
         function loadVoices() {
             allVoices = synth.getVoices();
 
+            // Edge browser may return empty array initially - skip until voices are loaded
+            if (allVoices.length === 0) {
+                console.log('⏳ Voices not loaded yet, waiting...');
+                return;
+            }
+
+            console.log('✅ Voices loaded successfully:', allVoices.length);
+
             // Filter and sort German voices (prioritize Google voices and de-DE)
             let germanVoices = allVoices.filter(voice => voice.lang.startsWith('de'));
+
             germanVoices.sort((a, b) => {
                 // Priority order: Google de-DE > Google other > Microsoft de-DE > Others
                 const aIsGoogle = a.name.toLowerCase().includes('google');
@@ -2233,6 +2242,7 @@ i<!DOCTYPE html>
 
             // Filter and sort English voices (prioritize Google US, then UK, then others)
             let englishVoices = allVoices.filter(voice => voice.lang.startsWith('en'));
+
             englishVoices.sort((a, b) => {
                 // Priority: Google en-US > Google en-GB > Microsoft en-US > Others
                 const aIsGoogle = a.name.toLowerCase().includes('google');
@@ -2383,11 +2393,19 @@ i<!DOCTYPE html>
             infoElement.innerHTML = info;
         }
 
-        // Load voices on page load
+        // Load voices on page load with Edge browser support
         if (synth.onvoiceschanged !== undefined) {
             synth.onvoiceschanged = loadVoices;
         }
+
+        // Initial load
         loadVoices();
+
+        // Edge browser often needs extra time to load voices
+        // Retry after delays to ensure voices are loaded
+        setTimeout(loadVoices, 500);
+        setTimeout(loadVoices, 1000);
+        setTimeout(loadVoices, 2000);
 
         // Category Management Functions
         function loadCategories() {
@@ -4376,8 +4394,11 @@ i<!DOCTYPE html>
         }
 
         // Pronounce German word
-        function pronounceGerman(text) {
-            if (!synth) return;
+        function pronounceGerman(text, onComplete = null) {
+            if (!synth) {
+                if (onComplete) onComplete();
+                return;
+            }
 
             synth.cancel(); // Stop any ongoing speech
 
@@ -4388,12 +4409,47 @@ i<!DOCTYPE html>
             }
             utterance.rate = speechRate; // User-configurable rate
             utterance.pitch = speechPitch; // User-configurable pitch
-            synth.speak(utterance);
+
+            // Event-driven completion: call callback when speech finishes
+            let completed = false;
+            const safetyTimeout = setTimeout(() => {
+                if (!completed && onComplete) {
+                    console.log('⚠️ German speech safety timeout triggered');
+                    completed = true;
+                    onComplete();
+                }
+            }, 30000); // 30 second safety timeout for very long text
+
+            utterance.onend = () => {
+                if (!completed) {
+                    completed = true;
+                    clearTimeout(safetyTimeout);
+                    console.log('✅ German speech completed naturally');
+                    if (onComplete) onComplete();
+                }
+            };
+
+            utterance.onerror = (event) => {
+                if (!completed) {
+                    completed = true;
+                    clearTimeout(safetyTimeout);
+                    console.error('❌ German speech error:', event);
+                    if (onComplete) onComplete(); // Continue even on error
+                }
+            };
+
+            // Edge browser needs small delay before speaking
+            setTimeout(() => {
+                synth.speak(utterance);
+            }, 10);
         }
 
         // Pronounce English word
-        function pronounceEnglish(text) {
-            if (!synth) return;
+        function pronounceEnglish(text, onComplete = null) {
+            if (!synth) {
+                if (onComplete) onComplete();
+                return;
+            }
 
             synth.cancel(); // Stop any ongoing speech
 
@@ -4404,7 +4460,39 @@ i<!DOCTYPE html>
             }
             utterance.rate = speechRate; // User-configurable rate
             utterance.pitch = speechPitch; // User-configurable pitch
-            synth.speak(utterance);
+
+            // Event-driven completion: call callback when speech finishes
+            let completed = false;
+            const safetyTimeout = setTimeout(() => {
+                if (!completed && onComplete) {
+                    console.log('⚠️ English speech safety timeout triggered');
+                    completed = true;
+                    onComplete();
+                }
+            }, 30000); // 30 second safety timeout for very long text
+
+            utterance.onend = () => {
+                if (!completed) {
+                    completed = true;
+                    clearTimeout(safetyTimeout);
+                    console.log('✅ English speech completed naturally');
+                    if (onComplete) onComplete();
+                }
+            };
+
+            utterance.onerror = (event) => {
+                if (!completed) {
+                    completed = true;
+                    clearTimeout(safetyTimeout);
+                    console.error('❌ English speech error:', event);
+                    if (onComplete) onComplete(); // Continue even on error
+                }
+            };
+
+            // Edge browser needs small delay before speaking
+            setTimeout(() => {
+                synth.speak(utterance);
+            }, 10);
         }
 
         // Get active card list
@@ -4652,28 +4740,34 @@ i<!DOCTYPE html>
             const germanText = readExtendedContent && card.germanExtended ? card.germanExtended : card.german;
             const englishText = readExtendedContent && card.englishExtended ? card.englishExtended : card.english;
 
-            // Step 1: Pronounce German (word or extended)
-            pronounceGerman(germanText);
+            // Step 1: Pronounce German and WAIT for it to complete
+            pronounceGerman(germanText, () => {
+                if (!isAutoPlaying) return;
 
-            // Step 2: Wait, then pronounce English if enabled
-            if (autoplayEnglishEnabled) {
+                // Step 2: After German completes, wait user-configured delay, then pronounce English
                 autoplayTimeout = setTimeout(() => {
                     if (!isAutoPlaying) return;
-                    pronounceEnglish(englishText);
 
-                    // Step 3: Wait, then move to next card or repeat
-                    autoplayTimeout = setTimeout(() => {
-                        if (!isAutoPlaying) return;
-                        handleCardCompletion();
-                    }, delayBeforeNext);
+                    if (autoplayEnglishEnabled) {
+                        // Pronounce English and WAIT for it to complete
+                        pronounceEnglish(englishText, () => {
+                            if (!isAutoPlaying) return;
+
+                            // Step 3: After English completes, wait user-configured delay, then move to next card
+                            autoplayTimeout = setTimeout(() => {
+                                if (!isAutoPlaying) return;
+                                handleCardCompletion();
+                            }, delayBeforeNext);
+                        });
+                    } else {
+                        // If English not enabled, wait and move to next card
+                        autoplayTimeout = setTimeout(() => {
+                            if (!isAutoPlaying) return;
+                            handleCardCompletion();
+                        }, delayBeforeNext);
+                    }
                 }, delayBetweenLangs);
-            } else {
-                // If English not enabled, just wait and move to next or repeat
-                autoplayTimeout = setTimeout(() => {
-                    if (!isAutoPlaying) return;
-                    handleCardCompletion();
-                }, delayBeforeNext);
-            }
+            });
         }
 
         function handleCardCompletion() {
