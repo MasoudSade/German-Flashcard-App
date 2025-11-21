@@ -96,38 +96,38 @@ i<!DOCTYPE html>
         .card-german-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 40px 30px;
+            padding: 25px 20px;
             text-align: center;
             position: relative;
         }
 
         .card-label {
-            font-size: 0.8em;
+            font-size: 0.7em;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             opacity: 0.9;
         }
 
         .card-content {
-            font-size: 2.5em;
+            font-size: 2em;
             font-weight: 700;
             text-align: center;
             word-wrap: break-word;
-            margin: 20px 0;
+            margin: 12px 0;
         }
 
         .card-divider {
             border: none;
             border-top: 2px dashed rgba(255, 255, 255, 0.3);
-            margin: 20px 0;
+            margin: 12px 0;
         }
 
         .card-english-section {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
-            padding: 30px;
+            padding: 20px;
             text-align: center;
             max-height: 0;
             opacity: 0;
@@ -136,22 +136,22 @@ i<!DOCTYPE html>
         }
 
         .card-english-section.revealed {
-            max-height: 300px;
+            max-height: 250px;
             opacity: 1;
-            padding: 40px 30px;
+            padding: 25px 20px;
         }
 
         .reveal-btn {
             background: rgba(255, 255, 255, 0.2);
             border: 2px solid rgba(255, 255, 255, 0.5);
             color: white;
-            padding: 10px 25px;
-            border-radius: 25px;
+            padding: 8px 20px;
+            border-radius: 20px;
             cursor: pointer;
-            font-size: 0.9em;
+            font-size: 0.85em;
             font-weight: 600;
             transition: all 0.3s;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         .reveal-btn:hover {
@@ -413,15 +413,54 @@ i<!DOCTYPE html>
 
         .session-stats {
             background: #d1fae5;
-            padding: 15px;
+            padding: 0;
             border-radius: 10px;
             margin: 15px 0;
             display: none;
+            overflow: hidden;
+            border: 2px solid #10b981;
         }
 
-        .session-stats h4 {
-            margin: 0 0 10px 0;
-            color: #065f46;
+        .session-stats-header {
+            padding: 12px 15px;
+            background: #10b981;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: background 0.3s;
+        }
+
+        .session-stats-header:hover {
+            background: #059669;
+        }
+
+        .session-stats-header h4 {
+            margin: 0;
+            font-size: 1em;
+        }
+
+        .session-stats-toggle {
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+
+        .session-stats-toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .session-stats-content {
+            padding: 15px;
+            max-height: 300px;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.3s ease-out;
+        }
+
+        .session-stats-content.collapsed {
+            max-height: 0;
+            padding: 0 15px;
         }
 
         .stat-row {
@@ -958,6 +997,107 @@ i<!DOCTYPE html>
             font-family: monospace;
         }
 
+        /* Practice Mode Styles */
+        .practice-mode-btn {
+            display: none;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 700;
+            margin: 20px 0;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .practice-mode-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        .practice-mode-btn.active {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            animation: pulse-practice 2s infinite;
+        }
+
+        @keyframes pulse-practice {
+            0%, 100% { box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
+            50% { box-shadow: 0 4px 20px rgba(239, 68, 68, 0.6); }
+        }
+
+        body.practice-mode {
+            align-items: center;
+            padding: 10px;
+        }
+
+        body.practice-mode .container {
+            margin-top: 0;
+            max-width: 700px;
+        }
+
+        body.practice-mode .upload-section,
+        body.practice-mode .category-browser,
+        body.practice-mode .category-section,
+        body.practice-mode .settings-menu,
+        body.practice-mode .format-selector,
+        body.practice-mode .column-mapper,
+        body.practice-mode .file-info,
+        body.practice-mode .category-manager,
+        body.practice-mode h1,
+        body.practice-mode .settings-toggle-btn,
+        body.practice-mode #categoryMgmtToggleBtn,
+        body.practice-mode #testAutoOpenBtn {
+            display: none !important;
+        }
+
+        body.practice-mode .flashcard-container {
+            margin-bottom: 20px;
+        }
+
+        body.practice-mode .flashcard {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .practice-mode-controls {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            gap: 10px;
+        }
+
+        body.practice-mode .practice-mode-controls {
+            display: flex;
+        }
+
+        .floating-control-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .floating-control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating-control-btn.stop {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border-color: #dc2626;
+        }
+
         /* Settings Menu Styles */
         .settings-menu {
             display: none;
@@ -1086,18 +1226,19 @@ i<!DOCTYPE html>
 
         .quick-actions {
             display: none;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-            margin: 15px 0;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+            margin: 12px 0;
         }
 
         .quick-action-btn {
-            padding: 12px 20px;
+            padding: 8px 12px;
             background: white;
             border: 2px solid #667eea;
             color: #667eea;
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: 600;
+            font-size: 0.85em;
             cursor: pointer;
             transition: all 0.3s;
             font-size: 0.9em;
@@ -1388,26 +1529,96 @@ i<!DOCTYPE html>
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .card-german-section {
+                padding: 20px 15px;
+            }
+
+            .card-english-section.revealed {
+                padding: 20px 15px;
+                max-height: 300px;
+            }
+
+            .card-content {
+                font-size: 1.8em;
+            }
+
+            .practice-mode-controls {
+                top: 10px;
+                right: 10px;
+                flex-direction: column;
+            }
+
+            .floating-control-btn {
+                padding: 10px 18px;
+                font-size: 0.9em;
+            }
+        }
+
         @media (max-width: 480px) {
             .container {
-                padding: 20px;
+                padding: 15px;
             }
 
             h1 {
-                font-size: 1.5em;
+                font-size: 1.3em;
             }
 
-            .flashcard {
-                height: 250px;
+            .card-german-section {
+                padding: 18px 12px;
+            }
+
+            .card-english-section.revealed {
+                padding: 18px 12px;
+                max-height: 280px;
             }
 
             .card-content {
                 font-size: 1.5em;
             }
 
+            .card-label {
+                font-size: 0.65em;
+            }
+
+            .reveal-btn {
+                padding: 7px 15px;
+                font-size: 0.8em;
+            }
+
             .nav-button {
-                padding: 10px 20px;
-                font-size: 0.9em;
+                padding: 10px 15px;
+                font-size: 0.85em;
+            }
+
+            .audio-btn, .audio-btn-english {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2em;
+            }
+
+            body.practice-mode .container {
+                max-width: 100%;
+            }
+
+            .practice-mode-controls {
+                top: 5px;
+                right: 5px;
+                gap: 5px;
+            }
+
+            .floating-control-btn {
+                padding: 8px 12px;
+                font-size: 0.8em;
+            }
+
+            .practice-mode-btn {
+                padding: 15px;
+                font-size: 1em;
             }
 
             #categoryBrowserList {
@@ -1874,25 +2085,45 @@ i<!DOCTYPE html>
             <span id="timerText">Time Remaining: 00:00</span>
         </div>
 
-        <!-- Session Stats (Shows During Auto-Play) -->
+        <!-- Session Stats (Shows During Auto-Play) - Collapsible -->
         <div class="session-stats" id="sessionStats">
-            <h4>📊 Session Statistics</h4>
-            <div class="stat-row">
-                <span class="stat-label">Cards Reviewed:</span>
-                <span class="stat-value" id="cardsReviewed">0</span>
+            <div class="session-stats-header" onclick="toggleSessionStats()">
+                <h4>📊 Session Statistics</h4>
+                <span class="session-stats-toggle" id="sessionStatsToggle">▼</span>
             </div>
-            <div class="stat-row">
-                <span class="stat-label">Time Studying:</span>
-                <span class="stat-value" id="timeStudying">00:00</span>
+            <div class="session-stats-content" id="sessionStatsContent">
+                <div class="stat-row">
+                    <span class="stat-label">Cards Reviewed:</span>
+                    <span class="stat-value" id="cardsReviewed">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Time Studying:</span>
+                    <span class="stat-value" id="timeStudying">00:00</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Cards per Minute:</span>
+                    <span class="stat-value" id="cardsPerMinute">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Session Started:</span>
+                    <span class="stat-value" id="sessionStart">--:--</span>
+                </div>
             </div>
-            <div class="stat-row">
-                <span class="stat-label">Cards per Minute:</span>
-                <span class="stat-value" id="cardsPerMinute">0</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Session Started:</span>
-                <span class="stat-value" id="sessionStart">--:--</span>
-            </div>
+        </div>
+
+        <!-- Practice Mode Button -->
+        <button class="practice-mode-btn" id="practiceModeBtn" onclick="togglePracticeMode()">
+            🎯 Start Practice Mode - Focus Only on Flashcards
+        </button>
+
+        <!-- Floating Practice Mode Controls -->
+        <div class="practice-mode-controls" id="practiceModeControls">
+            <button class="floating-control-btn stop" onclick="togglePracticeMode()">
+                ⏹️ Stop Practice
+            </button>
+            <button class="floating-control-btn" onclick="document.getElementById('settingsToggleBtn').click()">
+                ⚙️ Settings
+            </button>
         </div>
 
         <div class="flashcard-container" id="flashcardContainer">
@@ -3068,6 +3299,7 @@ i<!DOCTYPE html>
                 navigation.style.display = 'flex';
                 stats.style.display = 'block';
                 document.getElementById('quickActions').style.display = 'grid';
+                document.getElementById('practiceModeBtn').style.display = 'block';
                 document.getElementById('settingsToggleBtn').style.display = 'flex';
                 document.getElementById('clearFileBtn').style.display = 'inline-block';
                 document.getElementById('instructions').style.display = 'none';
@@ -4075,6 +4307,7 @@ i<!DOCTYPE html>
                     flashcardContainer.style.display = 'block';
                     navigation.style.display = 'flex';
                     stats.style.display = 'block';
+                    document.getElementById('practiceModeBtn').style.display = 'block';
 
                     // Show new UI elements
                     document.getElementById('quickActions').style.display = 'grid';
@@ -5015,6 +5248,76 @@ i<!DOCTYPE html>
                     break;
             }
         });
+
+        // ============================================
+        // PRACTICE MODE FUNCTIONALITY
+        // ============================================
+        let isPracticeMode = false;
+
+        function togglePracticeMode() {
+            isPracticeMode = !isPracticeMode;
+            const body = document.body;
+            const btn = document.getElementById('practiceModeBtn');
+
+            if (isPracticeMode) {
+                // Enter practice mode
+                body.classList.add('practice-mode');
+                btn.classList.add('active');
+                btn.textContent = '⏹️ Stop Practice Mode';
+
+                // Scroll to flashcard and center it
+                const flashcardContainer = document.getElementById('flashcardContainer');
+                if (flashcardContainer) {
+                    setTimeout(() => {
+                        flashcardContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                }
+
+                // Auto-hide English section to start fresh
+                const englishSection = document.getElementById('englishSection');
+                if (englishSection && englishSection.classList.contains('revealed')) {
+                    englishSection.classList.remove('revealed');
+                }
+            } else {
+                // Exit practice mode
+                body.classList.remove('practice-mode');
+                btn.classList.remove('active');
+                btn.textContent = '🎯 Start Practice Mode - Focus Only on Flashcards';
+
+                // Scroll back to top smoothly
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Add keyboard shortcut for practice mode (Ctrl+P or Cmd+P)
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                if (flashcards.length > 0) {
+                    togglePracticeMode();
+                }
+            }
+        });
+
+        // ============================================
+        // SESSION STATS COLLAPSE/EXPAND FUNCTIONALITY
+        // ============================================
+        function toggleSessionStats() {
+            const content = document.getElementById('sessionStatsContent');
+            const toggle = document.getElementById('sessionStatsToggle');
+
+            if (content.classList.contains('collapsed')) {
+                // Expand
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                // Collapse
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
     </script>
 
     <!-- Focus Mode Overlay -->
