@@ -3485,6 +3485,9 @@ i<!DOCTYPE html>
                 // Load categories (will use cloud data if available)
                 loadCategories();
 
+                // Refresh category browser to display downloaded categories
+                renderCategoryBrowser();
+
                 updateSyncStatus('synced', '☁️ Synced');
 
                 console.log('Cloud login successful');
@@ -3563,6 +3566,9 @@ i<!DOCTYPE html>
 
                 // Load categories (will be empty for new user)
                 loadCategories();
+
+                // Refresh category browser
+                renderCategoryBrowser();
 
                 // Upload initial empty categories to claim the username
                 await uploadToCloud();
@@ -3644,6 +3650,7 @@ i<!DOCTYPE html>
             isCloudEnabled = false;
             document.getElementById('loginOverlay').style.display = 'none';
             loadCategories();
+            renderCategoryBrowser();
             console.log('Using local storage only');
         }
 
