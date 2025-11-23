@@ -2,18 +2,7 @@
 
 A powerful, feature-rich web-based flashcard application for learning German vocabulary with advanced learning features, spaced repetition, audio recording, and intelligent column mapping.
 
-![Flashcard App](https://img.shields.io/badge/Version-2.4-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
-
-## 🆕 What's New in v2.4
-
-**Enhanced Voice Selection System!**
-- 🔊 **Google voices prioritized** - Best quality TTS for learning
-- 🎙️ **8+ English dialects** - US, UK, Australia, India, Canada, and more
-- 🌍 **3 German variants** - Germany, Austria, Switzerland
-- 🎨 **Improved UI** - Clear voice quality indicators and helpful tips
-- ℹ️ **Real-time info** - See voice provider and quality below dropdowns
-
-[See full v2.4 changelog →](VERSION_2.4_CHANGELOG.md)
+![Flashcard App](https://img.shields.io/badge/Version-2.3-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
 
 ## ✨ Features
 
