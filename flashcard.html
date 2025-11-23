@@ -3582,7 +3582,7 @@ i<!DOCTYPE html>
         const safeStorage = {
             getItem: function(key) {
                 try {
-                    return safeStorage.getItem(key);
+                    return localStorage.getItem(key);
                 } catch (e) {
                     console.warn('localStorage blocked by browser:', e);
                     return null;
@@ -3590,14 +3590,14 @@ i<!DOCTYPE html>
             },
             setItem: function(key, value) {
                 try {
-                    safeStorage.setItem(key, value);
+                    localStorage.setItem(key, value);
                 } catch (e) {
                     console.warn('localStorage blocked by browser:', e);
                 }
             },
             removeItem: function(key) {
                 try {
-                    safeStorage.removeItem(key);
+                    localStorage.removeItem(key);
                 } catch (e) {
                     console.warn('localStorage blocked by browser:', e);
                 }
