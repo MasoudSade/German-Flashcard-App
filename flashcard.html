@@ -1042,7 +1042,6 @@ i<!DOCTYPE html>
         body.practice-mode .upload-section,
         body.practice-mode .category-browser,
         body.practice-mode .category-section,
-        body.practice-mode .settings-menu,
         body.practice-mode .format-selector,
         body.practice-mode .column-mapper,
         body.practice-mode .file-info,
@@ -1648,6 +1647,582 @@ i<!DOCTYPE html>
                 font-size: 1.2em;
             }
         }
+
+        /* File Manager Styles */
+        .file-manager {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 10px;
+        }
+
+        .file-manager-header {
+            color: #0ea5e9;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .file-manager-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            min-height: 400px;
+        }
+
+        .file-tree {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .tree-category {
+            margin-bottom: 10px;
+        }
+
+        .tree-category-name {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            background: #e0f2fe;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #0284c7;
+            transition: all 0.2s;
+        }
+
+        .tree-category-name:hover {
+            background: #bae6fd;
+        }
+
+        .tree-category-name.selected {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        .tree-subcategory {
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+
+        .tree-subcategory-name {
+            display: flex;
+            align-items: center;
+            padding: 6px 10px;
+            background: #f0f9ff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            color: #0369a1;
+            margin-bottom: 3px;
+            transition: all 0.2s;
+        }
+
+        .tree-subcategory-name:hover {
+            background: #e0f2fe;
+        }
+
+        .tree-subcategory-name.selected {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        .tree-icon {
+            margin-right: 8px;
+            font-size: 1.1em;
+        }
+
+        .file-editor {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .file-editor-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #0284c7;
+        }
+
+        .file-editor-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .file-editor-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: 0.9em;
+        }
+
+        .btn-add {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-add:hover {
+            background: #059669;
+        }
+
+        .btn-export {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-export:hover {
+            background: #2563eb;
+        }
+
+        .flashcard-list {
+            flex: 1;
+            overflow-y: auto;
+            max-height: 500px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.95em;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #0ea5e9;
+        }
+
+        .bulk-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            align-items: center;
+        }
+
+        .bulk-actions.hidden {
+            display: none;
+        }
+
+        .selection-count {
+            font-weight: 600;
+            color: #0284c7;
+            margin-right: auto;
+        }
+
+        .excel-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .excel-table thead {
+            background: #f1f5f9;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .excel-table th {
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            color: #334155;
+            border-bottom: 2px solid #cbd5e1;
+            border-right: 1px solid #e2e8f0;
+            font-size: 0.9em;
+        }
+
+        .excel-table th:last-child {
+            border-right: none;
+        }
+
+        .excel-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            font-size: 0.9em;
+            color: #334155;
+        }
+
+        .excel-table td:last-child {
+            border-right: none;
+        }
+
+        .excel-table tbody tr:hover {
+            background: #f0f9ff;
+        }
+
+        .excel-table tbody tr.selected {
+            background: #dbeafe;
+        }
+
+        .checkbox-cell {
+            width: 40px;
+            text-align: center;
+        }
+
+        .line-number-cell {
+            width: 50px;
+            font-weight: 600;
+            color: #64748b;
+            text-align: center;
+        }
+
+        .content-cell {
+            min-width: 150px;
+        }
+
+        .content-cell strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #1e293b;
+        }
+
+        .content-cell small {
+            color: #64748b;
+            font-style: italic;
+        }
+
+        .editable-cell {
+            cursor: text;
+            padding: 10px 8px !important;
+            transition: all 0.2s;
+        }
+
+        .editable-cell:hover {
+            background: #f0f9ff;
+            outline: 1px solid #bae6fd;
+        }
+
+        .editable-cell:focus {
+            background: #fff;
+            outline: 2px solid #0ea5e9;
+            outline-offset: -2px;
+        }
+
+        .editable-cell:empty:before {
+            content: attr(data-placeholder);
+            color: #cbd5e1;
+            font-style: italic;
+        }
+
+        .actions-cell {
+            width: 100px;
+            text-align: center;
+        }
+
+        .line-actions {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+
+        .line-btn {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.2s;
+        }
+
+        .btn-edit {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #2563eb;
+        }
+
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #dc2626;
+        }
+
+        .add-flashcard-form {
+            display: none;
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #f59e0b;
+        }
+
+        .add-flashcard-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #78350f;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #fbbf24;
+            border-radius: 6px;
+            font-size: 1em;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-save {
+            flex: 1;
+            padding: 10px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-save:hover {
+            background: #059669;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            padding: 10px;
+            background: #6b7280;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-cancel:hover {
+            background: #4b5563;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 10px;
+        }
+
+        /* Modal Popup for Table View */
+        .table-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            padding: 20px;
+        }
+
+        .table-modal-overlay.active {
+            display: flex;
+        }
+
+        .table-modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 95%;
+            max-width: 1400px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .table-modal-header {
+            padding: 20px 30px;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-modal-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #0284c7;
+        }
+
+        .table-modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: 1em;
+        }
+
+        .modal-btn-close {
+            background: #ef4444;
+            color: white;
+        }
+
+        .modal-btn-close:hover {
+            background: #dc2626;
+        }
+
+        .table-modal-body {
+            padding: 20px 30px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* Category Selector in Modal */
+        .modal-category-selector {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .modal-category-selector h4 {
+            margin: 0 0 10px 0;
+            color: #0284c7;
+            font-size: 1em;
+        }
+
+        .category-button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .category-btn {
+            padding: 8px 16px;
+            border: 2px solid #cbd5e1;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: 0.9em;
+        }
+
+        .category-btn:hover {
+            background: #e0f2fe;
+            border-color: #0ea5e9;
+        }
+
+        .category-btn.active {
+            background: #0ea5e9;
+            color: white;
+            border-color: #0284c7;
+        }
+
+        .subcategory-btn {
+            padding: 6px 12px;
+            border: 2px solid #e0f2fe;
+            background: #f0f9ff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.2s;
+        }
+
+        .subcategory-btn:hover {
+            background: #bae6fd;
+            border-color: #0ea5e9;
+        }
+
+        .subcategory-btn.active {
+            background: #0ea5e9;
+            color: white;
+            border-color: #0284c7;
+        }
+
+        @media (max-width: 768px) {
+            .file-manager-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .file-tree {
+                max-height: 300px;
+            }
+
+            .flashcard-line {
+                grid-template-columns: 30px 1fr 60px;
+                font-size: 0.9em;
+            }
+
+            .line-content:last-of-type {
+                display: none;
+            }
+
+            .table-modal-content {
+                width: 100%;
+                max-height: 95vh;
+            }
+
+            .table-modal-header {
+                padding: 15px 20px;
+            }
+
+            .table-modal-body {
+                padding: 15px 20px;
+            }
+        }
     </style>
     <style>
         /* Cloud Sync Login Modal */
@@ -1791,9 +2366,9 @@ i<!DOCTYPE html>
                 • No email required, just username + password
             </div>
 
-            <input type="text" id="username" class="login-input" placeholder="Username" autocomplete="username">
-            <input type="password" id="password" class="login-input" placeholder="Password" autocomplete="current-password">
-            <input type="password" id="confirmPassword" class="login-input" placeholder="Confirm Password" autocomplete="new-password" style="display: none;">
+            <input type="text" id="username" class="login-input" placeholder="Username" autocomplete="username" onkeypress="handleLoginKeyPress(event)">
+            <input type="password" id="password" class="login-input" placeholder="Password" autocomplete="current-password" onkeypress="handleLoginKeyPress(event)">
+            <input type="password" id="confirmPassword" class="login-input" placeholder="Confirm Password" autocomplete="new-password" style="display: none;" onkeypress="handleLoginKeyPress(event)">
 
             <button class="login-btn" id="loginBtn" onclick="window.cloudLogin()">🔓 Login</button>
             <button class="login-btn" id="signupBtn" onclick="window.cloudSignup()" style="display: none;">📝 Sign Up</button>
@@ -1869,6 +2444,29 @@ i<!DOCTYPE html>
             <button onclick="window.closeAccountSettings()" style="width: 100%; padding: 12px; background: #6b7280; color: white; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; margin-top: 10px; font-weight: 600;">
                 Close
             </button>
+        </div>
+    </div>
+
+    <!-- Table Modal Popup -->
+    <div class="table-modal-overlay" id="tableModal">
+        <div class="table-modal-content">
+            <div class="table-modal-header">
+                <div class="table-modal-title" id="modalTitle">Loading...</div>
+                <div class="table-modal-actions">
+                    <button class="modal-btn" style="background: #10b981; color: white;" onclick="saveAllChanges()">
+                        💾 Save All Changes
+                    </button>
+                    <button class="modal-btn" style="background: #3b82f6; color: white;" onclick="exportModalCSV()">
+                        📥 Export CSV
+                    </button>
+                    <button class="modal-btn modal-btn-close" onclick="closeTableModal()">
+                        ✕ Close
+                    </button>
+                </div>
+            </div>
+            <div class="table-modal-body" id="modalTableContainer">
+                <!-- Table content will be loaded here -->
+            </div>
         </div>
     </div>
 
@@ -1983,6 +2581,95 @@ i<!DOCTYPE html>
                         <div class="category-item">
                             <span>📁 Default</span>
                             <span style="font-size: 0.8em; color: #78350f;">Built-in</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- File Manager (Collapsible) -->
+        <div style="margin-bottom: 20px;">
+            <button class="settings-toggle-btn" id="fileManagerToggleBtn" style="display: flex; background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);">
+                <span>📂 File Manager - Browse & Edit Categories</span>
+                <span class="toggle-icon">▼</span>
+            </button>
+            <div class="file-manager" id="fileManagerSection" style="display: none;">
+                <h4 class="file-manager-header">📂 Browse and Edit Your Flashcard Files</h4>
+
+                <div class="file-manager-layout">
+                    <!-- Left: Category Tree Browser -->
+                    <div class="file-tree">
+                        <h5 style="color: #0284c7; margin-bottom: 15px; font-size: 1em;">📁 Categories</h5>
+                        <div id="fileTreeContent">
+                            <!-- Will be populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Right: File Editor -->
+                    <div class="file-editor">
+                        <div id="fileEditorEmpty" class="empty-state">
+                            <div class="empty-state-icon">📄</div>
+                            <p>Select a category or subcategory from the tree to view and edit flashcards</p>
+                        </div>
+
+                        <div id="fileEditorContent" style="display: none;">
+                            <div class="file-editor-header">
+                                <div class="file-editor-title" id="editorTitle">Default</div>
+                                <div class="file-editor-actions">
+                                    <button class="file-editor-btn" onclick="manualLoadData()" style="background: #10b981; font-size: 1.1em;">
+                                        🔄 Load Data
+                                    </button>
+                                    <button class="file-editor-btn btn-add" onclick="showAddFlashcardForm()">
+                                        ➕ Add Flashcard
+                                    </button>
+                                    <button class="file-editor-btn btn-export" onclick="exportCategoryToCSV()">
+                                        💾 Export CSV
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Add Flashcard Form (Hidden by default) -->
+                            <div class="add-flashcard-form" id="addFlashcardForm">
+                                <h5 style="color: #78350f; margin-bottom: 15px;">➕ Add New Flashcard</h5>
+                                <div class="form-group">
+                                    <label>German Word/Phrase:</label>
+                                    <input type="text" id="newGerman" placeholder="e.g., Hallo">
+                                </div>
+                                <div class="form-group">
+                                    <label>German Example (Optional):</label>
+                                    <input type="text" id="newGermanExample" placeholder="e.g., Hallo, wie geht es dir?">
+                                </div>
+                                <div class="form-group">
+                                    <label>English Translation:</label>
+                                    <input type="text" id="newEnglish" placeholder="e.g., Hello">
+                                </div>
+                                <div class="form-group">
+                                    <label>English Example (Optional):</label>
+                                    <input type="text" id="newEnglishExample" placeholder="e.g., Hello, how are you?">
+                                </div>
+                                <div class="form-actions">
+                                    <button class="btn-save" onclick="saveNewFlashcard()">💾 Save</button>
+                                    <button class="btn-cancel" onclick="hideAddFlashcardForm()">❌ Cancel</button>
+                                </div>
+                            </div>
+
+                            <!-- Search Bar -->
+                            <div class="search-bar">
+                                <input type="text" id="flashcardSearch" class="search-input" placeholder="🔍 Search flashcards... (German or English)">
+                                <button class="file-editor-btn" onclick="clearSearch()" style="background: #6b7280;">Clear</button>
+                            </div>
+
+                            <!-- Bulk Actions Bar (Hidden by default) -->
+                            <div class="bulk-actions hidden" id="bulkActionsBar">
+                                <span class="selection-count" id="selectionCount">0 selected</span>
+                                <button class="file-editor-btn" style="background: #ef4444;" onclick="deleteSelected()">🗑️ Delete Selected</button>
+                                <button class="file-editor-btn" style="background: #6b7280;" onclick="deselectAll()">Clear Selection</button>
+                            </div>
+
+                            <!-- Flashcard List (Excel-like Table) -->
+                            <div class="flashcard-list" id="flashcardListContainer">
+                                <!-- Will be populated dynamically -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2754,6 +3441,15 @@ i<!DOCTYPE html>
             fileCategories[currentFileName] = { category, subcategory };
             currentFileCategory = { category, subcategory };
 
+            // Update all current flashcards with the new category/subcategory
+            flashcards.forEach(card => {
+                card.category = category;
+                card.subcategory = subcategory || '';
+            });
+
+            // Save updated flashcards
+            saveToStorage();
+
             saveCategories();
             updateCurrentFileDisplay();
             renderCategoryBrowser();
@@ -2942,6 +3638,1184 @@ i<!DOCTYPE html>
                 this.classList.add('active');
             }
         });
+
+        // ==============================
+        // FILE MANAGER FUNCTIONALITY
+        // ==============================
+
+        let currentFileManagerSelection = null; // {category: 'X', subcategory: 'Y'}
+        let selectedFlashcardIds = new Set(); // Track selected flashcard IDs
+        let currentSearchTerm = ''; // Track current search term
+        let modalFlashcards = []; // Flashcards currently displayed in modal
+
+        // Guard flag to prevent multiple executions
+        let hasAutoLoaded = false;
+
+        // Auto-load all flashcards from all files
+        function autoLoadAllCategories() {
+            // Prevent multiple executions
+            if (hasAutoLoaded) {
+                console.log('⏭️ Auto-load already completed, skipping...');
+                return;
+            }
+
+            hasAutoLoaded = true;
+            console.log('🚀 AUTO-LOADING ALL CATEGORIES...');
+
+            // Get all files that have been saved
+            const allFiles = Object.keys(fileCategories);
+            console.log('📂 Found', allFiles.length, 'files to load');
+
+            if (allFiles.length === 0) {
+                console.log('⚠️ No files found in fileCategories');
+                return;
+            }
+
+            let loadedCount = 0;
+            let totalCards = 0;
+
+            // Load each file into the global flashcards array
+            allFiles.forEach(fileName => {
+                const savedData = safeStorage.getItem(`flashcards_${fileName}`);
+                if (!savedData) {
+                    console.log(`⚠️ No data for file: ${fileName}`);
+                    return;
+                }
+
+                try {
+                    const cardData = JSON.parse(savedData);
+                    const fileCategory = fileCategories[fileName] || { category: 'Default', subcategory: '' };
+
+                    console.log(`📥 Loading ${fileName}: ${cardData.length} cards into ${fileCategory.category} > ${fileCategory.subcategory}`);
+
+                    // Convert each card and add to global flashcards array
+                    cardData.forEach((card, index) => {
+                        // Create unique ID based on file and index to avoid conflicts
+                        const uniqueId = card.id || `${fileName.replace(/[^a-zA-Z0-9]/g, '_')}_${index}`;
+
+                        const flashcard = {
+                            id: uniqueId,
+                            german: card.german,
+                            germanExtended: card.germanExtended || '',
+                            english: card.english,
+                            englishExtended: card.englishExtended || '',
+                            detail: card.detail || '',
+                            hasExtended: !!(card.germanExtended || card.englishExtended),
+                            learned: card.learned || false,
+                            reviewDate: card.reviewDate || null,
+                            repetitions: card.repetitions || 0,
+                            easeFactor: card.easeFactor || 2.5,
+                            interval: card.interval || 1,
+                            category: fileCategory.category,
+                            subcategory: fileCategory.subcategory || '',
+                            sourceFile: fileName  // Track which file this came from
+                        };
+
+                        // Check if this exact card already exists by ID
+                        const existingIndex = flashcards.findIndex(c => c.id === uniqueId);
+
+                        if (existingIndex === -1) {
+                            flashcards.push(flashcard);
+                            totalCards++;
+                        }
+                        // Duplicate found - silently skip (deduplication working correctly)
+                    });
+
+                    loadedCount++;
+                } catch (error) {
+                    console.error(`❌ Error loading ${fileName}:`, error);
+                }
+            });
+
+            console.log(`✅ AUTO-LOAD COMPLETE!`);
+            console.log(`   Files loaded: ${loadedCount}/${allFiles.length}`);
+            console.log(`   Total flashcards: ${totalCards}`);
+            console.log(`   Flashcards array size: ${flashcards.length}`);
+
+            // Update UI
+            if (flashcards.length > 0) {
+                updateStats();
+                renderCategoryBrowser();
+
+                // Show success message
+                const fileInfo = document.getElementById('fileInfo');
+                if (fileInfo) {
+                    fileInfo.innerHTML = `<strong>✅ Auto-loaded ${loadedCount} files</strong><br>📚 Total: ${flashcards.length} flashcards across all categories`;
+                }
+            }
+        }
+
+        // Open table modal
+        function openTableModal(category, subcategory) {
+            console.log('📊 Opening modal for:', category, '>', subcategory);
+
+            currentFileManagerSelection = { category, subcategory };
+            const title = subcategory ? `${category} > ${subcategory}` : category;
+            document.getElementById('modalTitle').textContent = title;
+
+            const modal = document.getElementById('tableModal');
+            modal.classList.add('active');
+
+            // Load data into modal
+            loadFlashcardsIntoModal(category, subcategory);
+        }
+
+        // Close table modal
+        function closeTableModal() {
+            const modal = document.getElementById('tableModal');
+            modal.classList.remove('active');
+            selectedFlashcardIds.clear();
+            currentSearchTerm = '';
+        }
+
+        // Save all changes button
+        function saveAllChanges() {
+            console.log('💾 Saving all changes...');
+            saveProgress();
+            if (isCloudEnabled && cloudUser) {
+                syncToCloud();
+            }
+            alert('✅ All changes saved successfully!');
+        }
+
+        // Export from modal
+        function exportModalCSV() {
+            if (!currentFileManagerSelection) return;
+            exportCategoryToCSV();
+        }
+
+        // Load flashcards into modal table
+        function loadFlashcardsIntoModal(category, subcategory) {
+            const container = document.getElementById('modalTableContainer');
+            container.innerHTML = '<p style="text-align: center; padding: 40px;">Loading...</p>';
+
+            console.log('📊 Loading flashcards into modal');
+            console.log('  Category:', category);
+            console.log('  Subcategory:', subcategory);
+            console.log('  Total flashcards:', flashcards.length);
+
+            // Filter flashcards
+            let filteredCards = flashcards.filter(card => {
+                if (subcategory) {
+                    return card.category === category && card.subcategory === subcategory;
+                } else {
+                    return card.category === category && (!card.subcategory || card.subcategory === '');
+                }
+            });
+
+            console.log('  Filtered cards:', filteredCards.length);
+
+            if (filteredCards.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div><p>No flashcards in this category</p></div>';
+                return;
+            }
+
+            modalFlashcards = filteredCards;
+
+            // Build the full modal content with category selector, search, bulk actions, and table
+            container.innerHTML = `
+                <!-- Category Selector -->
+                <div class="modal-category-selector" id="modalCategorySelector">
+                    <!-- Will be populated dynamically -->
+                </div>
+
+                <!-- Search Bar -->
+                <div class="search-bar" style="margin-bottom: 20px;">
+                    <input type="text" id="modalSearch" class="search-input" placeholder="🔍 Search flashcards... (German or English)" onkeyup="filterModalTable()">
+                    <button class="file-editor-btn" onclick="clearModalSearch()" style="background: #6b7280;">Clear</button>
+                </div>
+
+                <!-- Bulk Actions Bar -->
+                <div class="bulk-actions hidden" id="modalBulkActions">
+                    <span class="selection-count" id="modalSelectionCount">0 selected</span>
+                    <button class="file-editor-btn" style="background: #ef4444;" onclick="deleteModalSelected()">🗑️ Delete Selected</button>
+                    <button class="file-editor-btn" style="background: #6b7280;" onclick="deselectModalAll()">Clear Selection</button>
+                </div>
+
+                <!-- Add Flashcard Button -->
+                <div style="margin-bottom: 15px;">
+                    <button class="file-editor-btn btn-add" onclick="showModalAddForm()" style="width: 100%;">
+                        ➕ Add New Flashcard
+                    </button>
+                </div>
+
+                <!-- Add Form (Hidden) -->
+                <div class="add-flashcard-form" id="modalAddForm">
+                    <h5 style="color: #78350f; margin-bottom: 15px;">➕ Add New Flashcard</h5>
+                    <div class="form-group">
+                        <label>German Word/Phrase:</label>
+                        <input type="text" id="modalNewGerman" placeholder="e.g., Hallo">
+                    </div>
+                    <div class="form-group">
+                        <label>German Example (Optional):</label>
+                        <input type="text" id="modalNewGermanExample" placeholder="e.g., Hallo, wie geht es dir?">
+                    </div>
+                    <div class="form-group">
+                        <label>English Translation:</label>
+                        <input type="text" id="modalNewEnglish" placeholder="e.g., Hello">
+                    </div>
+                    <div class="form-group">
+                        <label>English Example (Optional):</label>
+                        <input type="text" id="modalNewEnglishExample" placeholder="e.g., Hello, how are you?">
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn-save" onclick="saveModalNewFlashcard()">💾 Save</button>
+                        <button class="btn-cancel" onclick="hideModalAddForm()">❌ Cancel</button>
+                    </div>
+                </div>
+
+                <!-- Table Container -->
+                <div class="flashcard-list" id="modalTableList"></div>
+            `;
+
+            // Render the category selector
+            renderModalCategorySelector(category, subcategory);
+
+            // Render the table
+            renderModalTable(filteredCards);
+        }
+
+        // Render category selector in modal
+        function renderModalCategorySelector(selectedCategory, selectedSubcategory) {
+            const container = document.getElementById('modalCategorySelector');
+            if (!container) return;
+
+            let html = '<h4>📁 Quick Switch Categories:</h4>';
+
+            // Get all categories sorted
+            const allCategories = Object.keys(categories).sort();
+
+            allCategories.forEach(category => {
+                const categoryFlashcards = flashcards.filter(card =>
+                    card.category === category && (!card.subcategory || card.subcategory === '')
+                );
+
+                // Category button
+                html += '<div style="margin-bottom: 15px;">';
+                html += '<div class="category-button-group">';
+                const catActive = (category === selectedCategory && !selectedSubcategory) ? 'active' : '';
+                html += `<button class="category-btn ${catActive}" onclick="switchModalCategory('${category}', '')">
+                    📁 ${category} <span style="opacity: 0.7;">(${categoryFlashcards.length})</span>
+                </button>`;
+                html += '</div>';
+
+                // Subcategory buttons
+                if (categories[category] && categories[category].length > 0) {
+                    html += '<div class="category-button-group" style="margin-left: 20px;">';
+                    categories[category].forEach(subcategory => {
+                        const subcatFlashcards = flashcards.filter(card =>
+                            card.category === category && card.subcategory === subcategory
+                        );
+                        const subActive = (category === selectedCategory && subcategory === selectedSubcategory) ? 'active' : '';
+                        html += `<button class="subcategory-btn ${subActive}" onclick="switchModalCategory('${category}', '${subcategory}')">
+                            📄 ${subcategory} <span style="opacity: 0.7;">(${subcatFlashcards.length})</span>
+                        </button>`;
+                    });
+                    html += '</div>';
+                }
+
+                html += '</div>';
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Switch category in modal (without closing)
+        function switchModalCategory(category, subcategory) {
+            console.log('🔄 Switching modal to:', category, '>', subcategory);
+
+            // Update title
+            const title = subcategory ? `${category} > ${subcategory}` : category;
+            document.getElementById('modalTitle').textContent = title;
+
+            // Update selection
+            currentFileManagerSelection = { category, subcategory };
+
+            // Reload data in same modal
+            loadFlashcardsIntoModal(category, subcategory);
+        }
+
+        // Render modal table
+        function renderModalTable(cards) {
+            const container = document.getElementById('modalTableList');
+
+            const table = document.createElement('table');
+            table.className = 'excel-table';
+
+            // Header
+            const thead = document.createElement('thead');
+            thead.innerHTML = `
+                <tr>
+                    <th class="checkbox-cell"><input type="checkbox" id="modalSelectAll" onchange="toggleModalSelectAll()"></th>
+                    <th class="line-number-cell">#</th>
+                    <th class="content-cell">German</th>
+                    <th class="content-cell">German Example</th>
+                    <th class="content-cell">English</th>
+                    <th class="content-cell">English Example</th>
+                    <th class="actions-cell">Actions</th>
+                </tr>
+            `;
+            table.appendChild(thead);
+
+            // Body
+            const tbody = document.createElement('tbody');
+            cards.forEach((card, index) => {
+                const tr = document.createElement('tr');
+                tr.id = `modal-row-${card.id}`;
+
+                tr.innerHTML = `
+                    <td class="checkbox-cell">
+                        <input type="checkbox" class="modal-row-checkbox" data-id="${card.id}" onchange="toggleModalRowSelection(${card.id})">
+                    </td>
+                    <td class="line-number-cell">${index + 1}</td>
+                    <td class="content-cell editable-cell" contenteditable="true" data-id="${card.id}" data-field="german">${escapeHtml(card.german || '')}</td>
+                    <td class="content-cell editable-cell" contenteditable="true" data-id="${card.id}" data-field="germanExtended">${escapeHtml(card.germanExtended || '')}</td>
+                    <td class="content-cell editable-cell" contenteditable="true" data-id="${card.id}" data-field="english">${escapeHtml(card.english || '')}</td>
+                    <td class="content-cell editable-cell" contenteditable="true" data-id="${card.id}" data-field="englishExtended">${escapeHtml(card.englishExtended || '')}</td>
+                    <td class="actions-cell">
+                        <div class="line-actions">
+                            <button class="line-btn btn-edit" onclick="quickSaveRow(${card.id})">💾</button>
+                            <button class="line-btn btn-delete" onclick="deleteFlashcard(${card.id})">🗑️</button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+
+            table.appendChild(tbody);
+            container.appendChild(table);
+
+            console.log('✅ Modal table rendered with', cards.length, 'rows');
+        }
+
+        // Modal helper functions
+        function filterModalTable() {
+            const searchTerm = document.getElementById('modalSearch').value.toLowerCase();
+            const filtered = modalFlashcards.filter(card => {
+                return (
+                    (card.german && card.german.toLowerCase().includes(searchTerm)) ||
+                    (card.germanExtended && card.germanExtended.toLowerCase().includes(searchTerm)) ||
+                    (card.english && card.english.toLowerCase().includes(searchTerm)) ||
+                    (card.englishExtended && card.englishExtended.toLowerCase().includes(searchTerm))
+                );
+            });
+            renderModalTable(filtered);
+        }
+
+        function clearModalSearch() {
+            document.getElementById('modalSearch').value = '';
+            renderModalTable(modalFlashcards);
+        }
+
+        function toggleModalSelectAll() {
+            const selectAll = document.getElementById('modalSelectAll');
+            const checkboxes = document.querySelectorAll('.modal-row-checkbox');
+            checkboxes.forEach(cb => {
+                const cardId = parseInt(cb.dataset.id);
+                cb.checked = selectAll.checked;
+                if (selectAll.checked) {
+                    selectedFlashcardIds.add(cardId);
+                } else {
+                    selectedFlashcardIds.delete(cardId);
+                }
+            });
+            updateModalSelectionCount();
+        }
+
+        function toggleModalRowSelection(cardId) {
+            if (selectedFlashcardIds.has(cardId)) {
+                selectedFlashcardIds.delete(cardId);
+            } else {
+                selectedFlashcardIds.add(cardId);
+            }
+            updateModalSelectionCount();
+        }
+
+        function updateModalSelectionCount() {
+            const count = selectedFlashcardIds.size;
+            const countEl = document.getElementById('modalSelectionCount');
+            const bulkActions = document.getElementById('modalBulkActions');
+
+            if (countEl) countEl.textContent = `${count} selected`;
+            if (bulkActions) {
+                if (count > 0) {
+                    bulkActions.classList.remove('hidden');
+                } else {
+                    bulkActions.classList.add('hidden');
+                }
+            }
+        }
+
+        function deselectModalAll() {
+            selectedFlashcardIds.clear();
+            document.querySelectorAll('.modal-row-checkbox').forEach(cb => cb.checked = false);
+            const selectAll = document.getElementById('modalSelectAll');
+            if (selectAll) selectAll.checked = false;
+            updateModalSelectionCount();
+        }
+
+        function deleteModalSelected() {
+            if (selectedFlashcardIds.size === 0) return;
+
+            if (!confirm(`Delete ${selectedFlashcardIds.size} flashcards?`)) return;
+
+            selectedFlashcardIds.forEach(cardId => {
+                const index = flashcards.findIndex(c => c.id === cardId);
+                if (index > -1) flashcards.splice(index, 1);
+            });
+
+            selectedFlashcardIds.clear();
+            saveProgress();
+            if (isCloudEnabled && cloudUser) syncToCloud();
+
+            // Reload modal
+            const { category, subcategory } = currentFileManagerSelection;
+            loadFlashcardsIntoModal(category, subcategory);
+            refreshFileTree();
+        }
+
+        function showModalAddForm() {
+            document.getElementById('modalAddForm').classList.add('active');
+        }
+
+        function hideModalAddForm() {
+            document.getElementById('modalAddForm').classList.remove('active');
+        }
+
+        function saveModalNewFlashcard() {
+            const german = document.getElementById('modalNewGerman').value.trim();
+            const germanEx = document.getElementById('modalNewGermanExample').value.trim();
+            const english = document.getElementById('modalNewEnglish').value.trim();
+            const englishEx = document.getElementById('modalNewEnglishExample').value.trim();
+
+            if (!german || !english) {
+                alert('Please enter German and English text');
+                return;
+            }
+
+            const newCard = {
+                id: Date.now(),
+                german, germanExtended: germanEx,
+                english, englishExtended: englishEx,
+                learned: false,
+                category: currentFileManagerSelection.category,
+                subcategory: currentFileManagerSelection.subcategory || ''
+            };
+
+            flashcards.push(newCard);
+            saveProgress();
+            if (isCloudEnabled && cloudUser) syncToCloud();
+
+            // Reload modal
+            const { category, subcategory } = currentFileManagerSelection;
+            loadFlashcardsIntoModal(category, subcategory);
+            hideModalAddForm();
+            refreshFileTree();
+        }
+
+        // File Manager Toggle Button Handler
+        document.getElementById('fileManagerToggleBtn').addEventListener('click', function() {
+            const section = document.getElementById('fileManagerSection');
+            const isVisible = section.style.display === 'block';
+
+            if (isVisible) {
+                section.style.display = 'none';
+                this.classList.remove('active');
+            } else {
+                section.style.display = 'block';
+                this.classList.add('active');
+                refreshFileTree();
+            }
+        });
+
+        // Populate the file tree with categories and subcategories
+        function refreshFileTree() {
+            const treeContent = document.getElementById('fileTreeContent');
+            treeContent.innerHTML = '';
+
+            console.log('📂 Refreshing file tree. Total flashcards:', flashcards.length);
+            console.log('📂 Categories:', Object.keys(categories));
+
+            if (Object.keys(categories).length === 0) {
+                treeContent.innerHTML = '<p style="color: #94a3b8; text-align: center; padding: 20px;">No categories yet</p>';
+                return;
+            }
+
+            Object.keys(categories).sort().forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'tree-category';
+
+                // Category name
+                const categoryName = document.createElement('div');
+                categoryName.className = 'tree-category-name';
+                categoryName.innerHTML = `<span class="tree-icon">📁</span>${category}`;
+
+                // Count flashcards in this category (no subcategory)
+                const categoryFlashcards = flashcards.filter(card =>
+                    card.category === category && (!card.subcategory || card.subcategory === '')
+                );
+                console.log(`  📁 ${category}: ${categoryFlashcards.length} cards (no subcategory)`);
+                categoryName.innerHTML += ` <span style="color: rgba(255,255,255,0.7); font-size: 0.85em; margin-left: auto;">(${categoryFlashcards.length})</span>`;
+
+                categoryName.addEventListener('click', (e) => {
+                    console.log('🖱️ Category clicked:', category);
+                    e.stopPropagation();
+                    try {
+                        // Open modal directly
+                        openTableModal(category, '');
+                    } catch (error) {
+                        console.error('❌ Error opening modal:', error);
+                    }
+                });
+                categoryDiv.appendChild(categoryName);
+
+                // Subcategories
+                if (categories[category] && categories[category].length > 0) {
+                    const subcatContainer = document.createElement('div');
+                    subcatContainer.className = 'tree-subcategory';
+
+                    categories[category].forEach(subcategory => {
+                        const subcatDiv = document.createElement('div');
+                        subcatDiv.className = 'tree-subcategory-name';
+                        subcatDiv.innerHTML = `<span class="tree-icon">📄</span>${subcategory}`;
+
+                        // Count flashcards in this subcategory from all saved files
+                        let subcatCardCount = 0;
+                        Object.keys(fileCategories).forEach(fileName => {
+                            const fileCategory = fileCategories[fileName];
+                            if (fileCategory.category === category && fileCategory.subcategory === subcategory) {
+                                const savedData = safeStorage.getItem(`flashcards_${fileName}`);
+                                if (savedData) {
+                                    try {
+                                        const cardData = JSON.parse(savedData);
+                                        subcatCardCount += cardData.length;
+                                    } catch (e) {
+                                        console.error(`Error parsing ${fileName}:`, e);
+                                    }
+                                }
+                            }
+                        });
+                        console.log(`    📄 ${category} > ${subcategory}: ${subcatCardCount} cards`);
+                        subcatDiv.innerHTML += ` <span style="color: rgba(0,0,0,0.5); font-size: 0.85em; margin-left: auto;">(${subcatCardCount})</span>`;
+
+                        subcatDiv.addEventListener('click', (e) => {
+                            console.log('🖱️ Subcategory clicked:', category, '>', subcategory);
+                            e.stopPropagation();
+                            try {
+                                // Open modal directly
+                                openTableModal(category, subcategory);
+                            } catch (error) {
+                                console.error('❌ Error opening modal:', error);
+                            }
+                        });
+                        subcatContainer.appendChild(subcatDiv);
+                    });
+
+                    categoryDiv.appendChild(subcatContainer);
+                }
+
+                treeContent.appendChild(categoryDiv);
+            });
+        }
+
+        // Manual load data button
+        function manualLoadData() {
+            console.log('🔄 ========== MANUAL LOAD DATA CLICKED ==========');
+
+            if (!currentFileManagerSelection) {
+                alert('Please select a category from the tree first!');
+                return;
+            }
+
+            console.log('🔄 Current selection:', currentFileManagerSelection);
+            console.log('🔄 Total flashcards in memory:', flashcards.length);
+
+            // Debug: Show first 5 flashcards
+            console.log('🔄 First 5 flashcards in memory:');
+            for (let i = 0; i < Math.min(5, flashcards.length); i++) {
+                console.log(`  Card ${i}:`, {
+                    german: flashcards[i].german,
+                    english: flashcards[i].english,
+                    category: flashcards[i].category,
+                    subcategory: flashcards[i].subcategory
+                });
+            }
+
+            const { category, subcategory } = currentFileManagerSelection;
+
+            console.log('🔄 Looking for cards with:');
+            console.log('  - category:', category);
+            console.log('  - subcategory:', subcategory);
+
+            // Force load the flashcards
+            loadFlashcardsForCategory(category, subcategory);
+        }
+
+        // Select a category/subcategory and display its flashcards
+        function selectCategory(category, subcategory, clickedElement) {
+            console.log('🎯 selectCategory called:', category, '>', subcategory);
+            console.log('🎯 Total flashcards in memory:', flashcards.length);
+
+            currentFileManagerSelection = { category, subcategory };
+
+            // Clear selection and search when switching categories
+            selectedFlashcardIds.clear();
+            currentSearchTerm = '';
+            const searchBox = document.getElementById('flashcardSearch');
+            if (searchBox) searchBox.value = '';
+
+            // Update UI - highlight selected item
+            try {
+                document.querySelectorAll('.tree-category-name, .tree-subcategory-name').forEach(el => {
+                    el.classList.remove('selected');
+                });
+                if (clickedElement) {
+                    clickedElement.classList.add('selected');
+                }
+            } catch (e) {
+                console.error('Error updating selection:', e);
+            }
+
+            // Show editor content, hide empty state
+            const editorEmpty = document.getElementById('fileEditorEmpty');
+            const editorContent = document.getElementById('fileEditorContent');
+
+            if (editorEmpty) editorEmpty.style.display = 'none';
+            if (editorContent) editorContent.style.display = 'block';
+
+            // Update title
+            const title = subcategory ? `${category} > ${subcategory}` : category;
+            const titleElement = document.getElementById('editorTitle');
+            if (titleElement) titleElement.textContent = title;
+
+            // Hide add form if it was open
+            const addForm = document.getElementById('addFlashcardForm');
+            if (addForm) addForm.classList.remove('active');
+
+            console.log('🎯 Category selected. Click "Load Data" button to view flashcards.');
+            // Don't auto-load, let user click the button
+        }
+
+        // Load and display flashcards for selected category (Excel-like table)
+        function loadFlashcardsForCategory(category, subcategory) {
+            const container = document.getElementById('flashcardListContainer');
+            container.innerHTML = '';
+
+            console.log(`🔍 Filtering flashcards for: ${category} > ${subcategory}`);
+            console.log(`🔍 Total flashcards available: ${flashcards.length}`);
+
+            // Debug: show first few cards
+            if (flashcards.length > 0) {
+                console.log('🔍 Sample card:', {
+                    german: flashcards[0].german,
+                    category: flashcards[0].category,
+                    subcategory: flashcards[0].subcategory
+                });
+            }
+
+            let debugCount = 0;
+            let filteredCards = flashcards.filter(card => {
+                if (subcategory) {
+                    const match = card.category === category && card.subcategory === subcategory;
+                    if (!match && debugCount < 3) {
+                        console.log(`🔍 Card doesn't match: cat="${card.category}", subcat="${card.subcategory}"`);
+                        debugCount++;
+                    }
+                    return match;
+                } else {
+                    return card.category === category && (!card.subcategory || card.subcategory === '');
+                }
+            });
+
+            console.log(`🔍 Filtered to ${filteredCards.length} cards`);
+            console.log('🔍 About to enter try-catch block...');
+
+            try {
+                console.log('🔍 Inside try-catch block!');
+                // Apply search filter if search term exists
+                if (currentSearchTerm) {
+                    filteredCards = filteredCards.filter(card => {
+                        const searchLower = currentSearchTerm.toLowerCase();
+                        return (
+                            (card.german && card.german.toLowerCase().includes(searchLower)) ||
+                            (card.germanExtended && card.germanExtended.toLowerCase().includes(searchLower)) ||
+                            (card.english && card.english.toLowerCase().includes(searchLower)) ||
+                            (card.englishExtended && card.englishExtended.toLowerCase().includes(searchLower))
+                        );
+                    });
+                }
+
+                if (filteredCards.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div><p>No flashcards found</p></div>';
+                    console.log('❌ No cards to display after filtering');
+                    return;
+                }
+
+                console.log('✅ Creating table for', filteredCards.length, 'cards');
+
+            // Create Excel-like table
+            const table = document.createElement('table');
+            table.className = 'excel-table';
+            console.log('✅ Table element created');
+
+            // Table header
+            const thead = document.createElement('thead');
+            thead.innerHTML = `
+                <tr>
+                    <th class="checkbox-cell">
+                        <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()">
+                    </th>
+                    <th class="line-number-cell">#</th>
+                    <th class="content-cell">German</th>
+                    <th class="content-cell">German Example</th>
+                    <th class="content-cell">English</th>
+                    <th class="content-cell">English Example</th>
+                    <th class="actions-cell">Actions</th>
+                </tr>
+            `;
+            table.appendChild(thead);
+            console.log('✅ Table header created');
+
+            // Table body
+            const tbody = document.createElement('tbody');
+            console.log('✅ Starting to create rows for', filteredCards.length, 'cards');
+
+            filteredCards.forEach((card, index) => {
+                try {
+                    const tr = document.createElement('tr');
+                    tr.id = `row-${card.id}`;
+                    if (selectedFlashcardIds.has(card.id)) {
+                        tr.classList.add('selected');
+                    }
+
+                    // Safely get values with defaults
+                    const germanText = card.german || '';
+                    const germanExt = card.germanExtended || '';
+                    const englishText = card.english || '';
+                    const englishExt = card.englishExtended || '';
+
+                    if (index < 3) {
+                        console.log(`  Row ${index}:`, germanText.substring(0, 20), '→', englishText.substring(0, 20));
+                    }
+
+                tr.innerHTML = `
+                    <td class="checkbox-cell">
+                        <input type="checkbox" class="row-checkbox" data-id="${card.id}"
+                               onchange="toggleRowSelection(${card.id})"
+                               ${selectedFlashcardIds.has(card.id) ? 'checked' : ''}>
+                    </td>
+                    <td class="line-number-cell">${index + 1}</td>
+                    <td class="content-cell editable-cell" contenteditable="true" data-id="${card.id}" data-field="german">
+                        ${escapeHtml(germanText)}
+                    </td>
+                    <td class="content-cell editable-cell" contenteditable="true" data-id="${card.id}" data-field="germanExtended" style="color: ${germanExt ? '#334155' : '#cbd5e1'};">
+                        ${escapeHtml(germanExt)}
+                    </td>
+                    <td class="content-cell editable-cell" contenteditable="true" data-id="${card.id}" data-field="english">
+                        ${escapeHtml(englishText)}
+                    </td>
+                    <td class="content-cell editable-cell" contenteditable="true" data-id="${card.id}" data-field="englishExtended" style="color: ${englishExt ? '#334155' : '#cbd5e1'};">
+                        ${escapeHtml(englishExt)}
+                    </td>
+                    <td class="actions-cell">
+                        <div class="line-actions">
+                            <button class="line-btn btn-edit" onclick="quickSaveRow(${card.id})">💾</button>
+                            <button class="line-btn btn-delete" onclick="deleteFlashcard(${card.id})">🗑️</button>
+                        </div>
+                    </td>
+                `;
+
+                    tbody.appendChild(tr);
+                } catch (error) {
+                    console.error(`❌ Error creating row ${index}:`, error);
+                }
+            });
+
+            console.log('✅ All rows created, appending tbody to table');
+            table.appendChild(tbody);
+
+            console.log('✅ Appending table to container');
+            console.log('  Container:', container);
+            console.log('  Table rows:', tbody.children.length);
+
+            container.appendChild(table);
+
+                console.log('✅ TABLE RENDERED SUCCESSFULLY!');
+                console.log('  Total rows in table:', table.querySelectorAll('tbody tr').length);
+
+                // Update selection count
+                updateSelectionCount();
+
+            } catch (error) {
+                console.error('❌❌❌ CRITICAL ERROR IN TABLE RENDERING:', error);
+                console.error('Error stack:', error.stack);
+                container.innerHTML = `<div class="empty-state">
+                    <div class="empty-state-icon">⚠️</div>
+                    <p style="color: red;">Error loading data: ${error.message}</p>
+                    <p style="font-size: 0.9em;">Check console for details</p>
+                </div>`;
+            }
+        }
+
+        // Helper function to escape HTML
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = String(text);
+            return div.innerHTML;
+        }
+
+        // Search functionality
+        document.getElementById('flashcardSearch').addEventListener('input', function(e) {
+            currentSearchTerm = e.target.value;
+            if (currentFileManagerSelection) {
+                loadFlashcardsForCategory(currentFileManagerSelection.category, currentFileManagerSelection.subcategory);
+            }
+        });
+
+        // Clear search
+        function clearSearch() {
+            currentSearchTerm = '';
+            document.getElementById('flashcardSearch').value = '';
+            if (currentFileManagerSelection) {
+                loadFlashcardsForCategory(currentFileManagerSelection.category, currentFileManagerSelection.subcategory);
+            }
+        }
+
+        // Toggle row selection
+        function toggleRowSelection(cardId) {
+            const row = document.getElementById(`row-${cardId}`);
+            if (selectedFlashcardIds.has(cardId)) {
+                selectedFlashcardIds.delete(cardId);
+                row.classList.remove('selected');
+            } else {
+                selectedFlashcardIds.add(cardId);
+                row.classList.add('selected');
+            }
+            updateSelectionCount();
+        }
+
+        // Toggle select all
+        function toggleSelectAll() {
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+
+            if (selectAllCheckbox.checked) {
+                // Select all
+                checkboxes.forEach(cb => {
+                    const cardId = parseInt(cb.dataset.id);
+                    selectedFlashcardIds.add(cardId);
+                    cb.checked = true;
+                    document.getElementById(`row-${cardId}`).classList.add('selected');
+                });
+            } else {
+                // Deselect all
+                checkboxes.forEach(cb => {
+                    const cardId = parseInt(cb.dataset.id);
+                    selectedFlashcardIds.delete(cardId);
+                    cb.checked = false;
+                    document.getElementById(`row-${cardId}`).classList.remove('selected');
+                });
+            }
+            updateSelectionCount();
+        }
+
+        // Deselect all
+        function deselectAll() {
+            selectedFlashcardIds.clear();
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = false;
+                const cardId = parseInt(cb.dataset.id);
+                const row = document.getElementById(`row-${cardId}`);
+                if (row) {
+                    row.classList.remove('selected');
+                }
+            });
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            if (selectAllCheckbox) {
+                selectAllCheckbox.checked = false;
+            }
+            updateSelectionCount();
+        }
+
+        // Update selection count and show/hide bulk actions bar
+        function updateSelectionCount() {
+            const count = selectedFlashcardIds.size;
+            const countElement = document.getElementById('selectionCount');
+            const bulkActionsBar = document.getElementById('bulkActionsBar');
+
+            if (count > 0) {
+                countElement.textContent = `${count} selected`;
+                bulkActionsBar.classList.remove('hidden');
+            } else {
+                countElement.textContent = '0 selected';
+                bulkActionsBar.classList.add('hidden');
+            }
+        }
+
+        // Delete selected flashcards
+        function deleteSelected() {
+            if (selectedFlashcardIds.size === 0) {
+                alert('No flashcards selected');
+                return;
+            }
+
+            const count = selectedFlashcardIds.size;
+            if (!confirm(`Delete ${count} selected flashcard${count > 1 ? 's' : ''}?`)) {
+                return;
+            }
+
+            // Remove selected cards
+            selectedFlashcardIds.forEach(cardId => {
+                const index = flashcards.findIndex(c => c.id === cardId);
+                if (index > -1) {
+                    flashcards.splice(index, 1);
+                }
+            });
+
+            // Clear selection
+            selectedFlashcardIds.clear();
+
+            // Save to storage
+            saveToStorage();
+
+            // Sync to cloud if enabled
+            if (isCloudEnabled && cloudUser) {
+                syncToCloud();
+            }
+
+            // Refresh display
+            loadFlashcardsForCategory(currentFileManagerSelection.category, currentFileManagerSelection.subcategory);
+            refreshFileTree();
+            updateCategoryBrowser();
+
+            alert(`✅ ${count} flashcard${count > 1 ? 's' : ''} deleted successfully!`);
+        }
+
+        // Show add flashcard form
+        function showAddFlashcardForm() {
+            const form = document.getElementById('addFlashcardForm');
+            form.classList.add('active');
+
+            // Clear form fields
+            document.getElementById('newGerman').value = '';
+            document.getElementById('newGermanExample').value = '';
+            document.getElementById('newEnglish').value = '';
+            document.getElementById('newEnglishExample').value = '';
+
+            // Focus on first field
+            document.getElementById('newGerman').focus();
+        }
+
+        // Hide add flashcard form
+        function hideAddFlashcardForm() {
+            document.getElementById('addFlashcardForm').classList.remove('active');
+        }
+
+        // Save new flashcard
+        function saveNewFlashcard() {
+            const german = document.getElementById('newGerman').value.trim();
+            const germanExample = document.getElementById('newGermanExample').value.trim();
+            const english = document.getElementById('newEnglish').value.trim();
+            const englishExample = document.getElementById('newEnglishExample').value.trim();
+
+            if (!german || !english) {
+                alert('Please enter at least German and English text');
+                return;
+            }
+
+            if (!currentFileManagerSelection) {
+                alert('Please select a category first');
+                return;
+            }
+
+            // Create new flashcard
+            const newCard = {
+                id: Date.now(), // Simple unique ID
+                german: german,
+                germanExtended: germanExample || '',
+                english: english,
+                englishExtended: englishExample || '',
+                learned: false,
+                category: currentFileManagerSelection.category,
+                subcategory: currentFileManagerSelection.subcategory || ''
+            };
+
+            // Add to flashcards array
+            flashcards.push(newCard);
+
+            // Save to storage
+            saveToStorage();
+
+            // Sync to cloud if enabled
+            if (isCloudEnabled && cloudUser) {
+                syncToCloud();
+            }
+
+            // Refresh display
+            loadFlashcardsForCategory(currentFileManagerSelection.category, currentFileManagerSelection.subcategory);
+            hideAddFlashcardForm();
+            refreshFileTree();
+            updateCategoryBrowser();
+
+            alert('✅ Flashcard added successfully!');
+        }
+
+        // Quick save row (for inline editing)
+        function quickSaveRow(cardId) {
+            const card = flashcards.find(c => c.id === cardId);
+            if (!card) return;
+
+            // Get all editable cells for this card
+            const cells = document.querySelectorAll(`[data-id="${cardId}"][data-field]`);
+
+            let updated = false;
+            cells.forEach(cell => {
+                const field = cell.getAttribute('data-field');
+                const newValue = cell.textContent.trim();
+
+                if (card[field] !== newValue) {
+                    card[field] = newValue;
+                    updated = true;
+                }
+            });
+
+            if (updated) {
+                // Save to storage
+                saveToStorage();
+
+                // Sync to cloud if enabled
+                if (isCloudEnabled && cloudUser) {
+                    syncToCloud();
+                }
+
+                // Visual feedback
+                const row = document.getElementById(`row-${cardId}`);
+                if (row) {
+                    row.style.background = '#d1fae5';
+                    setTimeout(() => {
+                        row.style.background = '';
+                    }, 500);
+                }
+
+                console.log('✅ Card saved:', cardId);
+            }
+        }
+
+        // Edit flashcard (legacy prompt-based)
+        function editFlashcard(cardId) {
+            const card = flashcards.find(c => c.id === cardId);
+            if (!card) return;
+
+            const german = prompt('German word/phrase:', card.german);
+            if (german === null) return;
+
+            const germanExample = prompt('German example (optional):', card.germanExtended || '');
+            const english = prompt('English translation:', card.english);
+            if (english === null) return;
+
+            const englishExample = prompt('English example (optional):', card.englishExtended || '');
+
+            // Update card
+            card.german = german.trim();
+            card.germanExtended = germanExample ? germanExample.trim() : '';
+            card.english = english.trim();
+            card.englishExtended = englishExample ? englishExample.trim() : '';
+
+            // Save to storage
+            saveToStorage();
+
+            // Sync to cloud if enabled
+            if (isCloudEnabled && cloudUser) {
+                syncToCloud();
+            }
+
+            // Refresh display
+            loadFlashcardsForCategory(currentFileManagerSelection.category, currentFileManagerSelection.subcategory);
+
+            alert('✅ Flashcard updated successfully!');
+        }
+
+        // Delete flashcard
+        function deleteFlashcard(cardId) {
+            const card = flashcards.find(c => c.id === cardId);
+            if (!card) return;
+
+            if (!confirm(`Delete this flashcard?\n\nGerman: ${card.german}\nEnglish: ${card.english}`)) {
+                return;
+            }
+
+            // Remove from array
+            const index = flashcards.findIndex(c => c.id === cardId);
+            if (index > -1) {
+                flashcards.splice(index, 1);
+            }
+
+            // Save to storage
+            saveToStorage();
+
+            // Sync to cloud if enabled
+            if (isCloudEnabled && cloudUser) {
+                syncToCloud();
+            }
+
+            // Refresh display
+            loadFlashcardsForCategory(currentFileManagerSelection.category, currentFileManagerSelection.subcategory);
+            refreshFileTree();
+            updateCategoryBrowser();
+
+            alert('✅ Flashcard deleted successfully!');
+        }
+
+        // Export category to CSV
+        function exportCategoryToCSV() {
+            if (!currentFileManagerSelection) {
+                alert('Please select a category first');
+                return;
+            }
+
+            const { category, subcategory } = currentFileManagerSelection;
+            const filteredCards = flashcards.filter(card => {
+                if (subcategory) {
+                    return card.category === category && card.subcategory === subcategory;
+                } else {
+                    return card.category === category && (!card.subcategory || card.subcategory === '');
+                }
+            });
+
+            if (filteredCards.length === 0) {
+                alert('No flashcards to export');
+                return;
+            }
+
+            // Create CSV content
+            let csv = 'German,German Example,English,English Example\n';
+            filteredCards.forEach(card => {
+                const row = [
+                    card.german || '',
+                    card.germanExtended || '',
+                    card.english || '',
+                    card.englishExtended || ''
+                ].map(field => `"${field.replace(/"/g, '""')}"`).join(',');
+                csv += row + '\n';
+            });
+
+            // Download
+            const filename = subcategory ? `${category}_${subcategory}.csv` : `${category}.csv`;
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+
+            alert(`✅ Exported ${filteredCards.length} flashcards to ${filename}`);
+        }
+
+        // ==============================
+        // END FILE MANAGER FUNCTIONALITY
+        // ==============================
 
         // Intelligent Category Suggestion System
         let suggestedCategory = null;
@@ -3439,6 +5313,26 @@ i<!DOCTYPE html>
             }
         }
 
+        // Handle Enter key press in login form
+        function handleLoginKeyPress(event) {
+            if (event.key === 'Enter' || event.keyCode === 13) {
+                event.preventDefault();
+
+                // Check which mode we're in (login or signup)
+                const signupBtn = document.getElementById('signupBtn');
+                const loginBtn = document.getElementById('loginBtn');
+                const isSignupMode = signupBtn && signupBtn.style.display !== 'none';
+
+                if (isSignupMode) {
+                    // Trigger signup button click
+                    signupBtn.click();
+                } else {
+                    // Trigger login button click
+                    loginBtn.click();
+                }
+            }
+        }
+
         // Cloud Login
         async function cloudLogin() {
             const username = document.getElementById('username').value.trim();
@@ -3504,6 +5398,9 @@ i<!DOCTYPE html>
                 updateSyncStatus('synced', '☁️ Synced');
 
                 console.log('Cloud login successful');
+
+                // Auto-load all flashcards from all categories
+                autoLoadAllCategories();
             } catch (error) {
                 console.error('Login error:', error);
                 alert('Login failed. Please try again.');
@@ -3909,10 +5806,20 @@ i<!DOCTYPE html>
             try {
                 updateSyncStatus('syncing', 'Uploading...');
 
-                // Prepare data (ONLY categories, no personal info)
+                // Collect all flashcard data from localStorage
+                const allFlashcardData = {};
+                Object.keys(fileCategories).forEach(fileName => {
+                    const savedData = safeStorage.getItem(`flashcards_${fileName}`);
+                    if (savedData) {
+                        allFlashcardData[fileName] = savedData;
+                    }
+                });
+
+                // Prepare data (categories + actual flashcard data)
                 const dataToSync = {
                     categories: categories,
                     fileCategories: fileCategories,
+                    flashcardData: allFlashcardData,
                     lastSync: Date.now()
                 };
 
@@ -3965,11 +5872,18 @@ i<!DOCTYPE html>
                 categories = decrypted.categories || {};
                 fileCategories = decrypted.fileCategories || {};
 
+                // Restore flashcard data
+                const flashcardData = decrypted.flashcardData || {};
+                Object.keys(flashcardData).forEach(fileName => {
+                    safeStorage.setItem(`flashcards_${fileName}`, flashcardData[fileName]);
+                });
+
                 // Save to local storage
                 safeStorage.setItem('flashcard_categories', JSON.stringify(categories));
                 safeStorage.setItem('flashcard_file_categories', JSON.stringify(fileCategories));
 
                 console.log('Data downloaded from cloud');
+                console.log(`📥 Restored ${Object.keys(flashcardData).length} files from cloud`);
             } catch (error) {
                 console.error('Download error:', error);
                 if (error.message === 'Invalid password') {
@@ -4105,7 +6019,22 @@ i<!DOCTYPE html>
                     subcats.forEach(subcat => {
                         const subcatItem = document.createElement('div');
                         subcatItem.style.cssText = 'padding: 6px 8px; margin: 2px 0; color: #555; cursor: pointer; border-radius: 6px; transition: all 0.2s; background: #f8f9fa;';
-                        subcatItem.innerHTML = `└ <strong>${subcat}</strong> <span style="color: #999;">(${categoryFiles[category][subcat].length} file${categoryFiles[category][subcat].length !== 1 ? 's' : ''})</span>`;
+
+                        // Count cards in this subcategory from saved files
+                        let totalCards = 0;
+                        categoryFiles[category][subcat].forEach(fileName => {
+                            const savedData = safeStorage.getItem(`flashcards_${fileName}`);
+                            if (savedData) {
+                                try {
+                                    const cardData = JSON.parse(savedData);
+                                    totalCards += cardData.length;
+                                } catch (e) {
+                                    console.error(`Error parsing ${fileName}:`, e);
+                                }
+                            }
+                        });
+
+                        subcatItem.innerHTML = `└ <strong>${subcat}</strong> <span style="color: #999;">(${categoryFiles[category][subcat].length} file${categoryFiles[category][subcat].length !== 1 ? 's' : ''}, ${totalCards} cards)</span>`;
 
                         // Hover effect
                         subcatItem.addEventListener('mouseenter', function() {
@@ -4223,9 +6152,13 @@ i<!DOCTYPE html>
             try {
                 const cardData = JSON.parse(savedData);
 
+                // Get the file's category mapping
+                const fileCategory = fileCategories[fileName] || { category: 'Default', subcategory: '' };
+                console.log(`📂 Loading file "${fileName}" with category:`, fileCategory);
+
                 // Reconstruct flashcards from saved data
                 flashcards = cardData.map((card, index) => ({
-                    id: index,
+                    id: card.id || index,
                     german: card.german,
                     germanExtended: card.germanExtended || '',
                     english: card.english,
@@ -4236,8 +6169,13 @@ i<!DOCTYPE html>
                     reviewDate: card.reviewDate || null,
                     repetitions: card.repetitions || 0,
                     easeFactor: card.easeFactor || 2.5,
-                    interval: card.interval || 1
+                    interval: card.interval || 1,
+                    // Always use the file's category mapping, not what was saved
+                    category: fileCategory.category,
+                    subcategory: fileCategory.subcategory || ''
                 }));
+
+                console.log(`📂 Loaded ${flashcards.length} flashcards into memory`);
 
                 currentFileName = fileName;
                 currentIndex = 0;
@@ -4265,6 +6203,12 @@ i<!DOCTYPE html>
                 document.getElementById('settingsToggleBtn').style.display = 'flex';
                 document.getElementById('clearFileBtn').style.display = 'inline-block';
                 document.getElementById('instructions').style.display = 'none';
+
+                // Refresh file tree if file manager is visible
+                const fileManagerSection = document.getElementById('fileManagerSection');
+                if (fileManagerSection && fileManagerSection.style.display !== 'none') {
+                    refreshFileTree();
+                }
 
                 // Scroll to flashcard
                 flashcardContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -4432,16 +6376,27 @@ i<!DOCTYPE html>
         function saveProgress() {
             if (currentFileName && flashcards.length > 0) {
                 const progressData = flashcards.map(card => ({
+                    id: card.id,
                     german: card.german,
+                    germanExtended: card.germanExtended || '',
                     english: card.english,
+                    englishExtended: card.englishExtended || '',
+                    detail: card.detail || '',
                     learned: card.learned,
                     reviewDate: card.reviewDate || null,
                     repetitions: card.repetitions || 0,
                     easeFactor: card.easeFactor || 2.5,
-                    interval: card.interval || 1
+                    interval: card.interval || 1,
+                    category: card.category || 'Default',
+                    subcategory: card.subcategory || ''
                 }));
                 safeStorage.setItem(`flashcards_${currentFileName}`, JSON.stringify(progressData));
             }
+        }
+
+        // Save to storage function (used by file manager)
+        function saveToStorage() {
+            saveProgress();
         }
 
         function loadProgress(fileName) {
@@ -5216,7 +7171,9 @@ i<!DOCTYPE html>
                         reviewDate: savedCard?.reviewDate || null,
                         repetitions: savedCard?.repetitions || 0,
                         easeFactor: savedCard?.easeFactor || 2.5,
-                        interval: savedCard?.interval || 1
+                        interval: savedCard?.interval || 1,
+                        category: currentFileCategory.category || 'Default',
+                        subcategory: currentFileCategory.subcategory || ''
                     };
 
                     // Debug logging for first 3 cards
@@ -6357,9 +8314,39 @@ i<!DOCTYPE html>
             }
         }
 
+        // Check for tracking prevention on page load
+        function checkTrackingPrevention() {
+            try {
+                localStorage.setItem('_test', '1');
+                localStorage.removeItem('_test');
+                return false; // No tracking prevention
+            } catch (e) {
+                console.error('⚠️ TRACKING PREVENTION DETECTED!');
+                console.error('Browser is blocking localStorage. Please:');
+                console.error('1. If using Microsoft Edge: Settings → Privacy → Tracking Prevention → Change to "Basic"');
+                console.error('2. OR use Chrome/Firefox for local file testing');
+                console.error('3. OR host the file on a web server (http://localhost)');
+                return true; // Tracking prevention active
+            }
+        }
+
         // Initialize cloud sync on page load
         window.addEventListener('DOMContentLoaded', function() {
+            // Check for tracking prevention
+            const hasTrackingPrevention = checkTrackingPrevention();
+            if (hasTrackingPrevention) {
+                // Show warning message to user
+                alert('⚠️ Browser Tracking Prevention is blocking storage!\n\n' +
+                      'Please change your browser settings:\n' +
+                      '• Microsoft Edge: Settings → Privacy → Change "Strict" to "Basic"\n' +
+                      '• OR use Chrome/Firefox\n' +
+                      '• OR host on a web server\n\n' +
+                      'The app may not work correctly until this is fixed.');
+            }
+
             checkExistingLogin();
+
+            // Note: Auto-load will run ONLY after successful login (not on page load)
         });
     </script>
 

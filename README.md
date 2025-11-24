@@ -1,398 +1,414 @@
-# 🇩🇪 German-English Flashcard App 🇬🇧
+# 🇩🇪 German-English Flashcards v2.5.4 🇬🇧
 
-A powerful, feature-rich web-based flashcard application for learning German vocabulary with advanced learning features, spaced repetition, audio recording, and intelligent column mapping.
+A powerful, feature-rich flashcard application for learning German vocabulary with cloud synchronization, spaced repetition, and advanced speech synthesis.
 
-![Flashcard App](https://img.shields.io/badge/Version-2.3-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
+![Version](https://img.shields.io/badge/version-2.5.4-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Status](https://img.shields.io/badge/status-active-success)
 
-## ✨ Features
+---
 
-### 🎯 Core Features
-- **📁 CSV Import** - Load vocabulary from custom CSV files with ANY column order
-- **🎯 Manual Column Mapping** - Interactive UI to assign column types (NEW in v2.3!)
-- **⚡ Predefined Formats** - 4 quick presets for instant setup (NEW in v2.3!)
-- **🔄 Spaced Repetition** - SM-2 algorithm for optimal learning
-- **💾 Progress Tracking** - Automatic localStorage persistence
-- **📊 Statistics** - Real-time learning progress tracking
-- **🎙️ Audio Pronunciation** - Text-to-speech for German & English
-- **🎙️ Session Recording** - Record audio for offline review (NEW in v2.3!)
-- **⌨️ Keyboard Shortcuts** - Fast navigation and actions
+## 📋 Table of Contents
 
-### 🚀 Advanced Features
-- **▶️ Auto-Play Mode** - Hands-free learning with configurable delays
-- **🔁 Loop Mode** - Continuous playback for passive learning
-- **🗣️ Repeat Mode** - Repeat each card 2-5 times for reinforcement
-- **⏰ Study Timer** - Pomodoro-style timed sessions (5-60 minutes)
-- **📚 Sleep Timer** - Gentle bedtime learning (10-45 minutes)
-- **🎯 Focus Mode** - Distraction-free fullscreen studying
-- **📊 Session Statistics** - Live tracking of cards reviewed, time, pace
-- **🎤 Voice Customization** - Select voices, adjust rate & pitch
+- [Features](#-features)
+- [Quick Start](#-quick-start)
+- [Installation](#-installation)
+- [Usage Guide](#-usage-guide)
+- [Cloud Sync Setup](#-cloud-sync-setup)
+- [Recent Updates](#-recent-updates-v254)
+- [Technical Details](#-technical-details)
+- [Keyboard Shortcuts](#-keyboard-shortcuts)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-### 📚 Organization Features
-- **Category System** - Organize files into categories & subcategories
-- **🏷️ File Mapping** - Assign CSV files to specific categories
-- **🔍 Smart Filtering** - Show only unlearned cards
-- **🔀 Shuffle Mode** - Randomize card order
-- **✓ Mark as Learned** - Track mastered vocabulary
+---
 
-### 🎨 Modern UI
-- **Clean Design** - Flashcard-first interface
-- **Collapsible Settings** - Accordion menu with 5 organized sections
-- **Quick Actions** - 4 most-used buttons always accessible
-- **Responsive Layout** - Works on desktop, tablet, and mobile
-- **Dark Mode Ready** - Professional purple gradient theme
+## 🎯 Features
+
+### Core Features
+- **📚 CSV File Import** - Import vocabulary from CSV files with intelligent column detection
+- **🔄 Spaced Repetition System (SRS)** - Smart algorithm tracks learning progress
+- **🎙️ Text-to-Speech** - High-quality pronunciation with Google and Microsoft voices
+- **☁️ Cloud Sync** - Encrypted synchronization across multiple devices
+- **📊 Progress Tracking** - Detailed statistics and learning analytics
+- **🎯 Practice Mode** - Distraction-free focused learning environment
+- **🌙 Dark Mode Support** - Comfortable studying in any lighting
+
+### Advanced Features
+- **🗂️ Category Management** - Organize vocabulary by topics and levels
+- **🔍 Smart Search** - Find cards instantly across all categories
+- **📱 Responsive Design** - Works perfectly on desktop, tablet, and mobile
+- **🎨 Customizable Voices** - Choose from multiple German and English voices
+- **⚡ Auto-Play Mode** - Automated pronunciation for hands-free learning
+- **📈 Review Scheduling** - Optimal timing based on learning science
+- **💾 Auto-Save** - Never lose your progress
+- **🔐 Secure Encryption** - AES-256-GCM encryption for cloud data
+
+---
 
 ## 🚀 Quick Start
 
-### Option 1: Direct Use
-1. Download `flashcard.html` and `sample_vocabulary.csv`
-2. Double-click `flashcard.html` to open in your browser
-3. Click "📁 Upload CSV File" and select `sample_vocabulary.csv`
-4. Start learning! 🎓
+### For First-Time Users
 
-### Option 2: Clone Repository
+1. **Open the App**
+   ```
+   Simply open flashcard.html in your web browser
+   ```
+
+2. **Upload Your Vocabulary**
+   - Click "📁 Upload CSV File"
+   - Select your vocabulary file
+   - Choose column mappings (German, English, etc.)
+
+3. **Start Learning**
+   - Click "🎯 Start Practice Mode"
+   - Use arrow keys or buttons to navigate
+   - Mark words as learned
+
+4. **Enable Cloud Sync (Optional)**
+   - Click the account button (top-right)
+   - Create an account or login
+   - Your data syncs automatically
+
+---
+
+## 💻 Installation
+
+### Option 1: Direct Use (No Installation)
+1. Download `flashcard.html`
+2. Open in any modern web browser
+3. Start learning immediately
+
+### Option 2: Local Server (Recommended for Development)
 ```bash
-git clone https://github.com/YOUR_USERNAME/German-Flashcard-App.git
-cd German-Flashcard-App
-# Open flashcard.html in your browser
+# Clone the repository
+git clone [repository-url]
+cd German-Flashcard-App-Public
+
+# Open with a local server (Python)
+python -m http.server 8000
+
+# Open in browser
+http://localhost:8000/flashcard.html
 ```
 
-## 📋 CSV Format & Column Mapping
+### Requirements
+- **Browser:** Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+- **Internet:** Required only for cloud sync
+- **Storage:** ~5MB for app, variable for vocabulary data
 
-### 🎯 NEW in v2.3: Universal CSV Support!
+---
 
-The app now supports **ANY CSV format** with our new **Manual Column Mapping** feature!
+## 📖 Usage Guide
 
-### Three Ways to Load Your CSV:
+### Uploading Vocabulary Files
 
-#### 1. ⚡ Predefined Formats (Fastest)
-Choose from 4 preset formats:
-- **3-Column Standard**: German, German Example, English
-- **3-Column Reverse**: English, English Example, German
-- **4-Column Full**: German, German Ex., English, English Ex.
-- **2-Column Simple**: German, English (no examples)
+**Supported Formats:**
+- CSV files (UTF-8 encoded)
+- Columns: German, English, Details (optional)
+- Example format:
+  ```csv
+  German,English,Details
+  Hallo,Hello,Common greeting
+  Tschüss,Goodbye,Informal farewell
+  ```
 
-#### 2. 🎯 Manual Column Mapping (Most Flexible)
-- Interactive modal shows preview of your data (10 rows)
-- Click column headers to assign types
-- Instant dropdown menus
-- Color-coded assignments (Green=German, Blue=English, etc.)
-- Perfect for custom or complex CSV files
+**Upload Steps:**
+1. Click "📁 Upload CSV File"
+2. Select your file
+3. App auto-detects columns
+4. Confirm or adjust mappings
+5. Choose category and subcategory
+6. Click "Load Flashcards"
 
-#### 3. 🤖 Auto-Detection (Intelligent)
-- AI-powered language detection
-- Works for most standard formats
-- Automatic fallback option
+### Learning Modes
 
-### Basic CSV Format Example:
+#### **Practice Mode** 🎯
+- Clean, distraction-free interface
+- Focused on current flashcard
+- Quick navigation with keyboard
+- Settings accessible during practice
 
-```csv
-German word,English translation,Additional details (optional)
-Hallo,Hello,Common greeting
-Danke,Thank you,Expression of gratitude
-Brot,Bread,Food item
-Wasser,Water,Beverage
-```
+**Activate:** Click "🎯 Start Practice Mode"
 
-### Extended Format (4 Columns):
+#### **Review Mode** 📚
+- Shows all flashcards in sequence
+- Full navigation controls visible
+- Detailed statistics panel
+- Category browser accessible
 
-```csv
-German word,German sentence,English word,English sentence
-Hallo,Ich sage hallo,Hello,I say hello
-Wasser,Ich trinke Wasser,Water,I drink water
-```
+### Marking Progress
 
-**Rules:**
-- Use comma (`,`) as separator (or semicolon, pipe, tab - auto-detected!)
-- At least 2 columns required
-- Column order doesn't matter (use manual mapping!)
-- No column headers needed (but supported)
-- Save as UTF-8 encoding for special characters (ä, ö, ü)
+**Learning States:**
+- **New** 🆕 - Not yet studied
+- **Learning** 📖 - Currently studying
+- **Learned** ✓ - Mastered (marked as learned)
+- **Due for Review** 🔔 - Ready to review based on SRS
 
-## 🎮 How to Use
+**Actions:**
+- Click ✓ button to mark as learned
+- Review scheduling happens automatically
+- Progress saves instantly
 
-### Basic Usage
-1. **Upload CSV** - Click the upload button and select your vocabulary file
-2. **Choose Format** (NEW in v2.3!) - Select how to load your file:
-   - Try a predefined format (fastest)
-   - Use manual column mapping (full control)
-   - Use auto-detection (intelligent)
-3. **Study Cards** - Navigate with Next/Previous buttons or arrow keys
-4. **Reveal Meaning** - Click "Show English Meaning" or press Space
-5. **Mark Learned** - Press 'L' key or click "Mark as Learned" button
-6. **Audio** - Press 'P' for German or 'E' for English pronunciation
-7. **Record Sessions** (NEW!) - Enable recording to save audio for later
+---
 
-### Quick Actions (Always Visible)
-- **▶️ Auto-Play** - Start automatic playback with audio
-- **🔀 Shuffle** - Randomize card order
-- **✓ Mark Learned** - Mark current card as learned
-- **👁 Unlearned Only** - Filter to show only unlearned cards
+## ☁️ Cloud Sync Setup
 
-### Settings Menu
-Click **"⚙️ Settings & Options"** to access:
+### Setting Up Firebase (For Your Own Deployment)
 
-#### 📚 Category Management
-- Create categories (e.g., "German", "French")
-- Add subcategories (e.g., "A1 Vocabulary", "Business Terms")
-- Assign files to categories
-- View all categories in tree structure
+1. **Create Firebase Project**
+   - Go to [Firebase Console](https://console.firebase.google.com/)
+   - Create new project
+   - Enable Realtime Database
 
-#### 🎙️ Voice & Speech Settings
-- Select German voice from available system voices
-- Select English voice
-- Adjust speech rate (0.5x - 1.5x)
-- Adjust pitch (0.5 - 2.0)
+2. **Get Configuration**
+   - Project Settings → General
+   - Scroll to "Your apps" → Web app
+   - Copy configuration object
 
-#### ▶️ Auto-Play Settings
-- Enable/disable English pronunciation
-- Set delay between German & English (0.5s - 3s)
-- Set delay before next card (1s - 5s)
-- **🎙️ Record Session Audio** (NEW v2.3!) - Record entire session for later review
-  - Automatic save on completion
-  - Prompt to save/discard on manual stop
-  - Download as .webm audio file
-  - Play recording directly in browser
+3. **Update flashcard.html**
+   ```javascript
+   // Find the Firebase configuration section (around line 5240)
+   const firebaseConfig = {
+       apiKey: "YOUR_API_KEY",
+       authDomain: "YOUR_PROJECT.firebaseapp.com",
+       databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+       projectId: "YOUR_PROJECT_ID",
+       storageBucket: "YOUR_PROJECT.appspot.com",
+       messagingSenderId: "YOUR_SENDER_ID",
+       appId: "YOUR_APP_ID"
+   };
+   ```
 
-#### 🎯 Advanced Features
-- **Loop Mode** - Restart from beginning automatically
-- **Repeat Mode** - Play each card 2-5 times
-- **Study Timer** - Auto-stop after set time (5-60 min)
-- **Sleep Timer** - Gentle stop for bedtime learning (10-45 min)
+4. **Set Database Rules**
+   ```json
+   {
+     "rules": {
+       "users": {
+         "$username": {
+           ".read": "$username === auth.uid",
+           ".write": "$username === auth.uid"
+         }
+       }
+     }
+   }
+   ```
 
-#### 👁️ Display Options
-- Always show English meanings (no reveal needed)
-- Enter Focus Mode (fullscreen, zero distractions)
-- Reset All Progress
+### Using Cloud Sync
+
+1. **Create Account**
+   - Click account button (top-right)
+   - Choose "Sign Up"
+   - Enter username (min 3 chars) and password (min 6 chars)
+   - Data encrypts automatically
+
+2. **Login**
+   - Click account button
+   - Enter credentials
+   - Data downloads and syncs
+
+3. **Sync Across Devices**
+   - Login with same credentials on any device
+   - All vocabulary and progress syncs automatically
+   - Works offline, syncs when online
+
+---
+
+## 🆕 Recent Updates (v2.5.4)
+
+### January 24, 2025
+
+**🐛 Bug Fixes:**
+1. Fixed Practice Mode button deformation
+2. Settings menu now accessible in Practice Mode
+3. Card counts display correctly in file tree
+
+**✨ New Features:**
+1. Card count shown alongside file count (e.g., "1 file, 600 cards")
+2. Complete flashcard data now syncs to cloud (not just metadata)
+
+**🔧 Improvements:**
+1. Enhanced cloud sync reliability
+2. Better card counting across all categories
+3. Improved Practice Mode UI stability
+
+**📖 Full Changelog:** See `CHANGELOG_2025-01-24.md`
+
+---
+
+## 🔧 Technical Details
+
+### Technologies Used
+- **Frontend:** Pure HTML5, CSS3, JavaScript (ES6+)
+- **Speech:** Web Speech API (Google/Microsoft voices)
+- **Storage:** LocalStorage API
+- **Cloud:** Firebase Realtime Database
+- **Encryption:** AES-256-GCM (Web Crypto API)
+- **Architecture:** Single-page application (SPA)
+
+### Browser Compatibility
+| Browser | Version | Status |
+|---------|---------|--------|
+| Chrome  | 90+     | ✅ Fully Supported |
+| Firefox | 88+     | ✅ Fully Supported |
+| Safari  | 14+     | ✅ Fully Supported |
+| Edge    | 90+     | ✅ Fully Supported |
+| Opera   | 76+     | ✅ Fully Supported |
+
+### Performance
+- **Load Time:** < 1 second (local)
+- **File Size:** ~350KB uncompressed
+- **Storage:** ~2KB per 100 flashcards
+- **Memory Usage:** ~10-20MB typical
+- **Offline:** Full functionality except cloud sync
+
+### Data Storage
+- **LocalStorage Keys:**
+  - `flashcards_{filename}` - Card data
+  - `flashcard_categories` - Category structure
+  - `flashcard_file_categories` - File mappings
+  - `cloud_user` - Encrypted login info
+
+---
 
 ## ⌨️ Keyboard Shortcuts
 
 | Key | Action |
 |-----|--------|
-| `←` / `→` | Previous / Next card |
-| `Space` / `Enter` | Reveal English meaning |
-| `P` | Pronounce German word |
-| `E` | Pronounce English word |
-| `L` | Mark as Learned / Unlearned |
-
-## 📊 Learning Strategies
-
-### For Beginners
-1. Enable English pronunciation in Auto-Play
-2. Set speech rate to 0.7x (slower)
-3. Use Repeat Mode (3 times per card)
-4. Study 10-15 minutes daily
-5. Mark cards as learned only when confident
-
-### For Intermediate Learners
-1. Disable English pronunciation (test yourself)
-2. Set speech rate to 0.9x
-3. Use Shuffle mode for variety
-4. Study 20-30 minutes daily
-5. Focus on "Show Only Unlearned" cards
-
-### For Advanced Learners
-1. Use Loop Mode for background listening
-2. Speech rate 1.0x or faster
-3. Repeat Mode OFF (challenge yourself)
-4. Study during commute/exercise
-5. Create topic-specific vocabulary files
-
-### Spaced Repetition Usage
-- The app uses SM-2 algorithm automatically
-- Cards appear more/less frequently based on your performance
-- Review cards when "due for review" notification shows
-- Trust the system - it's scientifically proven!
-
-## 🗂️ Organizing Your Vocabulary
-
-### Category System Example
-
-```
-📁 German
-   ├─ A1 Vocabulary (beginner words)
-   ├─ A2 Vocabulary (elementary words)
-   ├─ Business Terms (work-related)
-   └─ Travel Phrases (tourism)
-
-📁 French
-   ├─ Beginner
-   └─ Cooking Terms
-
-📁 Spanish
-   └─ Travel
-```
-
-### Best Practices
-- Create main categories by language
-- Use subcategories for difficulty levels or topics
-- Assign each CSV file to a specific category
-- Keep files under 500 cards for best performance
-- Name files clearly (e.g., `german_a1_vocab.csv`)
-
-## 💾 Data Persistence
-
-### What is Saved Automatically?
-✅ **Categories & Subcategories** - All created categories
-✅ **File Assignments** - Which file belongs to which category
-✅ **Card Progress** - Which cards are marked as learned
-✅ **Review Schedules** - Spaced repetition data
-
-### What is NOT Saved?
-❌ **CSV File Content** - You must re-upload each session
-❌ **Voice Settings** - Reset each session
-❌ **Auto-play Settings** - Reset each session
-
-### Data Location
-- All data stored in browser's `localStorage`
-- No server, no account needed
-- Privacy-friendly (stays on your device)
-- Data persists until you clear browser data
-
-## 📱 Mobile Usage
-
-Works perfectly on mobile browsers!
-
-1. Transfer `flashcard.html` to your phone
-2. Open with any browser (Chrome, Safari, Firefox)
-3. Upload CSV files from your phone
-4. Study on the go!
-
-**Mobile Tips:**
-- Use Auto-Play for hands-free learning
-- Enable Loop Mode for commute listening
-- Quick Actions are touch-friendly
-- Settings accordion saves screen space
-
-## 🌐 Browser Compatibility
-
-| Browser | Status | Notes |
-|---------|--------|-------|
-| Chrome / Edge | ✅ Fully Supported | Best experience |
-| Firefox | ✅ Fully Supported | All features work |
-| Safari | ✅ Fully Supported | iOS & macOS |
-| Opera | ✅ Fully Supported | All features work |
-| Mobile Browsers | ✅ Fully Supported | Responsive design |
-
-**Requirements:**
-- JavaScript enabled
-- localStorage available (not in private/incognito mode)
-- Web Speech API for audio (most modern browsers)
-
-## 🌐 Hosting Your App Online
-
-Want to access your flashcard app from anywhere? Check out our comprehensive hosting guides!
-
-### Quick Start Options:
-
-1. **[GitHub Pages](GITHUB_PAGES_SETUP.md)** (RECOMMENDED)
-   - 100% FREE forever
-   - 5-minute setup
-   - HTTPS included
-   - Perfect for beginners
-   - Your app is already on GitHub!
-
-2. **[Home Router + WireGuard VPN](WIREGUARD_SETUP.md)**
-   - FREE (use your home internet)
-   - Private and secure
-   - Full control
-   - Requires technical knowledge
-
-3. **[Complete Hosting Guide](HOSTING_GUIDE.md)**
-   - All hosting options compared
-   - Domain setup instructions
-   - Security best practices
-   - Free and paid options
-
-**Easiest:** Enable GitHub Pages in repository settings → Access from anywhere!
-
-## 📚 Documentation
-
-Comprehensive guides available:
-
-### Getting Started
-- **[HOSTING_GUIDE.md](HOSTING_GUIDE.md)** - Complete hosting solutions guide
-- **[GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md)** - 5-minute setup for free hosting
-- **[WIREGUARD_SETUP.md](WIREGUARD_SETUP.md)** - Private VPN access guide
-- **[QUICK_START_v2.0.md](QUICK_START_v2.0.md)** - Quick start guide
-- **[UPGRADE_SUMMARY.txt](UPGRADE_SUMMARY.txt)** - Upgrade information
-
-### Version History
-- **[VERSION_2.3_CHANGELOG.md](VERSION_2.3_CHANGELOG.md)** - Latest features (v2.3)
-- **[VERSION_2.0_CHANGELOG.md](VERSION_2.0_CHANGELOG.md)** - Smart detection features
-- **[FIXES_v2.1.md](FIXES_v2.1.md)** - Bug fixes and improvements
-
-### Feature Guides (in `/docs` folder)
-- **README.txt** - User guide and feature overview
-- **CATEGORY_GUIDE.txt** - Complete category system documentation
-- **VOICE_SETTINGS_GUIDE.txt** - Voice customization guide
-- **AUTOPLAY_GUIDE.txt** - Auto-play feature tutorial
-- **ADVANCED_FEATURES_GUIDE.txt** - All 8 advanced features explained
-- **UI_REDESIGN_GUIDE.txt** - New interface documentation
-- **TESTING_PERSISTENCE.txt** - How to verify data persistence
-
-## 🛠️ Technical Stack
-
-- **HTML5** - Structure and markup
-- **CSS3** - Modern styling with gradients and animations
-- **Vanilla JavaScript** - No frameworks, pure JS
-- **Web Speech Synthesis API** - Audio pronunciation
-- **localStorage** - Data persistence
-- **FileReader API** - CSV file parsing
-
-**Key Algorithms:**
-- SM-2 Spaced Repetition Algorithm
-- CSV parsing with validation
-- Category tree data structure
-
-## 🤝 Contributing
-
-Contributions are welcome! Here are some areas for improvement:
-
-- [ ] Multi-language support (beyond German-English)
-- [ ] Export/import settings and categories
-- [ ] Drag-and-drop file upload
-- [ ] Image support for flashcards
-- [ ] Dark theme toggle
-- [ ] Offline Progressive Web App (PWA)
-- [ ] Cloud sync (optional)
-- [ ] Card creation UI (no CSV needed)
-
-## 📄 License
-
-MIT License - Feel free to use, modify, and distribute!
-
-## 👨‍💻 Author
-
-Created with ❤️ for language learners everywhere
-
-## 🙏 Acknowledgments
-
-- Spaced Repetition algorithm based on SuperMemo's SM-2
-- Inspired by Anki and other flashcard systems
-- Built for efficient, effective language learning
-
-## 📞 Support
-
-- **Bug Reports:** Open an issue on GitHub
-- **Feature Requests:** Open an issue with "enhancement" label
-- **Questions:** Check documentation in `/docs` folder
-
-## 🎓 Use Cases
-
-Perfect for:
-- 📚 Language learning (German, French, Spanish, etc.)
-- 🎯 Vocabulary memorization
-- 📖 Exam preparation
-- 🗣️ Pronunciation practice
-- 🚗 Commute learning (Auto-Play mode)
-- 🛌 Bedtime review (Sleep Timer)
-- 🎓 Student study sessions (Study Timer)
-- 👨‍🏫 Teaching aid for educators
-
-## 🌟 Star This Project!
-
-If you find this helpful, please ⭐ star this repository!
+| `→` | Next card |
+| `←` | Previous card |
+| `Space` | Reveal/Hide answer |
+| `G` | Pronounce German |
+| `E` | Pronounce English |
+| `L` | Mark as learned |
+| `Esc` | Exit Practice Mode |
+| `S` | Open Settings |
+| `F` | Toggle Focus Mode |
 
 ---
 
-**Happy Learning! 🎉 Viel Erfolg! 🇩🇪**
+## 🔍 Troubleshooting
+
+### Common Issues
+
+**Issue: Cards not loading from cloud**
+- **Solution:** Ensure you've uploaded data after update to v2.5.4
+- Hard refresh: `Ctrl + Shift + R` (Windows) or `Cmd + Shift + R` (Mac)
+
+**Issue: Voice not working**
+- **Solution:** Check browser speech synthesis support
+- Try different voice from Settings → Voice & Speech
+- Ensure browser has permission for audio
+
+**Issue: Settings not visible**
+- **Solution:** Click Settings button (⚙️), then expand accordion sections
+- Hard refresh if recently updated
+
+**Issue: Progress not saving**
+- **Solution:** Check LocalStorage isn't full (typical limit: 5-10MB)
+- Verify browser allows LocalStorage
+- Try clearing other site data
+
+**Issue: Cloud sync failing**
+- **Solution:** Check internet connection
+- Verify Firebase configuration
+- Re-login to refresh authentication
+
+### Debug Mode
+
+Open browser console (`F12`) to see detailed logs:
+- Voice loading status
+- File loading progress
+- Cloud sync operations
+- Error messages with context
+
+---
+
+## 🤝 Contributing
+
+### How to Contribute
+1. Fork the repository
+2. Create feature branch: `git checkout -b feature-name`
+3. Make your changes
+4. Test thoroughly
+5. Commit: `git commit -m 'Add feature'`
+6. Push: `git push origin feature-name`
+7. Create Pull Request
+
+### Development Guidelines
+- Follow existing code style
+- Add comments for complex logic
+- Test on multiple browsers
+- Update documentation
+- No breaking changes without discussion
+
+### Reporting Issues
+- Use GitHub Issues
+- Include browser and version
+- Provide steps to reproduce
+- Attach screenshots if relevant
+- Check existing issues first
+
+---
+
+## 📄 License
+
+MIT License
+
+Copyright (c) 2025
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## 🙏 Acknowledgments
+
+- Voice synthesis powered by Google and Microsoft TTS
+- Firebase for cloud infrastructure
+- Web Crypto API for secure encryption
+- Open-source community for inspiration
+
+---
+
+## 📞 Support
+
+- **Documentation:** See `/docs` folder
+- **Issues:** GitHub Issues
+- **Updates:** Check CHANGELOG files
+- **Questions:** Open a discussion
+
+---
+
+## 🗺️ Roadmap
+
+### Planned Features
+- [ ] Image support for vocabulary
+- [ ] Audio recording for pronunciation
+- [ ] Gamification elements
+- [ ] Study groups and sharing
+- [ ] Mobile app versions
+- [ ] More language pairs
+- [ ] AI-powered suggestions
+
+---
+
+**Happy Learning! 🎓**
+
+*Made with ❤️ for language learners everywhere*
