@@ -2859,24 +2859,20 @@ i<!DOCTYPE html>
                         </label>
                     </div>
 
-                    <!-- Advanced Voice Selection (Collapsible) -->
-                    <details style="margin-bottom: 15px;">
-                        <summary style="cursor: pointer; padding: 10px; background: #f8f9fa; border-radius: 5px; font-weight: 600; color: #666;">
-                            🔧 Advanced: Choose Specific Voice
-                        </summary>
-                        <div style="padding: 10px; margin-top: 10px; border-left: 3px solid #667eea; background: #fafafa;">
-                            <label>
-                                <span><strong>German Voice:</strong></span>
-                                <select id="germanVoiceSelect" style="width: 100%; padding: 8px; margin-top: 5px; border: 2px solid #667eea; border-radius: 5px; font-size: 14px;"></select>
-                                <div id="germanVoiceInfo" style="font-size: 0.85em; color: #666; margin-top: 5px; font-style: italic;">Loading voices...</div>
-                            </label>
-                            <label style="margin-top: 15px;">
-                                <span><strong>English Voice:</strong></span>
-                                <select id="englishVoiceSelect" style="width: 100%; padding: 8px; margin-top: 5px; border: 2px solid #667eea; border-radius: 5px; font-size: 14px;"></select>
-                                <div id="englishVoiceInfo" style="font-size: 0.85em; color: #666; margin-top: 5px; font-style: italic;">Loading voices...</div>
-                            </label>
-                        </div>
-                    </details>
+                    <!-- Specific Voice Selection (Always Visible) -->
+                    <div style="background: #fafafa; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 2px solid #e0e0e0;">
+                        <div style="font-weight: 600; margin-bottom: 10px; color: #667eea;">🔧 Choose Specific Voice:</div>
+                        <label>
+                            <span><strong>German Voice:</strong></span>
+                            <select id="germanVoiceSelect" style="width: 100%; padding: 8px; margin-top: 5px; border: 2px solid #667eea; border-radius: 5px; font-size: 14px;"></select>
+                            <div id="germanVoiceInfo" style="font-size: 0.85em; color: #666; margin-top: 5px; font-style: italic;">Loading voices...</div>
+                        </label>
+                        <label style="margin-top: 15px;">
+                            <span><strong>English Voice:</strong></span>
+                            <select id="englishVoiceSelect" style="width: 100%; padding: 8px; margin-top: 5px; border: 2px solid #667eea; border-radius: 5px; font-size: 14px;"></select>
+                            <div id="englishVoiceInfo" style="font-size: 0.85em; color: #666; margin-top: 5px; font-style: italic;">Loading voices...</div>
+                        </label>
+                    </div>
                     <label style="margin-top: 15px;">
                         <span>Speech Rate:</span>
                         <input type="range" id="speechRate" min="0.5" max="1.5" step="0.1" value="0.8">
