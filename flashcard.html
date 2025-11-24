@@ -3816,25 +3816,59 @@ i<!DOCTYPE html>
             console.log('📊 Loading flashcards into modal');
             console.log('  Category:', category);
             console.log('  Subcategory:', subcategory);
-            console.log('  Total flashcards:', flashcards.length);
 
-            // Filter flashcards
-            let filteredCards = flashcards.filter(card => {
-                if (subcategory) {
-                    return card.category === category && card.subcategory === subcategory;
-                } else {
-                    return card.category === category && (!card.subcategory || card.subcategory === '');
+            // Load ALL cards from localStorage for this category/subcategory
+            let allCards = [];
+
+            // Find all files that match this category and subcategory
+            Object.keys(fileCategories).forEach(fileName => {
+                const fileCategory = fileCategories[fileName];
+                const matchesCategory = fileCategory.category === category;
+                const matchesSubcategory = subcategory ?
+                    fileCategory.subcategory === subcategory :
+                    (!fileCategory.subcategory || fileCategory.subcategory === '');
+
+                if (matchesCategory && matchesSubcategory) {
+                    const savedData = safeStorage.getItem(`flashcards_${fileName}`);
+                    if (savedData) {
+                        try {
+                            const cardData = JSON.parse(savedData);
+                            // Add cards with correct category/subcategory
+                            cardData.forEach((card, index) => {
+                                allCards.push({
+                                    id: card.id || index,
+                                    german: card.german,
+                                    germanExtended: card.germanExtended || '',
+                                    english: card.english,
+                                    englishExtended: card.englishExtended || '',
+                                    detail: card.detail || '',
+                                    hasExtended: !!(card.germanExtended || card.englishExtended),
+                                    learned: card.learned || false,
+                                    reviewDate: card.reviewDate || null,
+                                    repetitions: card.repetitions || 0,
+                                    easeFactor: card.easeFactor || 2.5,
+                                    interval: card.interval || 1,
+                                    category: fileCategory.category,
+                                    subcategory: fileCategory.subcategory || '',
+                                    fileName: fileName // Track which file this came from
+                                });
+                            });
+                            console.log(`  📁 Loaded ${cardData.length} cards from ${fileName}`);
+                        } catch (e) {
+                            console.error(`  ❌ Error loading ${fileName}:`, e);
+                        }
+                    }
                 }
             });
 
-            console.log('  Filtered cards:', filteredCards.length);
+            console.log('  Total cards loaded:', allCards.length);
 
-            if (filteredCards.length === 0) {
+            if (allCards.length === 0) {
                 container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div><p>No flashcards in this category</p></div>';
                 return;
             }
 
-            modalFlashcards = filteredCards;
+            modalFlashcards = allCards;
 
             // Build the full modal content with category selector, search, bulk actions, and table
             container.innerHTML = `
