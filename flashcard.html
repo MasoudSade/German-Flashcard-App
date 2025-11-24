@@ -2839,16 +2839,44 @@ i<!DOCTYPE html>
                         <strong>🎙️ = Microsoft voices (high quality)</strong><br>
                         <span style="color: #666;">Tip: Google voices provide the most natural pronunciation for learning!</span>
                     </div>
-                    <label>
-                        <span><strong>German Voice:</strong></span>
-                        <select id="germanVoiceSelect" style="width: 100%; padding: 8px; margin-top: 5px; border: 2px solid #667eea; border-radius: 5px; font-size: 14px;"></select>
-                        <div id="germanVoiceInfo" style="font-size: 0.85em; color: #666; margin-top: 5px; font-style: italic;">Loading voices...</div>
-                    </label>
-                    <label style="margin-top: 15px;">
-                        <span><strong>English Voice:</strong></span>
-                        <select id="englishVoiceSelect" style="width: 100%; padding: 8px; margin-top: 5px; border: 2px solid #667eea; border-radius: 5px; font-size: 14px;"></select>
-                        <div id="englishVoiceInfo" style="font-size: 0.85em; color: #666; margin-top: 5px; font-style: italic;">Loading voices...</div>
-                    </label>
+
+                    <!-- Quick Gender Selection -->
+                    <div style="background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 2px solid #e0e0e0;">
+                        <div style="font-weight: 600; margin-bottom: 10px; color: #667eea;">👤 Quick Voice Selection:</div>
+                        <label style="margin-bottom: 10px;">
+                            <span style="display: block; margin-bottom: 5px;"><strong>German Narrator:</strong></span>
+                            <select id="germanGenderSelect" style="width: 100%; padding: 10px; border: 2px solid #667eea; border-radius: 5px; font-size: 14px; background: white;">
+                                <option value="female">👩 Female Voice (Recommended)</option>
+                                <option value="male">👨 Male Voice</option>
+                            </select>
+                        </label>
+                        <label style="margin-top: 10px;">
+                            <span style="display: block; margin-bottom: 5px;"><strong>English Narrator:</strong></span>
+                            <select id="englishGenderSelect" style="width: 100%; padding: 10px; border: 2px solid #667eea; border-radius: 5px; font-size: 14px; background: white;">
+                                <option value="male">👨 Male Voice (Recommended)</option>
+                                <option value="female">👩 Female Voice</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <!-- Advanced Voice Selection (Collapsible) -->
+                    <details style="margin-bottom: 15px;">
+                        <summary style="cursor: pointer; padding: 10px; background: #f8f9fa; border-radius: 5px; font-weight: 600; color: #666;">
+                            🔧 Advanced: Choose Specific Voice
+                        </summary>
+                        <div style="padding: 10px; margin-top: 10px; border-left: 3px solid #667eea; background: #fafafa;">
+                            <label>
+                                <span><strong>German Voice:</strong></span>
+                                <select id="germanVoiceSelect" style="width: 100%; padding: 8px; margin-top: 5px; border: 2px solid #667eea; border-radius: 5px; font-size: 14px;"></select>
+                                <div id="germanVoiceInfo" style="font-size: 0.85em; color: #666; margin-top: 5px; font-style: italic;">Loading voices...</div>
+                            </label>
+                            <label style="margin-top: 15px;">
+                                <span><strong>English Voice:</strong></span>
+                                <select id="englishVoiceSelect" style="width: 100%; padding: 8px; margin-top: 5px; border: 2px solid #667eea; border-radius: 5px; font-size: 14px;"></select>
+                                <div id="englishVoiceInfo" style="font-size: 0.85em; color: #666; margin-top: 5px; font-style: italic;">Loading voices...</div>
+                            </label>
+                        </div>
+                    </details>
                     <label style="margin-top: 15px;">
                         <span>Speech Rate:</span>
                         <input type="range" id="speechRate" min="0.5" max="1.5" step="0.1" value="0.8">
@@ -7960,6 +7988,73 @@ i<!DOCTYPE html>
             englishVoice = englishVoices[parseInt(e.target.value)];
             updateVoiceInfo('english', englishVoice);
             console.log('English voice changed to:', englishVoice.name);
+        });
+
+        // Gender-based voice selection handlers
+        document.getElementById('germanGenderSelect').addEventListener('change', (e) => {
+            const gender = e.target.value;
+            const germanVoices = allVoices.filter(voice => voice.lang.startsWith('de'));
+
+            // Try to find a voice matching the gender preference
+            let selectedVoice;
+            if (gender === 'female') {
+                // Female voices often have these patterns
+                selectedVoice = germanVoices.find(v =>
+                    v.name.toLowerCase().includes('katja') ||
+                    v.name.toLowerCase().includes('hedda') ||
+                    v.name.toLowerCase().includes('female') ||
+                    v.name.toLowerCase().includes('woman')
+                ) || germanVoices.find(v => v.name.toLowerCase().includes('google')) || germanVoices[0];
+            } else {
+                // Male voices
+                selectedVoice = germanVoices.find(v =>
+                    v.name.toLowerCase().includes('stefan') ||
+                    v.name.toLowerCase().includes('male') ||
+                    v.name.toLowerCase().includes('man')
+                ) || germanVoices[1] || germanVoices[0];
+            }
+
+            if (selectedVoice) {
+                germanVoice = selectedVoice;
+                // Update the advanced dropdown to match
+                const voiceIndex = germanVoices.indexOf(selectedVoice);
+                document.getElementById('germanVoiceSelect').value = voiceIndex;
+                updateVoiceInfo('german', germanVoice);
+                console.log('German voice changed to:', germanVoice.name, '(Gender:', gender + ')');
+            }
+        });
+
+        document.getElementById('englishGenderSelect').addEventListener('change', (e) => {
+            const gender = e.target.value;
+            const englishVoices = allVoices.filter(voice => voice.lang.startsWith('en'));
+
+            // Try to find a voice matching the gender preference
+            let selectedVoice;
+            if (gender === 'male') {
+                // Male voices often have these patterns
+                selectedVoice = englishVoices.find(v =>
+                    v.name.toLowerCase().includes('david') ||
+                    v.name.toLowerCase().includes('mark') ||
+                    v.name.toLowerCase().includes('male') ||
+                    v.name.toLowerCase().includes('man')
+                ) || englishVoices.find(v => v.name.toLowerCase().includes('google') && v.lang === 'en-US') || englishVoices[0];
+            } else {
+                // Female voices
+                selectedVoice = englishVoices.find(v =>
+                    v.name.toLowerCase().includes('zira') ||
+                    v.name.toLowerCase().includes('female') ||
+                    v.name.toLowerCase().includes('woman')
+                ) || englishVoices[1] || englishVoices[0];
+            }
+
+            if (selectedVoice) {
+                englishVoice = selectedVoice;
+                // Update the advanced dropdown to match
+                const voiceIndex = englishVoices.indexOf(selectedVoice);
+                document.getElementById('englishVoiceSelect').value = voiceIndex;
+                updateVoiceInfo('english', englishVoice);
+                console.log('English voice changed to:', englishVoice.name, '(Gender:', gender + ')');
+            }
         });
 
         // Speech rate handler
